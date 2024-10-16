@@ -18,15 +18,16 @@ fi
 
 cd $CINERA_REPO_PATH
 git pull
-if [[ -z "${CINERA_VERSION}" ]]; then
-	git checkout master
-else
-	git checkout $CINERA_VERSION
-fi
-cd $CINERA_REPO_PATH/hmmlib
-make
-cp hmml.a hmmlib.h ../cinera
+# if [[ -z "${CINERA_VERSION}" ]]; then
+# 	git checkout master
+# else
+# 	git checkout $CINERA_VERSION
+# fi
+# cd $CINERA_REPO_PATH/hmmlib
+# make
+# cp hmml.a hmmlib.h ../cinera
 cd $CINERA_REPO_PATH/cinera
+cp ../hmmlib2/hmmlib.h .
 `$SHELL cinera.c`
 
 if [ ! -d $CINERA_ASSETS_PATH ]; then
