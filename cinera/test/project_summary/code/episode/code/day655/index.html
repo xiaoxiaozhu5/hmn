@@ -1,0 +1,1237 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="generator" content="Cinera 0.10.30">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="keywords" content="animation, asset system, audio, collision, data structure, entity system, filtering, language, library, lighting, movement, threading, Chat Comment, In-Game, Programming, Research, Speech">
+
+        <link rel="stylesheet" type="text/css" href="https://handmade.network/public/annotations/cinera.css?r=39c76375">
+        <link rel="stylesheet" type="text/css" href="https://handmade.network/public/annotations/cinera__hero.css?r=29c3877c">
+        <link rel="stylesheet" type="text/css" href="https://handmade.network/public/annotations/cinera_topics.css?r=8e300c51">
+        <script type="text/javascript" src="https://handmade.network/public/annotations/cinera_pre.js?r=3e2343d1"></script>
+        <script type="text/javascript" src="https://handmade.network/public/annotations/cinera_player_pre.js?r=5587322c"></script>
+
+        <meta property="cinera:type" content="entry">
+        <meta property="cinera:title" content="Revisiting Entity Movement">
+        <meta property="cinera:project" content="Handmade Hero">
+        <meta property="cinera:project_lineage" content=" / Handmade Hero">
+    </head>
+    <body>
+        <div class="cinera">
+            <script type="text/javascript" src="https://handmade.network/public/annotations/cinera_clear.js?r=00000000"></script>
+            <div class="cineraMenus hero">
+            <span class="episode_name">Revisiting Entity Movement</span>
+            <div class="menu references">
+                <span>References &#9660;</span>
+                <div class="refs references_container">
+                    <a data-id="https://www.youtube.com/watch?v=r9eQth4Q5jg" href="https://www.youtube.com/watch?v=r9eQth4Q5jg" target="_blank" class="ref">
+                        <span class="ref_content">
+                            <div class="source">Molly Rocket (YouTube)</div>
+                            <div class="ref_title">Twenty Minutes of Reasons to Use the RemedyBG Debugger</div>
+                        </span>
+                        <div class="ref_indices">
+                            <span data-timestamp="44.000" class="timecode"><span class="ref_index">[1]</span><span class="time">0:44</span></span>
+                        </div>
+                    </a>
+                    <a data-id="https://github.com/nothings/stb" href="https://github.com/nothings/stb" target="_blank" class="ref">
+                        <span class="ref_content">
+                            <div class="source">GitHub</div>
+                            <div class="ref_title">nothings /&#8203; stb</div>
+                        </span>
+                        <div class="ref_indices">
+                            <span data-timestamp="10536.000" class="timecode"><span class="ref_index">[2]</span><span class="time">2:55:36</span></span><span data-timestamp="10571.000" class="timecode"><span class="ref_index">[3]</span><span class="time">2:56:11</span></span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="menu filter">
+                <span><img src="https://handmade.network/public/annotations/cinera_icon_filter.png?r=3d831e54"></span>
+                <div class="filter_container">
+                   <div class="filter_header">
+                       <div class="filter_mode exclusive">Filter mode: </div>
+                       <div class="filter_titles">
+                           <div class="filter_title">Topics</div>
+                           <div class="filter_title">Media</div>
+                       </div>
+                   </div>
+                   <div class="filters">
+                        <div class="filter_topics">
+                            <div class="filter_content animation">
+                                <span class="icon category animation" data-hue="170" data-saturation="81%"></span><span class="cineraText">animation</span>
+                            </div>
+                            <div class="filter_content asset-system">
+                                <span class="icon category asset-system" data-hue="233" data-saturation="90%"></span><span class="cineraText">asset system</span>
+                            </div>
+                            <div class="filter_content audio">
+                                <span class="icon category audio" data-hue="287" data-saturation="77%"></span><span class="cineraText">audio</span>
+                            </div>
+                            <div class="filter_content collision">
+                                <span class="icon category collision" data-hue="342" data-saturation="93%"></span><span class="cineraText">collision</span>
+                            </div>
+                            <div class="filter_content data-structure">
+                                <span class="icon category data-structure" data-hue="290" data-saturation="90%"></span><span class="cineraText">data structure</span>
+                            </div>
+                            <div class="filter_content entity-system">
+                                <span class="icon category entity-system" data-hue="275" data-saturation="92%"></span><span class="cineraText">entity system</span>
+                            </div>
+                            <div class="filter_content filtering">
+                                <span class="icon category filtering" data-hue="227" data-saturation="85%"></span><span class="cineraText">filtering</span>
+                            </div>
+                            <div class="filter_content language">
+                                <span class="icon category language" data-hue="142" data-saturation="84%"></span><span class="cineraText">language</span>
+                            </div>
+                            <div class="filter_content library">
+                                <span class="icon category library" data-hue="40" data-saturation="80%"></span><span class="cineraText">library</span>
+                            </div>
+                            <div class="filter_content lighting">
+                                <span class="icon category lighting" data-hue="40" data-saturation="76%"></span><span class="cineraText">lighting</span>
+                            </div>
+                            <div class="filter_content movement">
+                                <span class="icon category movement" data-hue="341" data-saturation="97%"></span><span class="cineraText">movement</span>
+                            </div>
+                            <div class="filter_content threading">
+                                <span class="icon category threading" data-hue="25" data-saturation="97%"></span><span class="cineraText">threading</span>
+                            </div>
+                            <div title="Timestamps that don't fit into the above topic(s) may be filtered using this pseudo-topic" class="filter_content nullTopic">
+                                <span class="icon category nullTopic"></span><span class="cineraText">(null topic)</span>
+                            </div>
+                        </div>
+                        <div class="filter_media">
+                            <div class="filter_content authored">
+                                <span class="icon">&#128490;</span><span class="cineraText">Chat Comment</span>
+                            </div>
+                            <div class="filter_content run">
+                                <span class="icon">&#127939;</span><span class="cineraText">In-Game</span>
+                            </div>
+                            <div class="filter_content programming">
+                                <span class="icon">&#128430;</span><span class="cineraText">Programming</span><span class="cineraDefaultMediumIndicator" title="Default medium
+Timestamps lacking a media icon are in this medium">&#128969;</span>
+                            </div>
+                            <div class="filter_content research">
+                                <span class="icon">&#128214;</span><span class="cineraText">Research</span>
+                            </div>
+                            <div class="filter_content speech">
+                                <span class="icon">&#128489;</span><span class="cineraText">Speech</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="menu views">
+                <div class="view" data-id="theatre" title="Theatre mode">&#127917;</div>
+                <div class="views_container">
+                    <div class="view" data-id="super" title="SUPERtheatre mode">&#127967;</div>
+                </div>
+            </div>
+            <div class="menu link">
+                <span>&#128279;</span>
+                <div class="link_container">
+                    <div id="cineraLinkMode">Link to: current timestamp</div>
+                    <textarea title="Click to copy to clipboard" id="cineraLink" readonly spellcheck="false"></textarea>
+                </div>
+            </div>
+            <div class="menu credits">
+                <span>Credits</span>
+                <div class="credits_container">
+                    <span class="credit">
+                        <a class="person" href="https://handmadehero.org/" target="_blank">
+                            <div class="role">Host</div>
+                            <div class="name">Casey Muratori</div>
+                        </a>
+                        <a class="support" href="https://handmadehero.org/fund" target="_blank"><img src="https://handmade.network/public/annotations/cinera_sprite_sendowl.png?r=6899f6b0"></a>
+                    </span>
+                    <span class="credit">
+                        <a class="person" href="https://miblo.net/" target="_blank">
+                            <div class="role">Indexer</div>
+                            <div class="name">Matt Mascarenhas</div>
+                        </a>
+                        <a class="support" href="https://miblo.net/cinera#pledge" target="_blank"><img src="https://handmade.network/public/annotations/cinera_sprite_sendowl.png?r=6899f6b0"></a>
+                    </span>
+                </div>
+            </div>
+            <div class="cineraHelp">
+                <span>?</span>
+                <div class="help_container">
+                    <span class="help_key">?</span><h1>Keyboard Navigation</h1>
+
+                    <h2>Global Keys</h2>
+                    <span class="help_key">[</span>, <span class="help_key">&lt;</span> / <span class="help_key">]</span>, <span class="help_key">&gt;</span> <span class="help_text">Jump to previous / next episode</span><br>
+                    <span class="help_key">W</span>, <span class="help_key">K</span>, <span class="help_key">P</span> / <span class="help_key">S</span>, <span class="help_key">J</span>, <span class="help_key">N</span> <span class="help_text">Jump to previous / next timestamp</span><br>
+                    <span class="help_key">t</span> / <span class="help_key">T</span> <span class="help_text">Toggle theatre / SUPERtheatre mode</span><br>
+                    <span class="help_key">V</span> <span class="help_text">Revert filter to original state</span> <span class="help_key">Y</span> <span class="help_text">Select link (requires manual Ctrl-c)</span>
+
+                    <h2>Menu toggling</h2>
+                    <span class="help_key unavailable">q</span> <span class="help_text unavailable">Quotes</span>
+                    <span class="help_key">r</span> <span class="help_text">References</span>
+                    <span class="help_key">f</span> <span class="help_text">Filter</span>
+                    <span class="help_key">y</span> <span class="help_text">Link</span>
+                    <span class="help_key">c</span> <span class="help_text">Credits</span>
+
+                    <h2>In-Menu and <span class="help_title_key help_custom_index">Index</span> Controls</h2>
+                    <div class="help_paragraph">
+                        <div class="key_block">
+                            <div>
+                                <span class="help_key">a</span>
+                            </div>
+                            <div>
+                                <span class="help_key help_custom_index">w</span><br>
+                                <span class="help_key help_custom_index">s</span>
+                            </div>
+                            <div>
+                                <span class="help_key">d</span>
+                            </div>
+                        </div>
+                        <div class="key_block">
+                            <span class="help_key">h</span>
+                            <span class="help_key help_custom_index">j</span>
+                            <span class="help_key help_custom_index">k</span>
+                            <span class="help_key">l</span>
+                        </div>
+                        <div class="key_block">
+                            <div>
+                                <span class="help_key">←</span>
+                            </div>
+                            <div>
+                                <span class="help_key">↑</span><br>
+                                <span class="help_key">↓</span>
+                            </div>
+                            <div>
+                                <span class="help_key">→</span>
+                            </div>
+                        </div>
+                    </div><br>
+                    <div class="help_paragraph">
+                        <span class="help_key help_custom_index">Esc</span> <span class="help_text">Close menu / unfocus timestamp</span>
+                    </div>
+                    <br>
+                    <h2><span class="unavailable">Quotes and</span> References Menus and Index</h2>
+                    <span class="help_key word">Enter</span> <span class="help_text">Jump to timestamp</span><br>
+
+                    <h2><span class="unavailable">Quotes,</span> References and Credits Menus</h2>                    <span class="help_key">o</span> <span class="help_text">Open URL (in new tab)</span>
+
+                    <h2>Filter Menu</h2>
+                    <span class="help_key">x</span>, <span class="help_key word">Space</span> <span class="help_text">Toggle category and focus next</span><br>
+                    <span class="help_key">X</span>, <span class="help_key word modifier">Shift</span><span class="help_key word">Space</span> <span class="help_text">Toggle category and focus previous</span><br>
+                    <span class="help_key">v</span> <span class="help_text">Invert topics / media as per focus</span>
+
+                    <h2>Filter and Link Menus</h2>
+                    <span class="help_key">z</span> <span class="help_text">Toggle filter / linking mode</span>
+
+                    <h2>Credits Menu</h2>
+                    <span class="help_key word">Enter</span> <span class="help_text">Open URL (in new tab)</span><br>
+                </div>
+            </div>
+        </div>
+        <script src="https://www.youtube.com/iframe_api"></script>
+        <div class="cineraPlayerContainer">
+            <div class="video_container" data-platform="youtube" data-videoId="pITjYkjGha4"></div>
+            <div class="markers_container hero">
+                <a class="episodeMarker prev" href="https://hero.handmade.network/episode/code/day654/"><div>&#9195;</div><div>Previous: 'Self-illuminating Floor Tiles'</div><div>&#9195;</div></a>
+            <div class="markers">
+                <div data-timestamp="1.000" class="marker cat_nullTopic speech">
+                    <div class="cineraContent"><span class="timecode">0:01</span>Recap and set the stage for the day<span class="cineraCategories"><div title="Speech" class="categoryMedium speech">&#128489;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">0:01</span>Recap and set the stage for the day<span class="cineraCategories"><div title="Speech" class="categoryMedium speech">&#128489;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">0:01</span>Recap and set the stage for the day<span class="cineraCategories"><div title="Speech" class="categoryMedium speech">&#128489;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="44.000" class="marker cat_nullTopic research" data-ref="https://www.youtube.com/watch?v=r9eQth4Q5jg">
+                    <div class="cineraContent"><span class="timecode">0:44</span>Plug &quot;Twenty Minutes of Reasons to Use the <span class="project" data-hue="298" data-saturation="95%">RemedyBG</span> Debugger&quot;<sup>1</sup><span class="cineraCategories"><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">0:44</span>Plug &quot;Twenty Minutes of Reasons to Use the <span class="project" data-hue="298" data-saturation="95%">RemedyBG</span> Debugger&quot;<sup>1</sup><span class="cineraCategories"><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">0:44</span>Plug &quot;Twenty Minutes of Reasons to Use the <span class="project" data-hue="298" data-saturation="95%">RemedyBG</span> Debugger&quot;<sup>1</sup><span class="cineraCategories"><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="98.000" class="marker cat_filtering cat_lighting run">
+                    <div class="cineraContent"><span class="timecode">1:38</span>Demo our future desire for a bloom filter and participating media (dust), with a few words on other film artifacts such as halation<span class="cineraCategories"><div title="filtering" class="category filtering" data-hue="227" data-saturation="85%"></div><div title="lighting" class="category lighting" data-hue="40" data-saturation="76%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:38</span>Demo our future desire for a bloom filter and participating media (dust), with a few words on other film artifacts such as halation<span class="cineraCategories"><div title="filtering" class="category filtering" data-hue="227" data-saturation="85%"></div><div title="lighting" class="category lighting" data-hue="40" data-saturation="76%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:38</span>Demo our future desire for a bloom filter and participating media (dust), with a few words on other film artifacts such as halation<span class="cineraCategories"><div title="filtering" class="category filtering" data-hue="227" data-saturation="85%"></div><div title="lighting" class="category lighting" data-hue="40" data-saturation="76%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="558.000" class="marker cat_movement run">
+                    <div class="cineraContent"><span class="timecode">9:18</span>Determine to build some basic entity interactions<span class="cineraCategories"><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">9:18</span>Determine to build some basic entity interactions<span class="cineraCategories"><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">9:18</span>Determine to build some basic entity interactions<span class="cineraCategories"><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="899.000" class="marker cat_movement run">
+                    <div class="cineraContent"><span class="timecode">14:59</span>Consider fixing the glove&#39;s movement to discrete patterns<span class="cineraCategories"><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">14:59</span>Consider fixing the glove&#39;s movement to discrete patterns<span class="cineraCategories"><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">14:59</span>Consider fixing the glove&#39;s movement to discrete patterns<span class="cineraCategories"><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="1392.000" class="marker cat_collision research">
+                    <div class="cineraContent"><span class="timecode">23:12</span>Determine to switch to an entirely transactional collision system<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">23:12</span>Determine to switch to an entirely transactional collision system<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">23:12</span>Determine to switch to an entirely transactional collision system<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="1411.000" class="marker cat_nullTopic research">
+                    <div class="cineraContent"><span class="timecode">23:31</span>Thoughts on freedom, constraints and making problems tractable<span class="cineraCategories"><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">23:31</span>Thoughts on freedom, constraints and making problems tractable<span class="cineraCategories"><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">23:31</span>Thoughts on freedom, constraints and making problems tractable<span class="cineraCategories"><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="1573.000" class="marker cat_collision cat_movement research">
+                    <div class="cineraContent"><span class="timecode">26:13</span>Real-time transactional movement and collision<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">26:13</span>Real-time transactional movement and collision<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">26:13</span>Real-time transactional movement and collision<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="1711.000" class="marker cat_movement run">
+                    <div class="cineraContent"><span class="timecode">28:31</span>Demo our need for leading-edge, sustaining action and trailing-edge (attack, sustain and release) events<span class="cineraCategories"><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">28:31</span>Demo our need for leading-edge, sustaining action and trailing-edge (attack, sustain and release) events<span class="cineraCategories"><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">28:31</span>Demo our need for leading-edge, sustaining action and trailing-edge (attack, sustain and release) events<span class="cineraCategories"><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="1886.000" class="marker cat_collision cat_movement programming">
+                    <div class="cineraContent"><span class="timecode">31:26</span>Remove the voxel-based collision code, and the floating movement mode<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">31:26</span>Remove the voxel-based collision code, and the floating movement mode<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">31:26</span>Remove the voxel-based collision code, and the floating movement mode<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="1956.000" class="marker cat_movement run">
+                    <div class="cineraContent"><span class="timecode">32:36</span>Previously floating entities (glove and familiar) no longer move<span class="cineraCategories"><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">32:36</span>Previously floating entities (glove and familiar) no longer move<span class="cineraCategories"><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">32:36</span>Previously floating entities (glove and familiar) no longer move<span class="cineraCategories"><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="1998.000" class="marker cat_movement programming">
+                    <div class="cineraContent"><span class="timecode">33:18</span>Fully remove MovementMode_Floating<span class="cineraCategories"><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">33:18</span>Fully remove MovementMode_Floating<span class="cineraCategories"><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">33:18</span>Fully remove MovementMode_Floating<span class="cineraCategories"><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="2051.000" class="marker cat_movement research">
+                    <div class="cineraContent"><span class="timecode">34:11</span>Consider removing entity_movement_mode entirely<span class="cineraCategories"><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">34:11</span>Consider removing entity_movement_mode entirely<span class="cineraCategories"><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">34:11</span>Consider removing entity_movement_mode entirely<span class="cineraCategories"><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="2104.000" class="marker cat_movement programming">
+                    <div class="cineraContent"><span class="timecode">35:04</span>Re-add MovementMode_Floating and remove MovementMode_AngleOffset and MovementMode_AngleAttackSwipe<span class="cineraCategories"><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">35:04</span>Re-add MovementMode_Floating and remove MovementMode_AngleOffset and MovementMode_AngleAttackSwipe<span class="cineraCategories"><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">35:04</span>Re-add MovementMode_Floating and remove MovementMode_AngleOffset and MovementMode_AngleAttackSwipe<span class="cineraCategories"><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="2130.000" class="marker cat_movement research">
+                    <div class="cineraContent"><span class="timecode">35:30</span>Consider removing entity_movement_mode entirely (cont.)<span class="cineraCategories"><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">35:30</span>Consider removing entity_movement_mode entirely (cont.)<span class="cineraCategories"><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">35:30</span>Consider removing entity_movement_mode entirely (cont.)<span class="cineraCategories"><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="2290.000" class="marker cat_animation cat_entity-system programming">
+                    <div class="cineraContent"><span class="timecode">38:10</span>Rename entity_movement_mode to entity_animation<span class="cineraCategories"><div title="animation" class="category animation" data-hue="170" data-saturation="81%"></div><div title="entity system" class="category entity-system" data-hue="275" data-saturation="92%"></div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">38:10</span>Rename entity_movement_mode to entity_animation<span class="cineraCategories"><div title="animation" class="category animation" data-hue="170" data-saturation="81%"></div><div title="entity system" class="category entity-system" data-hue="275" data-saturation="92%"></div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">38:10</span>Rename entity_movement_mode to entity_animation<span class="cineraCategories"><div title="animation" class="category animation" data-hue="170" data-saturation="81%"></div><div title="entity system" class="category entity-system" data-hue="275" data-saturation="92%"></div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="2458.000" class="marker cat_animation cat_movement research">
+                    <div class="cineraContent"><span class="timecode">40:58</span>Plan to separate out transactional movement from animation<span class="cineraCategories"><div title="animation" class="category animation" data-hue="170" data-saturation="81%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">40:58</span>Plan to separate out transactional movement from animation<span class="cineraCategories"><div title="animation" class="category animation" data-hue="170" data-saturation="81%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">40:58</span>Plan to separate out transactional movement from animation<span class="cineraCategories"><div title="animation" class="category animation" data-hue="170" data-saturation="81%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="2541.000" class="marker cat_animation programming">
+                    <div class="cineraContent"><span class="timecode">42:21</span>Introduce UpdateAnimation() to adopt code from UpdateAndRenderEntities()<span class="cineraCategories"><div title="animation" class="category animation" data-hue="170" data-saturation="81%"></div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">42:21</span>Introduce UpdateAnimation() to adopt code from UpdateAndRenderEntities()<span class="cineraCategories"><div title="animation" class="category animation" data-hue="170" data-saturation="81%"></div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">42:21</span>Introduce UpdateAnimation() to adopt code from UpdateAndRenderEntities()<span class="cineraCategories"><div title="animation" class="category animation" data-hue="170" data-saturation="81%"></div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="2658.000" class="marker cat_language authored">
+                    <div class="cineraContent"><span class="timecode">44:18</span><span class="author" data-hue="125" data-saturation="97%">wassimulator</span> Could you, please, at some point explain what &quot;internal&quot;, &quot;external&quot;, &quot;function&quot; and &quot;static&quot; before functions do? I vaguely understand what they do but not concretely<span class="cineraCategories"><div title="language" class="category language" data-hue="142" data-saturation="84%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">44:18</span><span class="author" data-hue="125" data-saturation="97%">wassimulator</span> Could you, please, at some point explain what &quot;internal&quot;, &quot;external&quot;, &quot;function&quot; and &quot;static&quot; before functions do? I vaguely understand what they do but not concretely<span class="cineraCategories"><div title="language" class="category language" data-hue="142" data-saturation="84%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">44:18</span><span class="author" data-hue="125" data-saturation="97%">wassimulator</span> Could you, please, at some point explain what &quot;internal&quot;, &quot;external&quot;, &quot;function&quot; and &quot;static&quot; before functions do? I vaguely understand what they do but not concretely<span class="cineraCategories"><div title="language" class="category language" data-hue="142" data-saturation="84%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="2697.000" class="marker cat_language programming">
+                    <div class="cineraContent"><span class="timecode">44:57</span>Understanding &quot;static&quot;<span class="cineraCategories"><div title="language" class="category language" data-hue="142" data-saturation="84%"></div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">44:57</span>Understanding &quot;static&quot;<span class="cineraCategories"><div title="language" class="category language" data-hue="142" data-saturation="84%"></div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">44:57</span>Understanding &quot;static&quot;<span class="cineraCategories"><div title="language" class="category language" data-hue="142" data-saturation="84%"></div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="2725.000" class="marker cat_language programming">
+                    <div class="cineraContent"><span class="timecode">45:25</span>Understanding &quot;static&quot; for function-local variable persistence<span class="cineraCategories"><div title="language" class="category language" data-hue="142" data-saturation="84%"></div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">45:25</span>Understanding &quot;static&quot; for function-local variable persistence<span class="cineraCategories"><div title="language" class="category language" data-hue="142" data-saturation="84%"></div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">45:25</span>Understanding &quot;static&quot; for function-local variable persistence<span class="cineraCategories"><div title="language" class="category language" data-hue="142" data-saturation="84%"></div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="2851.000" class="marker cat_language programming">
+                    <div class="cineraContent"><span class="timecode">47:31</span>Understanding &quot;static&quot; for global variables and functions<span class="cineraCategories"><div title="language" class="category language" data-hue="142" data-saturation="84%"></div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">47:31</span>Understanding &quot;static&quot; for global variables and functions<span class="cineraCategories"><div title="language" class="category language" data-hue="142" data-saturation="84%"></div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">47:31</span>Understanding &quot;static&quot; for global variables and functions<span class="cineraCategories"><div title="language" class="category language" data-hue="142" data-saturation="84%"></div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="3041.000" class="marker cat_language authored">
+                    <div class="cineraContent"><span class="timecode">50:41</span><span class="author" data-hue="342" data-saturation="98%">mmozeiko</span> In C++11 and up there is no problem with multiple thread and local static variable initialization<span class="cineraCategories"><div title="language" class="category language" data-hue="142" data-saturation="84%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">50:41</span><span class="author" data-hue="342" data-saturation="98%">mmozeiko</span> In C++11 and up there is no problem with multiple thread and local static variable initialization<span class="cineraCategories"><div title="language" class="category language" data-hue="142" data-saturation="84%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">50:41</span><span class="author" data-hue="342" data-saturation="98%">mmozeiko</span> In C++11 and up there is no problem with multiple thread and local static variable initialization<span class="cineraCategories"><div title="language" class="category language" data-hue="142" data-saturation="84%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="3061.000" class="marker cat_language authored">
+                    <div class="cineraContent"><span class="timecode">51:01</span><span class="author" data-hue="342" data-saturation="98%">mmozeiko</span> It guarantees that initialization is thread-safe. Puts lock around it<span class="cineraCategories"><div title="language" class="category language" data-hue="142" data-saturation="84%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">51:01</span><span class="author" data-hue="342" data-saturation="98%">mmozeiko</span> It guarantees that initialization is thread-safe. Puts lock around it<span class="cineraCategories"><div title="language" class="category language" data-hue="142" data-saturation="84%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">51:01</span><span class="author" data-hue="342" data-saturation="98%">mmozeiko</span> It guarantees that initialization is thread-safe. Puts lock around it<span class="cineraCategories"><div title="language" class="category language" data-hue="142" data-saturation="84%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="3077.000" class="marker cat_language authored">
+                    <div class="cineraContent"><span class="timecode">51:17</span><span class="author" data-hue="342" data-saturation="98%">mmozeiko</span> Sure. But it works<span class="cineraCategories"><div title="language" class="category language" data-hue="142" data-saturation="84%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">51:17</span><span class="author" data-hue="342" data-saturation="98%">mmozeiko</span> Sure. But it works<span class="cineraCategories"><div title="language" class="category language" data-hue="142" data-saturation="84%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">51:17</span><span class="author" data-hue="342" data-saturation="98%">mmozeiko</span> Sure. But it works<span class="cineraCategories"><div title="language" class="category language" data-hue="142" data-saturation="84%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="3149.000" class="marker cat_language authored">
+                    <div class="cineraContent"><span class="timecode">52:29</span><span class="author" data-hue="269" data-saturation="74%">zufaelligertyp</span> I always imagined local static variables as being the same as global static lifetime-wise. Only difference that the variable is only available in this function / scope. Isn&#39;t this how it works in C?<span class="cineraCategories"><div title="language" class="category language" data-hue="142" data-saturation="84%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">52:29</span><span class="author" data-hue="269" data-saturation="74%">zufaelligertyp</span> I always imagined local static variables as being the same as global static lifetime-wise. Only difference that the variable is only available in this function / scope. Isn&#39;t this how it works in C?<span class="cineraCategories"><div title="language" class="category language" data-hue="142" data-saturation="84%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">52:29</span><span class="author" data-hue="269" data-saturation="74%">zufaelligertyp</span> I always imagined local static variables as being the same as global static lifetime-wise. Only difference that the variable is only available in this function / scope. Isn&#39;t this how it works in C?<span class="cineraCategories"><div title="language" class="category language" data-hue="142" data-saturation="84%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="3276.000" class="marker cat_nullTopic authored">
+                    <div class="cineraContent"><span class="timecode">54:36</span><span class="author" data-hue="342" data-saturation="98%">mmozeiko</span> If you don&#39;t initialize variables with code (like result of function call) then pretty much all compilers will simply put constant value you initialized in global data segment, and there will be no code run on &quot;first time&quot;<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">54:36</span><span class="author" data-hue="342" data-saturation="98%">mmozeiko</span> If you don&#39;t initialize variables with code (like result of function call) then pretty much all compilers will simply put constant value you initialized in global data segment, and there will be no code run on &quot;first time&quot;<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">54:36</span><span class="author" data-hue="342" data-saturation="98%">mmozeiko</span> If you don&#39;t initialize variables with code (like result of function call) then pretty much all compilers will simply put constant value you initialized in global data segment, and there will be no code run on &quot;first time&quot;<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="3303.000" class="marker cat_animation programming">
+                    <div class="cineraContent"><span class="timecode">55:03</span>Make UpdateAnimation() take a sim_region * and particle_cache *<span class="cineraCategories"><div title="animation" class="category animation" data-hue="170" data-saturation="81%"></div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">55:03</span>Make UpdateAnimation() take a sim_region * and particle_cache *<span class="cineraCategories"><div title="animation" class="category animation" data-hue="170" data-saturation="81%"></div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">55:03</span>Make UpdateAnimation() take a sim_region * and particle_cache *<span class="cineraCategories"><div title="animation" class="category animation" data-hue="170" data-saturation="81%"></div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="3506.000" class="marker cat_animation cat_movement run">
+                    <div class="cineraContent"><span class="timecode">58:26</span>Non-floating entities continue to move and animate<span class="cineraCategories"><div title="animation" class="category animation" data-hue="170" data-saturation="81%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">58:26</span>Non-floating entities continue to move and animate<span class="cineraCategories"><div title="animation" class="category animation" data-hue="170" data-saturation="81%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">58:26</span>Non-floating entities continue to move and animate<span class="cineraCategories"><div title="animation" class="category animation" data-hue="170" data-saturation="81%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="3577.000" class="marker cat_language authored">
+                    <div class="cineraContent"><span class="timecode">59:37</span><span class="author" data-hue="156" data-saturation="93%">kwmar</span> Local static variables actually use a thread-local flag they examine if they&#39;ve been already initialized. If not, then slow part comes. But in VS there is one such guard per local static variable, so if you have 10 of them in a function then you pay 10 times the guard check per function<span class="cineraCategories"><div title="language" class="category language" data-hue="142" data-saturation="84%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">59:37</span><span class="author" data-hue="156" data-saturation="93%">kwmar</span> Local static variables actually use a thread-local flag they examine if they&#39;ve been already initialized. If not, then slow part comes. But in VS there is one such guard per local static variable, so if you have 10 of them in a function then you pay 10 times the guard check per function<span class="cineraCategories"><div title="language" class="category language" data-hue="142" data-saturation="84%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">59:37</span><span class="author" data-hue="156" data-saturation="93%">kwmar</span> Local static variables actually use a thread-local flag they examine if they&#39;ve been already initialized. If not, then slow part comes. But in VS there is one such guard per local static variable, so if you have 10 of them in a function then you pay 10 times the guard check per function<span class="cineraCategories"><div title="language" class="category language" data-hue="142" data-saturation="84%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="3625.000" class="marker cat_animation programming">
+                    <div class="cineraContent"><span class="timecode">1:00:25</span>Add an Animation_Floating case to UpdateAnimation()<span class="cineraCategories"><div title="animation" class="category animation" data-hue="170" data-saturation="81%"></div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:00:25</span>Add an Animation_Floating case to UpdateAnimation()<span class="cineraCategories"><div title="animation" class="category animation" data-hue="170" data-saturation="81%"></div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:00:25</span>Add an Animation_Floating case to UpdateAnimation()<span class="cineraCategories"><div title="animation" class="category animation" data-hue="170" data-saturation="81%"></div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="3701.000" class="marker cat_animation cat_movement run">
+                    <div class="cineraContent"><span class="timecode">1:01:41</span>Floating entities don&#39;t move<span class="cineraCategories"><div title="animation" class="category animation" data-hue="170" data-saturation="81%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:01:41</span>Floating entities don&#39;t move<span class="cineraCategories"><div title="animation" class="category animation" data-hue="170" data-saturation="81%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:01:41</span>Floating entities don&#39;t move<span class="cineraCategories"><div title="animation" class="category animation" data-hue="170" data-saturation="81%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="3723.000" class="marker cat_entity-system research">
+                    <div class="cineraContent"><span class="timecode">1:02:03</span>Consider working on Type_brain_familiar<span class="cineraCategories"><div title="entity system" class="category entity-system" data-hue="275" data-saturation="92%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:02:03</span>Consider working on Type_brain_familiar<span class="cineraCategories"><div title="entity system" class="category entity-system" data-hue="275" data-saturation="92%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:02:03</span>Consider working on Type_brain_familiar<span class="cineraCategories"><div title="entity system" class="category entity-system" data-hue="275" data-saturation="92%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="3845.000" class="marker cat_entity-system authored">
+                    <div class="cineraContent"><span class="timecode">1:04:05</span><span class="author" data-hue="237" data-saturation="85%">mindmark42</span> You can still swap your head with ground tiles or at least the buttons, I think<span class="cineraCategories"><div title="entity system" class="category entity-system" data-hue="275" data-saturation="92%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:04:05</span><span class="author" data-hue="237" data-saturation="85%">mindmark42</span> You can still swap your head with ground tiles or at least the buttons, I think<span class="cineraCategories"><div title="entity system" class="category entity-system" data-hue="275" data-saturation="92%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:04:05</span><span class="author" data-hue="237" data-saturation="85%">mindmark42</span> You can still swap your head with ground tiles or at least the buttons, I think<span class="cineraCategories"><div title="entity system" class="category entity-system" data-hue="275" data-saturation="92%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="3881.000" class="marker cat_entity-system run">
+                    <div class="cineraContent"><span class="timecode">1:04:41</span>Possess a switch and various entities<span class="cineraCategories"><div title="entity system" class="category entity-system" data-hue="275" data-saturation="92%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:04:41</span>Possess a switch and various entities<span class="cineraCategories"><div title="entity system" class="category entity-system" data-hue="275" data-saturation="92%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:04:41</span>Possess a switch and various entities<span class="cineraCategories"><div title="entity system" class="category entity-system" data-hue="275" data-saturation="92%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="4035.000" class="marker cat_nullTopic authored">
+                    <div class="cineraContent"><span class="timecode">1:07:15</span><span class="author" data-hue="299" data-saturation="90%">philbohun</span> Does <span class="member" data-hue="125" data-saturation="81%">Casey</span> have enough subs for a React stream? That would be the comedy of the century<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:07:15</span><span class="author" data-hue="299" data-saturation="90%">philbohun</span> Does <span class="member" data-hue="125" data-saturation="81%">Casey</span> have enough subs for a React stream? That would be the comedy of the century<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:07:15</span><span class="author" data-hue="299" data-saturation="90%">philbohun</span> Does <span class="member" data-hue="125" data-saturation="81%">Casey</span> have enough subs for a React stream? That would be the comedy of the century<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="4063.000" class="marker cat_entity-system research">
+                    <div class="cineraContent"><span class="timecode">1:07:43</span>Reacquaint ourselves with the entity possession code in ExecuteBrainHero()<span class="cineraCategories"><div title="entity system" class="category entity-system" data-hue="275" data-saturation="92%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:07:43</span>Reacquaint ourselves with the entity possession code in ExecuteBrainHero()<span class="cineraCategories"><div title="entity system" class="category entity-system" data-hue="275" data-saturation="92%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:07:43</span>Reacquaint ourselves with the entity possession code in ExecuteBrainHero()<span class="cineraCategories"><div title="entity system" class="category entity-system" data-hue="275" data-saturation="92%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="4152.000" class="marker cat_entity-system programming">
+                    <div class="cineraContent"><span class="timecode">1:09:12</span>Toggle off the brained entity swapping code in ExecuteBrainHero()<span class="cineraCategories"><div title="entity system" class="category entity-system" data-hue="275" data-saturation="92%"></div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:09:12</span>Toggle off the brained entity swapping code in ExecuteBrainHero()<span class="cineraCategories"><div title="entity system" class="category entity-system" data-hue="275" data-saturation="92%"></div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:09:12</span>Toggle off the brained entity swapping code in ExecuteBrainHero()<span class="cineraCategories"><div title="entity system" class="category entity-system" data-hue="275" data-saturation="92%"></div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="4167.000" class="marker cat_entity-system run">
+                    <div class="cineraContent"><span class="timecode">1:09:27</span>Entity possession no longer happens<span class="cineraCategories"><div title="entity system" class="category entity-system" data-hue="275" data-saturation="92%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:09:27</span>Entity possession no longer happens<span class="cineraCategories"><div title="entity system" class="category entity-system" data-hue="275" data-saturation="92%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:09:27</span>Entity possession no longer happens<span class="cineraCategories"><div title="entity system" class="category entity-system" data-hue="275" data-saturation="92%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="4178.000" class="marker cat_movement research">
+                    <div class="cineraContent"><span class="timecode">1:09:38</span>Plan pattern-based movement and glove striking rules, with interruptibility<span class="cineraCategories"><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:09:38</span>Plan pattern-based movement and glove striking rules, with interruptibility<span class="cineraCategories"><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:09:38</span>Plan pattern-based movement and glove striking rules, with interruptibility<span class="cineraCategories"><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="4559.000" class="marker cat_nullTopic authored">
+                    <div class="cineraContent"><span class="timecode">1:15:59</span><span class="author" data-hue="272" data-saturation="96%">tinspin</span> Hi, does anyone in chat know if you can make a Win .exe that runs fine on both 7 &amp; 10 without using compatibility mode?<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:15:59</span><span class="author" data-hue="272" data-saturation="96%">tinspin</span> Hi, does anyone in chat know if you can make a Win .exe that runs fine on both 7 &amp; 10 without using compatibility mode?<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:15:59</span><span class="author" data-hue="272" data-saturation="96%">tinspin</span> Hi, does anyone in chat know if you can make a Win .exe that runs fine on both 7 &amp; 10 without using compatibility mode?<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="4615.000" class="marker cat_entity-system cat_movement research">
+                    <div class="cineraContent"><span class="timecode">1:16:55</span>Determine to introduce move queues<span class="cineraCategories"><div title="entity system" class="category entity-system" data-hue="275" data-saturation="92%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:16:55</span>Determine to introduce move queues<span class="cineraCategories"><div title="entity system" class="category entity-system" data-hue="275" data-saturation="92%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:16:55</span>Determine to introduce move queues<span class="cineraCategories"><div title="entity system" class="category entity-system" data-hue="275" data-saturation="92%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="4940.000" class="marker cat_data-structure cat_entity-system cat_movement programming">
+                    <div class="cineraContent"><span class="timecode">1:22:20</span>Introduce move_queue_entry for the entity struct to contain<span class="cineraCategories"><div title="data structure" class="category data-structure" data-hue="290" data-saturation="90%"></div><div title="entity system" class="category entity-system" data-hue="275" data-saturation="92%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:22:20</span>Introduce move_queue_entry for the entity struct to contain<span class="cineraCategories"><div title="data structure" class="category data-structure" data-hue="290" data-saturation="90%"></div><div title="entity system" class="category entity-system" data-hue="275" data-saturation="92%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:22:20</span>Introduce move_queue_entry for the entity struct to contain<span class="cineraCategories"><div title="data structure" class="category data-structure" data-hue="290" data-saturation="90%"></div><div title="entity system" class="category entity-system" data-hue="275" data-saturation="92%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="5177.000" class="marker cat_nullTopic speech">
+                    <div class="cineraContent"><span class="timecode">1:26:17</span>Is <span class="member" data-hue="278" data-saturation="87%">Jon</span> still streaming Counter-Strike?<span class="cineraCategories"><div title="Speech" class="categoryMedium speech">&#128489;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:26:17</span>Is <span class="member" data-hue="278" data-saturation="87%">Jon</span> still streaming Counter-Strike?<span class="cineraCategories"><div title="Speech" class="categoryMedium speech">&#128489;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:26:17</span>Is <span class="member" data-hue="278" data-saturation="87%">Jon</span> still streaming Counter-Strike?<span class="cineraCategories"><div title="Speech" class="categoryMedium speech">&#128489;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="5187.000" class="marker cat_nullTopic authored">
+                    <div class="cineraContent"><span class="timecode">1:26:27</span><span class="author" data-hue="125" data-saturation="97%">wassimulator</span> No<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:26:27</span><span class="author" data-hue="125" data-saturation="97%">wassimulator</span> No<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:26:27</span><span class="author" data-hue="125" data-saturation="97%">wassimulator</span> No<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="5190.000" class="marker cat_nullTopic authored">
+                    <div class="cineraContent"><span class="timecode">1:26:30</span><span class="author" data-hue="252" data-saturation="90%">nextra24</span> It&#39;s over<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:26:30</span><span class="author" data-hue="252" data-saturation="90%">nextra24</span> It&#39;s over<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:26:30</span><span class="author" data-hue="252" data-saturation="90%">nextra24</span> It&#39;s over<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="5238.000" class="marker cat_nullTopic authored">
+                    <div class="cineraContent"><span class="timecode">1:27:18</span><span class="author" data-hue="252" data-saturation="90%">nextra24</span> Multiple days of playoffs, final best-of-three today<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:27:18</span><span class="author" data-hue="252" data-saturation="90%">nextra24</span> Multiple days of playoffs, final best-of-three today<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:27:18</span><span class="author" data-hue="252" data-saturation="90%">nextra24</span> Multiple days of playoffs, final best-of-three today<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="5266.000" class="marker cat_nullTopic authored">
+                    <div class="cineraContent"><span class="timecode">1:27:46</span><span class="author" data-hue="252" data-saturation="90%">nextra24</span> No, that best-of-three determined the overall winner<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:27:46</span><span class="author" data-hue="252" data-saturation="90%">nextra24</span> No, that best-of-three determined the overall winner<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:27:46</span><span class="author" data-hue="252" data-saturation="90%">nextra24</span> No, that best-of-three determined the overall winner<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="5287.000" class="marker cat_nullTopic authored">
+                    <div class="cineraContent"><span class="timecode">1:28:07</span><span class="author" data-hue="125" data-saturation="97%">wassimulator</span> Faze won or phase one?<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:28:07</span><span class="author" data-hue="125" data-saturation="97%">wassimulator</span> Faze won or phase one?<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:28:07</span><span class="author" data-hue="125" data-saturation="97%">wassimulator</span> Faze won or phase one?<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="5294.000" class="marker cat_data-structure cat_movement programming">
+                    <div class="cineraContent"><span class="timecode">1:28:14</span>Remove move_spec and DefaultMoveSpec()<span class="cineraCategories"><div title="data structure" class="category data-structure" data-hue="290" data-saturation="90%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:28:14</span>Remove move_spec and DefaultMoveSpec()<span class="cineraCategories"><div title="data structure" class="category data-structure" data-hue="290" data-saturation="90%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:28:14</span>Remove move_spec and DefaultMoveSpec()<span class="cineraCategories"><div title="data structure" class="category data-structure" data-hue="290" data-saturation="90%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="5359.000" class="marker cat_movement run">
+                    <div class="cineraContent"><span class="timecode">1:29:19</span>Plan the glove&#39;s tile occupation<span class="cineraCategories"><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:29:19</span>Plan the glove&#39;s tile occupation<span class="cineraCategories"><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:29:19</span>Plan the glove&#39;s tile occupation<span class="cineraCategories"><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="5527.000" class="marker cat_data-structure cat_entity-system cat_movement programming">
+                    <div class="cineraContent"><span class="timecode">1:32:07</span>Remove ddP from entity<span class="cineraCategories"><div title="data structure" class="category data-structure" data-hue="290" data-saturation="90%"></div><div title="entity system" class="category entity-system" data-hue="275" data-saturation="92%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:32:07</span>Remove ddP from entity<span class="cineraCategories"><div title="data structure" class="category data-structure" data-hue="290" data-saturation="90%"></div><div title="entity system" class="category entity-system" data-hue="275" data-saturation="92%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:32:07</span>Remove ddP from entity<span class="cineraCategories"><div title="data structure" class="category data-structure" data-hue="290" data-saturation="90%"></div><div title="entity system" class="category entity-system" data-hue="275" data-saturation="92%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="5568.000" class="marker cat_entity-system cat_movement programming">
+                    <div class="cineraContent"><span class="timecode">1:32:48</span>Start to make ExecuteBrainHero() move the glove towards its parent entity when at rest<span class="cineraCategories"><div title="entity system" class="category entity-system" data-hue="275" data-saturation="92%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:32:48</span>Start to make ExecuteBrainHero() move the glove towards its parent entity when at rest<span class="cineraCategories"><div title="entity system" class="category entity-system" data-hue="275" data-saturation="92%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:32:48</span>Start to make ExecuteBrainHero() move the glove towards its parent entity when at rest<span class="cineraCategories"><div title="entity system" class="category entity-system" data-hue="275" data-saturation="92%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="5738.000" class="marker cat_nullTopic run">
+                    <div class="cineraContent"><span class="timecode">1:35:38</span>The game runs<span class="cineraCategories"><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:35:38</span>The game runs<span class="cineraCategories"><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:35:38</span>The game runs<span class="cineraCategories"><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="5740.000" class="marker cat_movement research">
+                    <div class="cineraContent"><span class="timecode">1:35:40</span>Plan move queue execution, and glove positioning relative to the player<span class="cineraCategories"><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:35:40</span>Plan move queue execution, and glove positioning relative to the player<span class="cineraCategories"><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:35:40</span>Plan move queue execution, and glove positioning relative to the player<span class="cineraCategories"><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="5924.000" class="marker cat_audio authored">
+                    <div class="cineraContent"><span class="timecode">1:38:44</span><span class="author" data-hue="295" data-saturation="74%">internationalizationist</span> Q: Do we have sound effects at the moment?<span class="cineraCategories"><div title="audio" class="category audio" data-hue="287" data-saturation="77%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:38:44</span><span class="author" data-hue="295" data-saturation="74%">internationalizationist</span> Q: Do we have sound effects at the moment?<span class="cineraCategories"><div title="audio" class="category audio" data-hue="287" data-saturation="77%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:38:44</span><span class="author" data-hue="295" data-saturation="74%">internationalizationist</span> Q: Do we have sound effects at the moment?<span class="cineraCategories"><div title="audio" class="category audio" data-hue="287" data-saturation="77%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="5971.000" class="marker cat_audio run">
+                    <div class="cineraContent"><span class="timecode">1:39:31</span>Hear no sound<span class="cineraCategories"><div title="audio" class="category audio" data-hue="287" data-saturation="77%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:39:31</span>Hear no sound<span class="cineraCategories"><div title="audio" class="category audio" data-hue="287" data-saturation="77%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:39:31</span>Hear no sound<span class="cineraCategories"><div title="audio" class="category audio" data-hue="287" data-saturation="77%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="5976.000" class="marker cat_audio research">
+                    <div class="cineraContent"><span class="timecode">1:39:36</span>Reacquaint ourselves with PlaySound() and OutputPlayingSounds()<span class="cineraCategories"><div title="audio" class="category audio" data-hue="287" data-saturation="77%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:39:36</span>Reacquaint ourselves with PlaySound() and OutputPlayingSounds()<span class="cineraCategories"><div title="audio" class="category audio" data-hue="287" data-saturation="77%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:39:36</span>Reacquaint ourselves with PlaySound() and OutputPlayingSounds()<span class="cineraCategories"><div title="audio" class="category audio" data-hue="287" data-saturation="77%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="6118.000" class="marker cat_asset-system cat_audio run">
+                    <div class="cineraContent"><span class="timecode">1:41:58</span>Step through PlaySound(), to find that our sound is not found<span class="cineraCategories"><div title="asset system" class="category asset-system" data-hue="233" data-saturation="90%"></div><div title="audio" class="category audio" data-hue="287" data-saturation="77%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:41:58</span>Step through PlaySound(), to find that our sound is not found<span class="cineraCategories"><div title="asset system" class="category asset-system" data-hue="233" data-saturation="90%"></div><div title="audio" class="category audio" data-hue="287" data-saturation="77%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:41:58</span>Step through PlaySound(), to find that our sound is not found<span class="cineraCategories"><div title="asset system" class="category asset-system" data-hue="233" data-saturation="90%"></div><div title="audio" class="category audio" data-hue="287" data-saturation="77%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="6179.000" class="marker cat_asset-system cat_audio research">
+                    <div class="cineraContent"><span class="timecode">1:42:59</span>Investigate why our sounds are not found<span class="cineraCategories"><div title="asset system" class="category asset-system" data-hue="233" data-saturation="90%"></div><div title="audio" class="category audio" data-hue="287" data-saturation="77%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:42:59</span>Investigate why our sounds are not found<span class="cineraCategories"><div title="asset system" class="category asset-system" data-hue="233" data-saturation="90%"></div><div title="audio" class="category audio" data-hue="287" data-saturation="77%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:42:59</span>Investigate why our sounds are not found<span class="cineraCategories"><div title="asset system" class="category asset-system" data-hue="233" data-saturation="90%"></div><div title="audio" class="category audio" data-hue="287" data-saturation="77%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="6264.000" class="marker cat_asset-system cat_audio run">
+                    <div class="cineraContent"><span class="timecode">1:44:24</span>Break on GetBestMatchSoundFrom()<span class="cineraCategories"><div title="asset system" class="category asset-system" data-hue="233" data-saturation="90%"></div><div title="audio" class="category audio" data-hue="287" data-saturation="77%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:44:24</span>Break on GetBestMatchSoundFrom()<span class="cineraCategories"><div title="asset system" class="category asset-system" data-hue="233" data-saturation="90%"></div><div title="audio" class="category audio" data-hue="287" data-saturation="77%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:44:24</span>Break on GetBestMatchSoundFrom()<span class="cineraCategories"><div title="asset system" class="category asset-system" data-hue="233" data-saturation="90%"></div><div title="audio" class="category audio" data-hue="287" data-saturation="77%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="6369.000" class="marker cat_asset-system cat_audio research">
+                    <div class="cineraContent"><span class="timecode">1:46:09</span>Reacquaint ourselves with ProcessAudioImport() and UpdateAssetDataFromFile()<span class="cineraCategories"><div title="asset system" class="category asset-system" data-hue="233" data-saturation="90%"></div><div title="audio" class="category audio" data-hue="287" data-saturation="77%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:46:09</span>Reacquaint ourselves with ProcessAudioImport() and UpdateAssetDataFromFile()<span class="cineraCategories"><div title="asset system" class="category asset-system" data-hue="233" data-saturation="90%"></div><div title="audio" class="category audio" data-hue="287" data-saturation="77%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:46:09</span>Reacquaint ourselves with ProcessAudioImport() and UpdateAssetDataFromFile()<span class="cineraCategories"><div title="asset system" class="category asset-system" data-hue="233" data-saturation="90%"></div><div title="audio" class="category audio" data-hue="287" data-saturation="77%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="6632.000" class="marker cat_asset-system cat_audio research">
+                    <div class="cineraContent"><span class="timecode">1:50:32</span>Reacquaint ourselves with AddAssetToHash()<span class="cineraCategories"><div title="asset system" class="category asset-system" data-hue="233" data-saturation="90%"></div><div title="audio" class="category audio" data-hue="287" data-saturation="77%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:50:32</span>Reacquaint ourselves with AddAssetToHash()<span class="cineraCategories"><div title="asset system" class="category asset-system" data-hue="233" data-saturation="90%"></div><div title="audio" class="category audio" data-hue="287" data-saturation="77%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:50:32</span>Reacquaint ourselves with AddAssetToHash()<span class="cineraCategories"><div title="asset system" class="category asset-system" data-hue="233" data-saturation="90%"></div><div title="audio" class="category audio" data-hue="287" data-saturation="77%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="6698.000" class="marker cat_nullTopic authored">
+                    <div class="cineraContent"><span class="timecode">1:51:38</span><span class="author" data-hue="220" data-saturation="95%">nomad_pixel</span> Is that a mechanical keyboard? What switches are those?<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:51:38</span><span class="author" data-hue="220" data-saturation="95%">nomad_pixel</span> Is that a mechanical keyboard? What switches are those?<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:51:38</span><span class="author" data-hue="220" data-saturation="95%">nomad_pixel</span> Is that a mechanical keyboard? What switches are those?<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="6789.000" class="marker cat_nullTopic authored">
+                    <div class="cineraContent"><span class="timecode">1:53:09</span><span class="author" data-hue="114" data-saturation="87%">klblaz</span> Have you tried keyboards with MX Brown? They are basically the same switch<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:53:09</span><span class="author" data-hue="114" data-saturation="87%">klblaz</span> Have you tried keyboards with MX Brown? They are basically the same switch<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:53:09</span><span class="author" data-hue="114" data-saturation="87%">klblaz</span> Have you tried keyboards with MX Brown? They are basically the same switch<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="6835.000" class="marker cat_nullTopic authored">
+                    <div class="cineraContent"><span class="timecode">1:53:55</span><span class="author" data-hue="298" data-saturation="91%">dandymcgee</span> What&#39;s the difference? They&#39;re meant to have the same actuation profile, no?<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:53:55</span><span class="author" data-hue="298" data-saturation="91%">dandymcgee</span> What&#39;s the difference? They&#39;re meant to have the same actuation profile, no?<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:53:55</span><span class="author" data-hue="298" data-saturation="91%">dandymcgee</span> What&#39;s the difference? They&#39;re meant to have the same actuation profile, no?<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="6892.000" class="marker cat_nullTopic authored">
+                    <div class="cineraContent"><span class="timecode">1:54:52</span><span class="author" data-hue="140" data-saturation="83%">mdciotti</span> Zealio Purple switches supposedly have a very similar force curve to the Razer Orange switches. You&#39;d have to build the keyboard yourself, though<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:54:52</span><span class="author" data-hue="140" data-saturation="83%">mdciotti</span> Zealio Purple switches supposedly have a very similar force curve to the Razer Orange switches. You&#39;d have to build the keyboard yourself, though<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:54:52</span><span class="author" data-hue="140" data-saturation="83%">mdciotti</span> Zealio Purple switches supposedly have a very similar force curve to the Razer Orange switches. You&#39;d have to build the keyboard yourself, though<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="7009.000" class="marker cat_asset-system cat_audio research">
+                    <div class="cineraContent"><span class="timecode">1:56:49</span>Reacquaint ourselves with AddAssetToHash() (cont.)<span class="cineraCategories"><div title="asset system" class="category asset-system" data-hue="233" data-saturation="90%"></div><div title="audio" class="category audio" data-hue="287" data-saturation="77%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:56:49</span>Reacquaint ourselves with AddAssetToHash() (cont.)<span class="cineraCategories"><div title="asset system" class="category asset-system" data-hue="233" data-saturation="90%"></div><div title="audio" class="category audio" data-hue="287" data-saturation="77%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:56:49</span>Reacquaint ourselves with AddAssetToHash() (cont.)<span class="cineraCategories"><div title="asset system" class="category asset-system" data-hue="233" data-saturation="90%"></div><div title="audio" class="category audio" data-hue="287" data-saturation="77%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="7058.000" class="marker cat_asset-system cat_audio programming">
+                    <div class="cineraContent"><span class="timecode">1:57:38</span>Add StopCodeHere lines in AddAssetToHash() if TypeID == Asset_Audio and if Tags[0] == Tag_Bloop<span class="cineraCategories"><div title="asset system" class="category asset-system" data-hue="233" data-saturation="90%"></div><div title="audio" class="category audio" data-hue="287" data-saturation="77%"></div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:57:38</span>Add StopCodeHere lines in AddAssetToHash() if TypeID == Asset_Audio and if Tags[0] == Tag_Bloop<span class="cineraCategories"><div title="asset system" class="category asset-system" data-hue="233" data-saturation="90%"></div><div title="audio" class="category audio" data-hue="287" data-saturation="77%"></div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:57:38</span>Add StopCodeHere lines in AddAssetToHash() if TypeID == Asset_Audio and if Tags[0] == Tag_Bloop<span class="cineraCategories"><div title="asset system" class="category asset-system" data-hue="233" data-saturation="90%"></div><div title="audio" class="category audio" data-hue="287" data-saturation="77%"></div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="7122.000" class="marker cat_asset-system cat_audio run">
+                    <div class="cineraContent"><span class="timecode">1:58:42</span>Break on StopCodeHere in AddAssetToHash() to find that Tags[\0] is Tag_ChannelIndex, not Tag_Bloop<span class="cineraCategories"><div title="asset system" class="category asset-system" data-hue="233" data-saturation="90%"></div><div title="audio" class="category audio" data-hue="287" data-saturation="77%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:58:42</span>Break on StopCodeHere in AddAssetToHash() to find that Tags[\0] is Tag_ChannelIndex, not Tag_Bloop<span class="cineraCategories"><div title="asset system" class="category asset-system" data-hue="233" data-saturation="90%"></div><div title="audio" class="category audio" data-hue="287" data-saturation="77%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:58:42</span>Break on StopCodeHere in AddAssetToHash() to find that Tags[\0] is Tag_ChannelIndex, not Tag_Bloop<span class="cineraCategories"><div title="asset system" class="category asset-system" data-hue="233" data-saturation="90%"></div><div title="audio" class="category audio" data-hue="287" data-saturation="77%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="7194.000" class="marker cat_asset-system cat_audio programming">
+                    <div class="cineraContent"><span class="timecode">1:59:54</span>Add a MatchElement_Channel to asset_match_vector_element for AddAssetToHash() to use<span class="cineraCategories"><div title="asset system" class="category asset-system" data-hue="233" data-saturation="90%"></div><div title="audio" class="category audio" data-hue="287" data-saturation="77%"></div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:59:54</span>Add a MatchElement_Channel to asset_match_vector_element for AddAssetToHash() to use<span class="cineraCategories"><div title="asset system" class="category asset-system" data-hue="233" data-saturation="90%"></div><div title="audio" class="category audio" data-hue="287" data-saturation="77%"></div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:59:54</span>Add a MatchElement_Channel to asset_match_vector_element for AddAssetToHash() to use<span class="cineraCategories"><div title="asset system" class="category asset-system" data-hue="233" data-saturation="90%"></div><div title="audio" class="category audio" data-hue="287" data-saturation="77%"></div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="7313.000" class="marker cat_asset-system cat_audio run">
+                    <div class="cineraContent"><span class="timecode">2:01:53</span>Hit a read access violation on Tag-&gt;ID in AddAssetToHash()<span class="cineraCategories"><div title="asset system" class="category asset-system" data-hue="233" data-saturation="90%"></div><div title="audio" class="category audio" data-hue="287" data-saturation="77%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">2:01:53</span>Hit a read access violation on Tag-&gt;ID in AddAssetToHash()<span class="cineraCategories"><div title="asset system" class="category asset-system" data-hue="233" data-saturation="90%"></div><div title="audio" class="category audio" data-hue="287" data-saturation="77%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">2:01:53</span>Hit a read access violation on Tag-&gt;ID in AddAssetToHash()<span class="cineraCategories"><div title="asset system" class="category asset-system" data-hue="233" data-saturation="90%"></div><div title="audio" class="category audio" data-hue="287" data-saturation="77%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="7399.000" class="marker cat_asset-system cat_audio programming">
+                    <div class="cineraContent"><span class="timecode">2:03:19</span>Remove MatchElement_Channel from asset_match_vector_element and make AddAssetToHash() store the Tag_ChannelIndex in MatchElement_FacingDirection<span class="cineraCategories"><div title="asset system" class="category asset-system" data-hue="233" data-saturation="90%"></div><div title="audio" class="category audio" data-hue="287" data-saturation="77%"></div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">2:03:19</span>Remove MatchElement_Channel from asset_match_vector_element and make AddAssetToHash() store the Tag_ChannelIndex in MatchElement_FacingDirection<span class="cineraCategories"><div title="asset system" class="category asset-system" data-hue="233" data-saturation="90%"></div><div title="audio" class="category audio" data-hue="287" data-saturation="77%"></div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">2:03:19</span>Remove MatchElement_Channel from asset_match_vector_element and make AddAssetToHash() store the Tag_ChannelIndex in MatchElement_FacingDirection<span class="cineraCategories"><div title="asset system" class="category asset-system" data-hue="233" data-saturation="90%"></div><div title="audio" class="category audio" data-hue="287" data-saturation="77%"></div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="7415.000" class="marker cat_asset-system cat_audio run">
+                    <div class="cineraContent"><span class="timecode">2:03:35</span>Hit a read access violation on Tag-&gt;ID in AddAssetToHash()<span class="cineraCategories"><div title="asset system" class="category asset-system" data-hue="233" data-saturation="90%"></div><div title="audio" class="category audio" data-hue="287" data-saturation="77%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">2:03:35</span>Hit a read access violation on Tag-&gt;ID in AddAssetToHash()<span class="cineraCategories"><div title="asset system" class="category asset-system" data-hue="233" data-saturation="90%"></div><div title="audio" class="category audio" data-hue="287" data-saturation="77%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">2:03:35</span>Hit a read access violation on Tag-&gt;ID in AddAssetToHash()<span class="cineraCategories"><div title="asset system" class="category asset-system" data-hue="233" data-saturation="90%"></div><div title="audio" class="category audio" data-hue="287" data-saturation="77%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="7423.000" class="marker cat_asset-system cat_audio programming">
+                    <div class="cineraContent"><span class="timecode">2:03:43</span>Remove Tag_ChannelIndex case from AddAssetToHash()<span class="cineraCategories"><div title="asset system" class="category asset-system" data-hue="233" data-saturation="90%"></div><div title="audio" class="category audio" data-hue="287" data-saturation="77%"></div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">2:03:43</span>Remove Tag_ChannelIndex case from AddAssetToHash()<span class="cineraCategories"><div title="asset system" class="category asset-system" data-hue="233" data-saturation="90%"></div><div title="audio" class="category audio" data-hue="287" data-saturation="77%"></div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">2:03:43</span>Remove Tag_ChannelIndex case from AddAssetToHash()<span class="cineraCategories"><div title="asset system" class="category asset-system" data-hue="233" data-saturation="90%"></div><div title="audio" class="category audio" data-hue="287" data-saturation="77%"></div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="7432.000" class="marker cat_asset-system cat_audio run">
+                    <div class="cineraContent"><span class="timecode">2:03:52</span>Hit a read access violation on Tag-&gt;ID in AddAssetToHash()<span class="cineraCategories"><div title="asset system" class="category asset-system" data-hue="233" data-saturation="90%"></div><div title="audio" class="category audio" data-hue="287" data-saturation="77%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">2:03:52</span>Hit a read access violation on Tag-&gt;ID in AddAssetToHash()<span class="cineraCategories"><div title="asset system" class="category asset-system" data-hue="233" data-saturation="90%"></div><div title="audio" class="category audio" data-hue="287" data-saturation="77%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">2:03:52</span>Hit a read access violation on Tag-&gt;ID in AddAssetToHash()<span class="cineraCategories"><div title="asset system" class="category asset-system" data-hue="233" data-saturation="90%"></div><div title="audio" class="category audio" data-hue="287" data-saturation="77%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="7437.000" class="marker cat_asset-system cat_audio programming">
+                    <div class="cineraContent"><span class="timecode">2:03:57</span>Undo our changes to AddAssetToHash() and asset_match_vector_element<span class="cineraCategories"><div title="asset system" class="category asset-system" data-hue="233" data-saturation="90%"></div><div title="audio" class="category audio" data-hue="287" data-saturation="77%"></div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">2:03:57</span>Undo our changes to AddAssetToHash() and asset_match_vector_element<span class="cineraCategories"><div title="asset system" class="category asset-system" data-hue="233" data-saturation="90%"></div><div title="audio" class="category audio" data-hue="287" data-saturation="77%"></div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">2:03:57</span>Undo our changes to AddAssetToHash() and asset_match_vector_element<span class="cineraCategories"><div title="asset system" class="category asset-system" data-hue="233" data-saturation="90%"></div><div title="audio" class="category audio" data-hue="287" data-saturation="77%"></div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="7471.000" class="marker cat_asset-system cat_audio run">
+                    <div class="cineraContent"><span class="timecode">2:04:31</span>Hit a read access violation on Tag-&gt;ID in AddAssetToHash()<span class="cineraCategories"><div title="asset system" class="category asset-system" data-hue="233" data-saturation="90%"></div><div title="audio" class="category audio" data-hue="287" data-saturation="77%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">2:04:31</span>Hit a read access violation on Tag-&gt;ID in AddAssetToHash()<span class="cineraCategories"><div title="asset system" class="category asset-system" data-hue="233" data-saturation="90%"></div><div title="audio" class="category audio" data-hue="287" data-saturation="77%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">2:04:31</span>Hit a read access violation on Tag-&gt;ID in AddAssetToHash()<span class="cineraCategories"><div title="asset system" class="category asset-system" data-hue="233" data-saturation="90%"></div><div title="audio" class="category audio" data-hue="287" data-saturation="77%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="7507.000" class="marker cat_asset-system cat_audio run">
+                    <div class="cineraContent"><span class="timecode">2:05:07</span>Step through AddAssetToHash() inspecting the Asset-&gt;HHA<span class="cineraCategories"><div title="asset system" class="category asset-system" data-hue="233" data-saturation="90%"></div><div title="audio" class="category audio" data-hue="287" data-saturation="77%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">2:05:07</span>Step through AddAssetToHash() inspecting the Asset-&gt;HHA<span class="cineraCategories"><div title="asset system" class="category asset-system" data-hue="233" data-saturation="90%"></div><div title="audio" class="category audio" data-hue="287" data-saturation="77%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">2:05:07</span>Step through AddAssetToHash() inspecting the Asset-&gt;HHA<span class="cineraCategories"><div title="asset system" class="category asset-system" data-hue="233" data-saturation="90%"></div><div title="audio" class="category audio" data-hue="287" data-saturation="77%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="7648.000" class="marker cat_nullTopic speech">
+                    <div class="cineraContent"><span class="timecode">2:07:28</span>Check the chat<span class="cineraCategories"><div title="Speech" class="categoryMedium speech">&#128489;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">2:07:28</span>Check the chat<span class="cineraCategories"><div title="Speech" class="categoryMedium speech">&#128489;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">2:07:28</span>Check the chat<span class="cineraCategories"><div title="Speech" class="categoryMedium speech">&#128489;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="7702.000" class="marker cat_nullTopic speech">
+                    <div class="cineraContent"><span class="timecode">2:08:22</span>Thoughts on open-source software as worker exploitation<span class="cineraCategories"><div title="Speech" class="categoryMedium speech">&#128489;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">2:08:22</span>Thoughts on open-source software as worker exploitation<span class="cineraCategories"><div title="Speech" class="categoryMedium speech">&#128489;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">2:08:22</span>Thoughts on open-source software as worker exploitation<span class="cineraCategories"><div title="Speech" class="categoryMedium speech">&#128489;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="7893.000" class="marker cat_asset-system cat_audio run">
+                    <div class="cineraContent"><span class="timecode">2:11:33</span>Investigate our Tag-&gt;ID read access violation<span class="cineraCategories"><div title="asset system" class="category asset-system" data-hue="233" data-saturation="90%"></div><div title="audio" class="category audio" data-hue="287" data-saturation="77%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">2:11:33</span>Investigate our Tag-&gt;ID read access violation<span class="cineraCategories"><div title="asset system" class="category asset-system" data-hue="233" data-saturation="90%"></div><div title="audio" class="category audio" data-hue="287" data-saturation="77%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">2:11:33</span>Investigate our Tag-&gt;ID read access violation<span class="cineraCategories"><div title="asset system" class="category asset-system" data-hue="233" data-saturation="90%"></div><div title="audio" class="category audio" data-hue="287" data-saturation="77%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="8101.000" class="marker cat_asset-system cat_audio authored">
+                    <div class="cineraContent"><span class="timecode">2:15:01</span><span class="author" data-hue="220" data-saturation="95%">nomad_pixel</span> Can you put a data breakpoint if it&#39;s always index 173 or whatever on when something writes to it?<span class="cineraCategories"><div title="asset system" class="category asset-system" data-hue="233" data-saturation="90%"></div><div title="audio" class="category audio" data-hue="287" data-saturation="77%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">2:15:01</span><span class="author" data-hue="220" data-saturation="95%">nomad_pixel</span> Can you put a data breakpoint if it&#39;s always index 173 or whatever on when something writes to it?<span class="cineraCategories"><div title="asset system" class="category asset-system" data-hue="233" data-saturation="90%"></div><div title="audio" class="category audio" data-hue="287" data-saturation="77%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">2:15:01</span><span class="author" data-hue="220" data-saturation="95%">nomad_pixel</span> Can you put a data breakpoint if it&#39;s always index 173 or whatever on when something writes to it?<span class="cineraCategories"><div title="asset system" class="category asset-system" data-hue="233" data-saturation="90%"></div><div title="audio" class="category audio" data-hue="287" data-saturation="77%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="8119.000" class="marker cat_asset-system cat_audio run">
+                    <div class="cineraContent"><span class="timecode">2:15:19</span>Investigate our Tag-&gt;ID read access violation (cont.)<span class="cineraCategories"><div title="asset system" class="category asset-system" data-hue="233" data-saturation="90%"></div><div title="audio" class="category audio" data-hue="287" data-saturation="77%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">2:15:19</span>Investigate our Tag-&gt;ID read access violation (cont.)<span class="cineraCategories"><div title="asset system" class="category asset-system" data-hue="233" data-saturation="90%"></div><div title="audio" class="category audio" data-hue="287" data-saturation="77%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">2:15:19</span>Investigate our Tag-&gt;ID read access violation (cont.)<span class="cineraCategories"><div title="asset system" class="category asset-system" data-hue="233" data-saturation="90%"></div><div title="audio" class="category audio" data-hue="287" data-saturation="77%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="8696.000" class="marker cat_asset-system cat_audio run">
+                    <div class="cineraContent"><span class="timecode">2:24:56</span>Delete base_game.hha and run the game to rebuild it<span class="cineraCategories"><div title="asset system" class="category asset-system" data-hue="233" data-saturation="90%"></div><div title="audio" class="category audio" data-hue="287" data-saturation="77%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">2:24:56</span>Delete base_game.hha and run the game to rebuild it<span class="cineraCategories"><div title="asset system" class="category asset-system" data-hue="233" data-saturation="90%"></div><div title="audio" class="category audio" data-hue="287" data-saturation="77%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">2:24:56</span>Delete base_game.hha and run the game to rebuild it<span class="cineraCategories"><div title="asset system" class="category asset-system" data-hue="233" data-saturation="90%"></div><div title="audio" class="category audio" data-hue="287" data-saturation="77%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="8786.000" class="marker cat_asset-system cat_audio run">
+                    <div class="cineraContent"><span class="timecode">2:26:26</span>Run the game successfully with the new base_game.hha<span class="cineraCategories"><div title="asset system" class="category asset-system" data-hue="233" data-saturation="90%"></div><div title="audio" class="category audio" data-hue="287" data-saturation="77%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">2:26:26</span>Run the game successfully with the new base_game.hha<span class="cineraCategories"><div title="asset system" class="category asset-system" data-hue="233" data-saturation="90%"></div><div title="audio" class="category audio" data-hue="287" data-saturation="77%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">2:26:26</span>Run the game successfully with the new base_game.hha<span class="cineraCategories"><div title="asset system" class="category asset-system" data-hue="233" data-saturation="90%"></div><div title="audio" class="category audio" data-hue="287" data-saturation="77%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="8807.000" class="marker cat_asset-system cat_audio programming">
+                    <div class="cineraContent"><span class="timecode">2:26:47</span>Add a MatchElement_Channel to asset_match_vector_element for AddAssetToHash() to use<span class="cineraCategories"><div title="asset system" class="category asset-system" data-hue="233" data-saturation="90%"></div><div title="audio" class="category audio" data-hue="287" data-saturation="77%"></div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">2:26:47</span>Add a MatchElement_Channel to asset_match_vector_element for AddAssetToHash() to use<span class="cineraCategories"><div title="asset system" class="category asset-system" data-hue="233" data-saturation="90%"></div><div title="audio" class="category audio" data-hue="287" data-saturation="77%"></div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">2:26:47</span>Add a MatchElement_Channel to asset_match_vector_element for AddAssetToHash() to use<span class="cineraCategories"><div title="asset system" class="category asset-system" data-hue="233" data-saturation="90%"></div><div title="audio" class="category audio" data-hue="287" data-saturation="77%"></div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="8863.000" class="marker cat_asset-system cat_audio run">
+                    <div class="cineraContent"><span class="timecode">2:27:43</span>Run successfully, with bloops<span class="cineraCategories"><div title="asset system" class="category asset-system" data-hue="233" data-saturation="90%"></div><div title="audio" class="category audio" data-hue="287" data-saturation="77%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">2:27:43</span>Run successfully, with bloops<span class="cineraCategories"><div title="asset system" class="category asset-system" data-hue="233" data-saturation="90%"></div><div title="audio" class="category audio" data-hue="287" data-saturation="77%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">2:27:43</span>Run successfully, with bloops<span class="cineraCategories"><div title="asset system" class="category asset-system" data-hue="233" data-saturation="90%"></div><div title="audio" class="category audio" data-hue="287" data-saturation="77%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="8898.000" class="marker cat_asset-system cat_audio programming">
+                    <div class="cineraContent"><span class="timecode">2:28:18</span>Toggle off the attack bloops in ExecuteBrainHero()<span class="cineraCategories"><div title="asset system" class="category asset-system" data-hue="233" data-saturation="90%"></div><div title="audio" class="category audio" data-hue="287" data-saturation="77%"></div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">2:28:18</span>Toggle off the attack bloops in ExecuteBrainHero()<span class="cineraCategories"><div title="asset system" class="category asset-system" data-hue="233" data-saturation="90%"></div><div title="audio" class="category audio" data-hue="287" data-saturation="77%"></div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">2:28:18</span>Toggle off the attack bloops in ExecuteBrainHero()<span class="cineraCategories"><div title="asset system" class="category asset-system" data-hue="233" data-saturation="90%"></div><div title="audio" class="category audio" data-hue="287" data-saturation="77%"></div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="8971.000" class="marker cat_asset-system cat_audio programming">
+                    <div class="cineraContent"><span class="timecode">2:29:31</span>Toggle on the intro cutscene music in GameUpdateAndRender(), updating to the current asset system code<span class="cineraCategories"><div title="asset system" class="category asset-system" data-hue="233" data-saturation="90%"></div><div title="audio" class="category audio" data-hue="287" data-saturation="77%"></div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">2:29:31</span>Toggle on the intro cutscene music in GameUpdateAndRender(), updating to the current asset system code<span class="cineraCategories"><div title="asset system" class="category asset-system" data-hue="233" data-saturation="90%"></div><div title="audio" class="category audio" data-hue="287" data-saturation="77%"></div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">2:29:31</span>Toggle on the intro cutscene music in GameUpdateAndRender(), updating to the current asset system code<span class="cineraCategories"><div title="asset system" class="category asset-system" data-hue="233" data-saturation="90%"></div><div title="audio" class="category audio" data-hue="287" data-saturation="77%"></div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="9178.000" class="marker cat_audio run">
+                    <div class="cineraContent"><span class="timecode">2:32:58</span>Our music plays, but tears<span class="cineraCategories"><div title="audio" class="category audio" data-hue="287" data-saturation="77%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">2:32:58</span>Our music plays, but tears<span class="cineraCategories"><div title="audio" class="category audio" data-hue="287" data-saturation="77%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">2:32:58</span>Our music plays, but tears<span class="cineraCategories"><div title="audio" class="category audio" data-hue="287" data-saturation="77%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="9216.000" class="marker cat_audio cat_threading research">
+                    <div class="cineraContent"><span class="timecode">2:33:36</span>Note the need to thread the audio<span class="cineraCategories"><div title="audio" class="category audio" data-hue="287" data-saturation="77%"></div><div title="threading" class="category threading" data-hue="25" data-saturation="97%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">2:33:36</span>Note the need to thread the audio<span class="cineraCategories"><div title="audio" class="category audio" data-hue="287" data-saturation="77%"></div><div title="threading" class="category threading" data-hue="25" data-saturation="97%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">2:33:36</span>Note the need to thread the audio<span class="cineraCategories"><div title="audio" class="category audio" data-hue="287" data-saturation="77%"></div><div title="threading" class="category threading" data-hue="25" data-saturation="97%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="9365.000" class="marker cat_audio run">
+                    <div class="cineraContent"><span class="timecode">2:36:05</span>Our music continues to tear<span class="cineraCategories"><div title="audio" class="category audio" data-hue="287" data-saturation="77%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">2:36:05</span>Our music continues to tear<span class="cineraCategories"><div title="audio" class="category audio" data-hue="287" data-saturation="77%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">2:36:05</span>Our music continues to tear<span class="cineraCategories"><div title="audio" class="category audio" data-hue="287" data-saturation="77%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="9419.000" class="marker cat_nullTopic speech">
+                    <div class="cineraContent"><span class="timecode">2:36:59</span>Call it there<span class="cineraCategories"><div title="Speech" class="categoryMedium speech">&#128489;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">2:36:59</span>Call it there<span class="cineraCategories"><div title="Speech" class="categoryMedium speech">&#128489;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">2:36:59</span>Call it there<span class="cineraCategories"><div title="Speech" class="categoryMedium speech">&#128489;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="9446.000" class="marker cat_nullTopic authored">
+                    <div class="cineraContent"><span class="timecode">2:37:26</span><span class="author" data-hue="270" data-saturation="89%">teamrandb</span> Q: If one wanted to spawn a second window, how would one go about tackling it? To give context, let&#39;s say one wanted to move most of <span class="project" data-hue="242" data-saturation="78%">Handmade Hero</span>&#39;s debug menu to a separate window, where the main DebugUI would be on Window 2 while the game is on Window 1. (Like to show the graphs on a separate window.) I&#39;m struggling to figure out how much of the message handling, and the game logic needs to be separated, or if it could &quot;as simple as&quot; two separate buffers, and a WindowID for when we push tasks<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">2:37:26</span><span class="author" data-hue="270" data-saturation="89%">teamrandb</span> Q: If one wanted to spawn a second window, how would one go about tackling it? To give context, let&#39;s say one wanted to move most of <span class="project" data-hue="242" data-saturation="78%">Handmade Hero</span>&#39;s debug menu to a separate window, where the main DebugUI would be on Window 2 while the game is on Window 1. (Like to show the graphs on a separate window.) I&#39;m struggling to figure out how much of the message handling, and the game logic needs to be separated, or if it could &quot;as simple as&quot; two separate buffers, and a WindowID for when we push tasks<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">2:37:26</span><span class="author" data-hue="270" data-saturation="89%">teamrandb</span> Q: If one wanted to spawn a second window, how would one go about tackling it? To give context, let&#39;s say one wanted to move most of <span class="project" data-hue="242" data-saturation="78%">Handmade Hero</span>&#39;s debug menu to a separate window, where the main DebugUI would be on Window 2 while the game is on Window 1. (Like to show the graphs on a separate window.) I&#39;m struggling to figure out how much of the message handling, and the game logic needs to be separated, or if it could &quot;as simple as&quot; two separate buffers, and a WindowID for when we push tasks<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="9543.000" class="marker cat_nullTopic speech">
+                    <div class="cineraContent"><span class="timecode">2:39:03</span>Call that a day<span class="cineraCategories"><div title="Speech" class="categoryMedium speech">&#128489;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">2:39:03</span>Call that a day<span class="cineraCategories"><div title="Speech" class="categoryMedium speech">&#128489;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">2:39:03</span>Call that a day<span class="cineraCategories"><div title="Speech" class="categoryMedium speech">&#128489;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="9563.000" class="marker cat_nullTopic authored">
+                    <div class="cineraContent"><span class="timecode">2:39:23</span><span class="author" data-hue="149" data-saturation="78%">bob_from_hearthstone</span> Is the problem with exploitation of the working class really an open source problem? You still can have a commercial licensing on an open source codebase, right? The problems seem to be more related to the free software where the work put on a software can be taken and monetized without proper rewarding of the workers. (Sorry for bringing the topic back)<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">2:39:23</span><span class="author" data-hue="149" data-saturation="78%">bob_from_hearthstone</span> Is the problem with exploitation of the working class really an open source problem? You still can have a commercial licensing on an open source codebase, right? The problems seem to be more related to the free software where the work put on a software can be taken and monetized without proper rewarding of the workers. (Sorry for bringing the topic back)<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">2:39:23</span><span class="author" data-hue="149" data-saturation="78%">bob_from_hearthstone</span> Is the problem with exploitation of the working class really an open source problem? You still can have a commercial licensing on an open source codebase, right? The problems seem to be more related to the free software where the work put on a software can be taken and monetized without proper rewarding of the workers. (Sorry for bringing the topic back)<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="10097.000" class="marker cat_nullTopic authored">
+                    <div class="cineraContent"><span class="timecode">2:48:17</span><span class="author" data-hue="105" data-saturation="92%">gregg_ink</span> Open source programmers made a choice to give the software for free. That&#39;s not exploiting people<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">2:48:17</span><span class="author" data-hue="105" data-saturation="92%">gregg_ink</span> Open source programmers made a choice to give the software for free. That&#39;s not exploiting people<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">2:48:17</span><span class="author" data-hue="105" data-saturation="92%">gregg_ink</span> Open source programmers made a choice to give the software for free. That&#39;s not exploiting people<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="10200.000" class="marker cat_nullTopic authored">
+                    <div class="cineraContent"><span class="timecode">2:50:00</span><span class="author" data-hue="358" data-saturation="77%">khbatus</span> But open source is good for regular people. Is there something like open source but not free for big corporations?<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">2:50:00</span><span class="author" data-hue="358" data-saturation="77%">khbatus</span> But open source is good for regular people. Is there something like open source but not free for big corporations?<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">2:50:00</span><span class="author" data-hue="358" data-saturation="77%">khbatus</span> But open source is good for regular people. Is there something like open source but not free for big corporations?<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="10220.000" class="marker cat_nullTopic authored">
+                    <div class="cineraContent"><span class="timecode">2:50:20</span><span class="author" data-hue="209" data-saturation="91%">distractedmosfet</span> Yeah AGPL, it&#39;s actually been around a while but the corps in the space, like Google, hate it and push against it<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">2:50:20</span><span class="author" data-hue="209" data-saturation="91%">distractedmosfet</span> Yeah AGPL, it&#39;s actually been around a while but the corps in the space, like Google, hate it and push against it<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">2:50:20</span><span class="author" data-hue="209" data-saturation="91%">distractedmosfet</span> Yeah AGPL, it&#39;s actually been around a while but the corps in the space, like Google, hate it and push against it<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="10316.000" class="marker cat_nullTopic authored">
+                    <div class="cineraContent"><span class="timecode">2:51:56</span><span class="author" data-hue="105" data-saturation="92%">gregg_ink</span> By that logic, did <span class="member" data-hue="125" data-saturation="81%">Casey</span> choose to be exploited by creating <span class="project" data-hue="242" data-saturation="78%">Handmade Hero</span>?<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">2:51:56</span><span class="author" data-hue="105" data-saturation="92%">gregg_ink</span> By that logic, did <span class="member" data-hue="125" data-saturation="81%">Casey</span> choose to be exploited by creating <span class="project" data-hue="242" data-saturation="78%">Handmade Hero</span>?<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">2:51:56</span><span class="author" data-hue="105" data-saturation="92%">gregg_ink</span> By that logic, did <span class="member" data-hue="125" data-saturation="81%">Casey</span> choose to be exploited by creating <span class="project" data-hue="242" data-saturation="78%">Handmade Hero</span>?<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="10461.000" class="marker cat_nullTopic authored">
+                    <div class="cineraContent"><span class="timecode">2:54:21</span><span class="author" data-hue="178" data-saturation="97%">arkandos_</span> Q: If I learn something from reading the <span class="project" data-hue="242" data-saturation="78%">Handmade Hero</span> source, can I use those same techniques in other closed-source projects?<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">2:54:21</span><span class="author" data-hue="178" data-saturation="97%">arkandos_</span> Q: If I learn something from reading the <span class="project" data-hue="242" data-saturation="78%">Handmade Hero</span> source, can I use those same techniques in other closed-source projects?<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">2:54:21</span><span class="author" data-hue="178" data-saturation="97%">arkandos_</span> Q: If I learn something from reading the <span class="project" data-hue="242" data-saturation="78%">Handmade Hero</span> source, can I use those same techniques in other closed-source projects?<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="10519.000" class="marker cat_nullTopic authored">
+                    <div class="cineraContent"><span class="timecode">2:55:19</span><span class="author" data-hue="271" data-saturation="98%">gheoan</span> <span class="member" data-hue="304" data-saturation="94%">handmade_hero</span> Are you using any open source code in your proprietary code?<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">2:55:19</span><span class="author" data-hue="271" data-saturation="98%">gheoan</span> <span class="member" data-hue="304" data-saturation="94%">handmade_hero</span> Are you using any open source code in your proprietary code?<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">2:55:19</span><span class="author" data-hue="271" data-saturation="98%">gheoan</span> <span class="member" data-hue="304" data-saturation="94%">handmade_hero</span> Are you using any open source code in your proprietary code?<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="10536.000" class="marker cat_library authored" data-ref="https://github.com/nothings/stb">
+                    <div class="cineraContent"><span class="timecode">2:55:36</span><span class="author" data-hue="156" data-saturation="93%">kwmar</span> What about <span class="member" data-hue="328" data-saturation="96%">Sean</span>&#39;s toolbox?<sup>2</sup><span class="cineraCategories"><div title="library" class="category library" data-hue="40" data-saturation="80%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">2:55:36</span><span class="author" data-hue="156" data-saturation="93%">kwmar</span> What about <span class="member" data-hue="328" data-saturation="96%">Sean</span>&#39;s toolbox?<sup>2</sup><span class="cineraCategories"><div title="library" class="category library" data-hue="40" data-saturation="80%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">2:55:36</span><span class="author" data-hue="156" data-saturation="93%">kwmar</span> What about <span class="member" data-hue="328" data-saturation="96%">Sean</span>&#39;s toolbox?<sup>2</sup><span class="cineraCategories"><div title="library" class="category library" data-hue="40" data-saturation="80%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="10552.000" class="marker cat_library authored">
+                    <div class="cineraContent"><span class="timecode">2:55:52</span><span class="author" data-hue="31" data-saturation="79%">amirh12</span> Don&#39;t you use OpenGL?<span class="cineraCategories"><div title="library" class="category library" data-hue="40" data-saturation="80%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">2:55:52</span><span class="author" data-hue="31" data-saturation="79%">amirh12</span> Don&#39;t you use OpenGL?<span class="cineraCategories"><div title="library" class="category library" data-hue="40" data-saturation="80%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">2:55:52</span><span class="author" data-hue="31" data-saturation="79%">amirh12</span> Don&#39;t you use OpenGL?<span class="cineraCategories"><div title="library" class="category library" data-hue="40" data-saturation="80%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="10571.000" class="marker cat_library authored" data-ref="https://github.com/nothings/stb">
+                    <div class="cineraContent"><span class="timecode">2:56:11</span><span class="author" data-hue="105" data-saturation="92%">gregg_ink</span> Were you not using stb<sup>3</sup> for fonts?<span class="cineraCategories"><div title="library" class="category library" data-hue="40" data-saturation="80%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">2:56:11</span><span class="author" data-hue="105" data-saturation="92%">gregg_ink</span> Were you not using stb<sup>3</sup> for fonts?<span class="cineraCategories"><div title="library" class="category library" data-hue="40" data-saturation="80%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">2:56:11</span><span class="author" data-hue="105" data-saturation="92%">gregg_ink</span> Were you not using stb<sup>3</sup> for fonts?<span class="cineraCategories"><div title="library" class="category library" data-hue="40" data-saturation="80%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="10592.000" class="marker cat_library authored">
+                    <div class="cineraContent"><span class="timecode">2:56:32</span><span class="author" data-hue="209" data-saturation="91%">distractedmosfet</span> OpenGL is an open spec, not open software<span class="cineraCategories"><div title="library" class="category library" data-hue="40" data-saturation="80%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">2:56:32</span><span class="author" data-hue="209" data-saturation="91%">distractedmosfet</span> OpenGL is an open spec, not open software<span class="cineraCategories"><div title="library" class="category library" data-hue="40" data-saturation="80%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">2:56:32</span><span class="author" data-hue="209" data-saturation="91%">distractedmosfet</span> OpenGL is an open spec, not open software<span class="cineraCategories"><div title="library" class="category library" data-hue="40" data-saturation="80%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="10619.000" class="marker cat_nullTopic authored">
+                    <div class="cineraContent"><span class="timecode">2:56:59</span><span class="author" data-hue="91" data-saturation="86%">slava_radko</span> <span class="member" data-hue="304" data-saturation="94%">handmade_hero</span> So basically it&#39;s fine if I learn from your stream, then close the stream and implement something like you, for example DLL loading and architecture, but implemented myself?<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">2:56:59</span><span class="author" data-hue="91" data-saturation="86%">slava_radko</span> <span class="member" data-hue="304" data-saturation="94%">handmade_hero</span> So basically it&#39;s fine if I learn from your stream, then close the stream and implement something like you, for example DLL loading and architecture, but implemented myself?<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">2:56:59</span><span class="author" data-hue="91" data-saturation="86%">slava_radko</span> <span class="member" data-hue="304" data-saturation="94%">handmade_hero</span> So basically it&#39;s fine if I learn from your stream, then close the stream and implement something like you, for example DLL loading and architecture, but implemented myself?<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="10711.000" class="marker cat_library authored">
+                    <div class="cineraContent"><span class="timecode">2:58:31</span><span class="author" data-hue="125" data-saturation="97%">wassimulator</span> Q: My renderer in AV-Racer uses OpenGL. Are there any practical drawbacks to it? Would you say I should switch to D3D on my next project or something else?<span class="cineraCategories"><div title="library" class="category library" data-hue="40" data-saturation="80%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">2:58:31</span><span class="author" data-hue="125" data-saturation="97%">wassimulator</span> Q: My renderer in AV-Racer uses OpenGL. Are there any practical drawbacks to it? Would you say I should switch to D3D on my next project or something else?<span class="cineraCategories"><div title="library" class="category library" data-hue="40" data-saturation="80%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">2:58:31</span><span class="author" data-hue="125" data-saturation="97%">wassimulator</span> Q: My renderer in AV-Racer uses OpenGL. Are there any practical drawbacks to it? Would you say I should switch to D3D on my next project or something else?<span class="cineraCategories"><div title="library" class="category library" data-hue="40" data-saturation="80%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="10746.000" class="marker cat_nullTopic authored">
+                    <div class="cineraContent"><span class="timecode">2:59:06</span><span class="author" data-hue="126" data-saturation="85%">bewwyss</span> How to calculate how much should go to an open source project if I make profits, in percent, let&#39;s say?<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">2:59:06</span><span class="author" data-hue="126" data-saturation="85%">bewwyss</span> How to calculate how much should go to an open source project if I make profits, in percent, let&#39;s say?<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">2:59:06</span><span class="author" data-hue="126" data-saturation="85%">bewwyss</span> How to calculate how much should go to an open source project if I make profits, in percent, let&#39;s say?<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="10805.000" class="marker cat_nullTopic speech">
+                    <div class="cineraContent"><span class="timecode">3:00:05</span>That&#39;s that<span class="cineraCategories"><div title="Speech" class="categoryMedium speech">&#128489;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">3:00:05</span>That&#39;s that<span class="cineraCategories"><div title="Speech" class="categoryMedium speech">&#128489;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">3:00:05</span>That&#39;s that<span class="cineraCategories"><div title="Speech" class="categoryMedium speech">&#128489;</div></span></div>
+                    </div>
+                </div>
+            </div>
+                <a class="episodeMarker next" href="https://hero.handmade.network/episode/code/day656/"><div>&#9196;</div><div>Next: 'Sketching Out Move Queues'</div><div>&#9196;</div></a>
+            </div>
+        </div>
+        </div>
+    <script type="text/javascript" src="https://handmade.network/public/annotations/cinera_player_post.js?r=285016ab"></script>
+    </body>
+</html>

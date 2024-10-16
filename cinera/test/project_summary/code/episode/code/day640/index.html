@@ -1,0 +1,1170 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="generator" content="Cinera 0.10.30">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="keywords" content="audio, collision, data structure, debug visualisation, food, geometry, hardware, language, library, mathematics, movement, operating system, physics, rendering, threading, ui, Administrivia, Chat Comment, In-Game, Programming, Research, Speech">
+
+        <link rel="stylesheet" type="text/css" href="https://handmade.network/public/annotations/cinera.css?r=39c76375">
+        <link rel="stylesheet" type="text/css" href="https://handmade.network/public/annotations/cinera__hero.css?r=29c3877c">
+        <link rel="stylesheet" type="text/css" href="https://handmade.network/public/annotations/cinera_topics.css?r=8e300c51">
+        <script type="text/javascript" src="https://handmade.network/public/annotations/cinera_pre.js?r=3e2343d1"></script>
+        <script type="text/javascript" src="https://handmade.network/public/annotations/cinera_player_pre.js?r=5587322c"></script>
+
+        <meta property="cinera:type" content="entry">
+        <meta property="cinera:title" content="Investigating Corner Collisions">
+        <meta property="cinera:project" content="Handmade Hero">
+        <meta property="cinera:project_lineage" content=" / Handmade Hero">
+    </head>
+    <body>
+        <div class="cinera">
+            <script type="text/javascript" src="https://handmade.network/public/annotations/cinera_clear.js?r=00000000"></script>
+            <div class="cineraMenus hero">
+            <span class="episode_name">Investigating Corner Collisions</span>
+            <div class="menu references">
+                <span>References &#9660;</span>
+                <div class="refs references_container">
+                    <a data-id="https://github.com/cmuratori/refterm/blob/main/build.bat" href="https://github.com/cmuratori/refterm/blob/main/build.bat" target="_blank" class="ref">
+                        <span class="ref_content">
+                            <div class="source">refterm</div>
+                            <div class="ref_title">build.bat</div>
+                        </span>
+                        <div class="ref_indices">
+                            <span data-timestamp="5898.000" class="timecode"><span class="ref_index">[1]</span><span class="time">1:38:18</span></span>
+                        </div>
+                    </a>
+                    <a data-id="https://en.wikipedia.org/wiki/Disjoint_union" href="https://en.wikipedia.org/wiki/Disjoint_union" target="_blank" class="ref">
+                        <span class="ref_content">
+                            <div class="source">Wikipedia</div>
+                            <div class="ref_title">Disjoint union</div>
+                        </span>
+                        <div class="ref_indices">
+                            <span data-timestamp="6161.000" class="timecode"><span class="ref_index">[2]</span><span class="time">1:42:41</span></span>
+                        </div>
+                    </a>
+                    <a data-id="https://en.wikipedia.org/wiki/Immediate_mode_GUI" href="https://en.wikipedia.org/wiki/Immediate_mode_GUI" target="_blank" class="ref">
+                        <span class="ref_content">
+                            <div class="source">Wikipedia</div>
+                            <div class="ref_title">Immediate mode GUI</div>
+                        </span>
+                        <div class="ref_indices">
+                            <span data-timestamp="6642.000" class="timecode"><span class="ref_index">[3]</span><span class="time">1:50:42</span></span>
+                        </div>
+                    </a>
+                    <a data-id="https://en.wikipedia.org/wiki/Gilbert%E2%80%93Johnson%E2%80%93Keerthi_distance_algorithm" href="https://en.wikipedia.org/wiki/Gilbert%E2%80%93Johnson%E2%80%93Keerthi_distance_algorithm" target="_blank" class="ref">
+                        <span class="ref_content">
+                            <div class="source">Wikipedia</div>
+                            <div class="ref_title">Gilbert–Johnson–Keerthi distance algorithm</div>
+                        </span>
+                        <div class="ref_indices">
+                            <span data-timestamp="6792.000" class="timecode"><span class="ref_index">[4]</span><span class="time">1:53:12</span></span>
+                        </div>
+                    </a>
+                    <a data-id="https://en.wikipedia.org/wiki/Eric_Veach" href="https://en.wikipedia.org/wiki/Eric_Veach" target="_blank" class="ref">
+                        <span class="ref_content">
+                            <div class="source">Wikipedia</div>
+                            <div class="ref_title">Eric Veach</div>
+                        </span>
+                        <div class="ref_indices">
+                            <span data-timestamp="6873.000" class="timecode"><span class="ref_index">[5]</span><span class="time">1:54:33</span></span>
+                        </div>
+                    </a>
+                    <a data-id="https://en.wikipedia.org/wiki/Matt_Pharr" href="https://en.wikipedia.org/wiki/Matt_Pharr" target="_blank" class="ref">
+                        <span class="ref_content">
+                            <div class="source">Wikipedia</div>
+                            <div class="ref_title">Matt Pharr</div>
+                        </span>
+                        <div class="ref_indices">
+                            <span data-timestamp="6873.000" class="timecode"><span class="ref_index">[6]</span><span class="time">1:54:33</span></span>
+                        </div>
+                    </a>
+                    <a data-id="https://www.goodiesmedmarket.com/" href="https://www.goodiesmedmarket.com/" target="_blank" class="ref">
+                        <span class="ref_content">
+                            <div class="ref_title">Goodies Mediterranean Market</div>
+                        </span>
+                        <div class="ref_indices">
+                            <span data-timestamp="7932.000" class="timecode"><span class="ref_index">[7]</span><span class="time">2:12:12</span></span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="menu filter">
+                <span><img src="https://handmade.network/public/annotations/cinera_icon_filter.png?r=3d831e54"></span>
+                <div class="filter_container">
+                   <div class="filter_header">
+                       <div class="filter_mode exclusive">Filter mode: </div>
+                       <div class="filter_titles">
+                           <div class="filter_title">Topics</div>
+                           <div class="filter_title">Media</div>
+                       </div>
+                   </div>
+                   <div class="filters">
+                        <div class="filter_topics">
+                            <div class="filter_content audio">
+                                <span class="icon category audio" data-hue="287" data-saturation="77%"></span><span class="cineraText">audio</span>
+                            </div>
+                            <div class="filter_content collision">
+                                <span class="icon category collision" data-hue="342" data-saturation="93%"></span><span class="cineraText">collision</span>
+                            </div>
+                            <div class="filter_content data-structure">
+                                <span class="icon category data-structure" data-hue="290" data-saturation="90%"></span><span class="cineraText">data structure</span>
+                            </div>
+                            <div class="filter_content debug-visualisation">
+                                <span class="icon category debug-visualisation" data-hue="60" data-saturation="86%"></span><span class="cineraText">debug visualisation</span>
+                            </div>
+                            <div class="filter_content food">
+                                <span class="icon category food" data-hue="157" data-saturation="98%"></span><span class="cineraText">food</span>
+                            </div>
+                            <div class="filter_content geometry">
+                                <span class="icon category geometry" data-hue="355" data-saturation="98%"></span><span class="cineraText">geometry</span>
+                            </div>
+                            <div class="filter_content hardware">
+                                <span class="icon category hardware" data-hue="284" data-saturation="94%"></span><span class="cineraText">hardware</span>
+                            </div>
+                            <div class="filter_content language">
+                                <span class="icon category language" data-hue="142" data-saturation="84%"></span><span class="cineraText">language</span>
+                            </div>
+                            <div class="filter_content library">
+                                <span class="icon category library" data-hue="40" data-saturation="80%"></span><span class="cineraText">library</span>
+                            </div>
+                            <div class="filter_content mathematics">
+                                <span class="icon category mathematics" data-hue="9" data-saturation="91%"></span><span class="cineraText">mathematics</span>
+                            </div>
+                            <div class="filter_content movement">
+                                <span class="icon category movement" data-hue="341" data-saturation="97%"></span><span class="cineraText">movement</span>
+                            </div>
+                            <div class="filter_content operating-system">
+                                <span class="icon category operating-system" data-hue="44" data-saturation="93%"></span><span class="cineraText">operating system</span>
+                            </div>
+                            <div class="filter_content physics">
+                                <span class="icon category physics" data-hue="242" data-saturation="94%"></span><span class="cineraText">physics</span>
+                            </div>
+                            <div class="filter_content rendering">
+                                <span class="icon category rendering" data-hue="140" data-saturation="79%"></span><span class="cineraText">rendering</span>
+                            </div>
+                            <div class="filter_content threading">
+                                <span class="icon category threading" data-hue="25" data-saturation="97%"></span><span class="cineraText">threading</span>
+                            </div>
+                            <div class="filter_content ui">
+                                <span class="icon category ui" data-hue="43" data-saturation="94%"></span><span class="cineraText">ui</span>
+                            </div>
+                            <div title="Timestamps that don't fit into the above topic(s) may be filtered using this pseudo-topic" class="filter_content nullTopic">
+                                <span class="icon category nullTopic"></span><span class="cineraText">(null topic)</span>
+                            </div>
+                        </div>
+                        <div class="filter_media">
+                            <div class="filter_content admin">
+                                <span class="icon">&#128505;</span><span class="cineraText">Administrivia</span>
+                            </div>
+                            <div class="filter_content authored">
+                                <span class="icon">&#128490;</span><span class="cineraText">Chat Comment</span>
+                            </div>
+                            <div class="filter_content run">
+                                <span class="icon">&#127939;</span><span class="cineraText">In-Game</span>
+                            </div>
+                            <div class="filter_content programming">
+                                <span class="icon">&#128430;</span><span class="cineraText">Programming</span><span class="cineraDefaultMediumIndicator" title="Default medium
+Timestamps lacking a media icon are in this medium">&#128969;</span>
+                            </div>
+                            <div class="filter_content research">
+                                <span class="icon">&#128214;</span><span class="cineraText">Research</span>
+                            </div>
+                            <div class="filter_content speech">
+                                <span class="icon">&#128489;</span><span class="cineraText">Speech</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="menu views">
+                <div class="view" data-id="theatre" title="Theatre mode">&#127917;</div>
+                <div class="views_container">
+                    <div class="view" data-id="super" title="SUPERtheatre mode">&#127967;</div>
+                </div>
+            </div>
+            <div class="menu link">
+                <span>&#128279;</span>
+                <div class="link_container">
+                    <div id="cineraLinkMode">Link to: current timestamp</div>
+                    <textarea title="Click to copy to clipboard" id="cineraLink" readonly spellcheck="false"></textarea>
+                </div>
+            </div>
+            <div class="menu credits">
+                <span>Credits</span>
+                <div class="credits_container">
+                    <span class="credit">
+                        <a class="person" href="https://handmadehero.org/" target="_blank">
+                            <div class="role">Host</div>
+                            <div class="name">Casey Muratori</div>
+                        </a>
+                        <a class="support" href="https://handmadehero.org/fund" target="_blank"><img src="https://handmade.network/public/annotations/cinera_sprite_sendowl.png?r=6899f6b0"></a>
+                    </span>
+                    <span class="credit">
+                        <a class="person" href="https://miblo.net/" target="_blank">
+                            <div class="role">Indexer</div>
+                            <div class="name">Matt Mascarenhas</div>
+                        </a>
+                        <a class="support" href="https://miblo.net/cinera#pledge" target="_blank"><img src="https://handmade.network/public/annotations/cinera_sprite_sendowl.png?r=6899f6b0"></a>
+                    </span>
+                </div>
+            </div>
+            <div class="cineraHelp">
+                <span>?</span>
+                <div class="help_container">
+                    <span class="help_key">?</span><h1>Keyboard Navigation</h1>
+
+                    <h2>Global Keys</h2>
+                    <span class="help_key">[</span>, <span class="help_key">&lt;</span> / <span class="help_key">]</span>, <span class="help_key">&gt;</span> <span class="help_text">Jump to previous / next episode</span><br>
+                    <span class="help_key">W</span>, <span class="help_key">K</span>, <span class="help_key">P</span> / <span class="help_key">S</span>, <span class="help_key">J</span>, <span class="help_key">N</span> <span class="help_text">Jump to previous / next timestamp</span><br>
+                    <span class="help_key">t</span> / <span class="help_key">T</span> <span class="help_text">Toggle theatre / SUPERtheatre mode</span><br>
+                    <span class="help_key">V</span> <span class="help_text">Revert filter to original state</span> <span class="help_key">Y</span> <span class="help_text">Select link (requires manual Ctrl-c)</span>
+
+                    <h2>Menu toggling</h2>
+                    <span class="help_key unavailable">q</span> <span class="help_text unavailable">Quotes</span>
+                    <span class="help_key">r</span> <span class="help_text">References</span>
+                    <span class="help_key">f</span> <span class="help_text">Filter</span>
+                    <span class="help_key">y</span> <span class="help_text">Link</span>
+                    <span class="help_key">c</span> <span class="help_text">Credits</span>
+
+                    <h2>In-Menu and <span class="help_title_key help_custom_index">Index</span> Controls</h2>
+                    <div class="help_paragraph">
+                        <div class="key_block">
+                            <div>
+                                <span class="help_key">a</span>
+                            </div>
+                            <div>
+                                <span class="help_key help_custom_index">w</span><br>
+                                <span class="help_key help_custom_index">s</span>
+                            </div>
+                            <div>
+                                <span class="help_key">d</span>
+                            </div>
+                        </div>
+                        <div class="key_block">
+                            <span class="help_key">h</span>
+                            <span class="help_key help_custom_index">j</span>
+                            <span class="help_key help_custom_index">k</span>
+                            <span class="help_key">l</span>
+                        </div>
+                        <div class="key_block">
+                            <div>
+                                <span class="help_key">←</span>
+                            </div>
+                            <div>
+                                <span class="help_key">↑</span><br>
+                                <span class="help_key">↓</span>
+                            </div>
+                            <div>
+                                <span class="help_key">→</span>
+                            </div>
+                        </div>
+                    </div><br>
+                    <div class="help_paragraph">
+                        <span class="help_key help_custom_index">Esc</span> <span class="help_text">Close menu / unfocus timestamp</span>
+                    </div>
+                    <br>
+                    <h2><span class="unavailable">Quotes and</span> References Menus and Index</h2>
+                    <span class="help_key word">Enter</span> <span class="help_text">Jump to timestamp</span><br>
+
+                    <h2><span class="unavailable">Quotes,</span> References and Credits Menus</h2>                    <span class="help_key">o</span> <span class="help_text">Open URL (in new tab)</span>
+
+                    <h2>Filter Menu</h2>
+                    <span class="help_key">x</span>, <span class="help_key word">Space</span> <span class="help_text">Toggle category and focus next</span><br>
+                    <span class="help_key">X</span>, <span class="help_key word modifier">Shift</span><span class="help_key word">Space</span> <span class="help_text">Toggle category and focus previous</span><br>
+                    <span class="help_key">v</span> <span class="help_text">Invert topics / media as per focus</span>
+
+                    <h2>Filter and Link Menus</h2>
+                    <span class="help_key">z</span> <span class="help_text">Toggle filter / linking mode</span>
+
+                    <h2>Credits Menu</h2>
+                    <span class="help_key word">Enter</span> <span class="help_text">Open URL (in new tab)</span><br>
+                </div>
+            </div>
+        </div>
+        <script src="https://www.youtube.com/iframe_api"></script>
+        <div class="cineraPlayerContainer">
+            <div class="video_container" data-platform="youtube" data-videoId="PZejeRCDT-M"></div>
+            <div class="markers_container hero">
+                <a class="episodeMarker prev" href="https://hero.handmade.network/episode/code/day639/"><div>&#9195;</div><div>Previous: 'Drawing Debug Diagrams'</div><div>&#9195;</div></a>
+            <div class="markers">
+                <div data-timestamp="0.000" class="marker cat_nullTopic speech">
+                    <div class="cineraContent"><span class="timecode">0:00</span>Recap and set the stage for the day<span class="cineraCategories"><div title="Speech" class="categoryMedium speech">&#128489;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">0:00</span>Recap and set the stage for the day<span class="cineraCategories"><div title="Speech" class="categoryMedium speech">&#128489;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">0:00</span>Recap and set the stage for the day<span class="cineraCategories"><div title="Speech" class="categoryMedium speech">&#128489;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="28.000" class="marker cat_collision cat_debug-visualisation run">
+                    <div class="cineraContent"><span class="timecode">0:28</span>Demo our sticky collision bug using the new diagramming<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">0:28</span>Demo our sticky collision bug using the new diagramming<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">0:28</span>Demo our sticky collision bug using the new diagramming<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="265.000" class="marker cat_nullTopic admin">
+                    <div class="cineraContent"><span class="timecode">4:25</span>Launch <span class="project" data-hue="13" data-saturation="79%">4coder</span>, with build initially not working<span class="cineraCategories"><div title="Administrivia" class="categoryMedium admin">&#128505;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">4:25</span>Launch <span class="project" data-hue="13" data-saturation="79%">4coder</span>, with build initially not working<span class="cineraCategories"><div title="Administrivia" class="categoryMedium admin">&#128505;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">4:25</span>Launch <span class="project" data-hue="13" data-saturation="79%">4coder</span>, with build initially not working<span class="cineraCategories"><div title="Administrivia" class="categoryMedium admin">&#128505;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="343.000" class="marker cat_collision cat_movement research">
+                    <div class="cineraContent"><span class="timecode">5:43</span>Reacquaint ourselves with the gliding movement code in MoveEntity()<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">5:43</span>Reacquaint ourselves with the gliding movement code in MoveEntity()<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">5:43</span>Reacquaint ourselves with the gliding movement code in MoveEntity()<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="602.000" class="marker cat_collision cat_debug-visualisation run">
+                    <div class="cineraContent"><span class="timecode">10:02</span>Interpret our colour-coded collision boxes<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">10:02</span>Interpret our colour-coded collision boxes<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">10:02</span>Interpret our colour-coded collision boxes<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="676.000" class="marker cat_collision cat_debug-visualisation cat_movement research">
+                    <div class="cineraContent"><span class="timecode">11:16</span>Reacquaint ourselves with the diagramming code in UpdateBest()<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">11:16</span>Reacquaint ourselves with the diagramming code in UpdateBest()<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">11:16</span>Reacquaint ourselves with the diagramming code in UpdateBest()<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="724.000" class="marker cat_collision cat_debug-visualisation run">
+                    <div class="cineraContent"><span class="timecode">12:04</span>Reinterpret our colour-coded collision boxes<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">12:04</span>Reinterpret our colour-coded collision boxes<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">12:04</span>Reinterpret our colour-coded collision boxes<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="844.000" class="marker cat_collision cat_movement research">
+                    <div class="cineraContent"><span class="timecode">14:04</span>Consider enabling MoveEntity() to allow diagonal motion<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">14:04</span>Consider enabling MoveEntity() to allow diagonal motion<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">14:04</span>Consider enabling MoveEntity() to allow diagonal motion<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="1021.000" class="marker cat_collision cat_debug-visualisation cat_movement run">
+                    <div class="cineraContent"><span class="timecode">17:01</span>Corner-diagonal motion should be handled<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">17:01</span>Corner-diagonal motion should be handled<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">17:01</span>Corner-diagonal motion should be handled<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="1048.000" class="marker cat_collision cat_movement research">
+                    <div class="cineraContent"><span class="timecode">17:28</span>Double-check Dir and Side in MoveEntity()<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">17:28</span>Double-check Dir and Side in MoveEntity()<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">17:28</span>Double-check Dir and Side in MoveEntity()<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="1187.000" class="marker cat_collision cat_debug-visualisation cat_movement run">
+                    <div class="cineraContent"><span class="timecode">19:47</span>Our BestCell black box is missing<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">19:47</span>Our BestCell black box is missing<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">19:47</span>Our BestCell black box is missing<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="1230.000" class="marker cat_collision cat_debug-visualisation cat_movement programming">
+                    <div class="cineraContent"><span class="timecode">20:30</span>Disable the BestCell diagramming in MoveEntity()<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">20:30</span>Disable the BestCell diagramming in MoveEntity()<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">20:30</span>Disable the BestCell diagramming in MoveEntity()<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="1246.000" class="marker cat_collision cat_debug-visualisation cat_movement run">
+                    <div class="cineraContent"><span class="timecode">20:46</span>The cyan plus sign remains<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">20:46</span>The cyan plus sign remains<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">20:46</span>The cyan plus sign remains<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="1255.000" class="marker cat_collision cat_debug-visualisation cat_movement research">
+                    <div class="cineraContent"><span class="timecode">20:55</span>Continue to wonder about our missing BestCell black box<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">20:55</span>Continue to wonder about our missing BestCell black box<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">20:55</span>Continue to wonder about our missing BestCell black box<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="1320.000" class="marker cat_collision cat_movement programming">
+                    <div class="cineraContent"><span class="timecode">22:00</span>Disable the gliding code in MoveEntity()<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">22:00</span>Disable the gliding code in MoveEntity()<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">22:00</span>Disable the gliding code in MoveEntity()<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="1337.000" class="marker cat_collision cat_debug-visualisation cat_movement run">
+                    <div class="cineraContent"><span class="timecode">22:17</span>The BestCell black box is never drawn<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">22:17</span>The BestCell black box is never drawn<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">22:17</span>The BestCell black box is never drawn<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="1366.000" class="marker cat_collision cat_debug-visualisation cat_movement programming">
+                    <div class="cineraContent"><span class="timecode">22:46</span>Try make MoveEntity() draw the BestCell in red<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">22:46</span>Try make MoveEntity() draw the BestCell in red<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">22:46</span>Try make MoveEntity() draw the BestCell in red<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="1375.000" class="marker cat_collision cat_debug-visualisation cat_movement run">
+                    <div class="cineraContent"><span class="timecode">22:55</span>The BestCell red box is never draw<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">22:55</span>The BestCell red box is never draw<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">22:55</span>The BestCell red box is never draw<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="1389.000" class="marker cat_collision cat_debug-visualisation cat_movement programming">
+                    <div class="cineraContent"><span class="timecode">23:09</span>Leave the BestCell black in MoveEntity() and try drawing a bigger version of the ToP box<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">23:09</span>Leave the BestCell black in MoveEntity() and try drawing a bigger version of the ToP box<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">23:09</span>Leave the BestCell black in MoveEntity() and try drawing a bigger version of the ToP box<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="1413.000" class="marker cat_collision cat_debug-visualisation cat_movement run">
+                    <div class="cineraContent"><span class="timecode">23:33</span>Our black box remains missing<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">23:33</span>Our black box remains missing<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">23:33</span>Our black box remains missing<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="1418.000" class="marker cat_collision cat_debug-visualisation cat_movement programming">
+                    <div class="cineraContent"><span class="timecode">23:38</span>Try reversing the ToP and BestCell diagramming in MoveEntity()<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">23:38</span>Try reversing the ToP and BestCell diagramming in MoveEntity()<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">23:38</span>Try reversing the ToP and BestCell diagramming in MoveEntity()<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="1432.000" class="marker cat_collision cat_debug-visualisation cat_movement run">
+                    <div class="cineraContent"><span class="timecode">23:52</span>Our BestCell is drawn, but not the ToP<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">23:52</span>Our BestCell is drawn, but not the ToP<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">23:52</span>Our BestCell is drawn, but not the ToP<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="1460.000" class="marker cat_debug-visualisation research">
+                    <div class="cineraContent"><span class="timecode">24:20</span>Inspect RenderDiagrams() for bugs drawing the first entry<span class="cineraCategories"><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">24:20</span>Inspect RenderDiagrams() for bugs drawing the first entry<span class="cineraCategories"><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">24:20</span>Inspect RenderDiagrams() for bugs drawing the first entry<span class="cineraCategories"><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="1763.000" class="marker cat_debug-visualisation run">
+                    <div class="cineraContent"><span class="timecode">29:23</span>Step in to AppendDiagramEntry()<span class="cineraCategories"><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">29:23</span>Step in to AppendDiagramEntry()<span class="cineraCategories"><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">29:23</span>Step in to AppendDiagramEntry()<span class="cineraCategories"><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="1821.000" class="marker cat_debug-visualisation cat_language programming">
+                    <div class="cineraContent"><span class="timecode">30:21</span>Fix DIAGRAM_Text() to pass Diagram_Text to AppendDiagramEntry()<span class="cineraCategories"><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="language" class="category language" data-hue="142" data-saturation="84%"></div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">30:21</span>Fix DIAGRAM_Text() to pass Diagram_Text to AppendDiagramEntry()<span class="cineraCategories"><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="language" class="category language" data-hue="142" data-saturation="84%"></div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">30:21</span>Fix DIAGRAM_Text() to pass Diagram_Text to AppendDiagramEntry()<span class="cineraCategories"><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="language" class="category language" data-hue="142" data-saturation="84%"></div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="1919.000" class="marker cat_collision cat_debug-visualisation cat_movement run">
+                    <div class="cineraContent"><span class="timecode">31:59</span>Our BestCell and ToP are both drawn<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">31:59</span>Our BestCell and ToP are both drawn<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">31:59</span>Our BestCell and ToP are both drawn<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="1947.000" class="marker cat_collision cat_movement programming">
+                    <div class="cineraContent"><span class="timecode">32:27</span>Re-enable the gliding code in MoveEntity()<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">32:27</span>Re-enable the gliding code in MoveEntity()<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">32:27</span>Re-enable the gliding code in MoveEntity()<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="1964.000" class="marker cat_collision cat_debug-visualisation cat_movement run">
+                    <div class="cineraContent"><span class="timecode">32:44</span>MoveEntity() tests all but three edges<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">32:44</span>MoveEntity() tests all but three edges<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">32:44</span>MoveEntity() tests all but three edges<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="2009.000" class="marker cat_collision cat_movement programming">
+                    <div class="cineraContent"><span class="timecode">33:29</span>Enable MoveEntity() to test diagonal edge motion<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">33:29</span>Enable MoveEntity() to test diagonal edge motion<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">33:29</span>Enable MoveEntity() to test diagonal edge motion<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="2209.000" class="marker cat_language speech">
+                    <div class="cineraContent"><span class="timecode">36:49</span>Somebody is talking about rust again<span class="cineraCategories"><div title="language" class="category language" data-hue="142" data-saturation="84%"></div><div title="Speech" class="categoryMedium speech">&#128489;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">36:49</span>Somebody is talking about rust again<span class="cineraCategories"><div title="language" class="category language" data-hue="142" data-saturation="84%"></div><div title="Speech" class="categoryMedium speech">&#128489;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">36:49</span>Somebody is talking about rust again<span class="cineraCategories"><div title="language" class="category language" data-hue="142" data-saturation="84%"></div><div title="Speech" class="categoryMedium speech">&#128489;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="2300.000" class="marker cat_language authored">
+                    <div class="cineraContent"><span class="timecode">38:20</span><span class="author" data-hue="62" data-saturation="84%">fat_dratini</span> It gets the hose again<span class="cineraCategories"><div title="language" class="category language" data-hue="142" data-saturation="84%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">38:20</span><span class="author" data-hue="62" data-saturation="84%">fat_dratini</span> It gets the hose again<span class="cineraCategories"><div title="language" class="category language" data-hue="142" data-saturation="84%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">38:20</span><span class="author" data-hue="62" data-saturation="84%">fat_dratini</span> It gets the hose again<span class="cineraCategories"><div title="language" class="category language" data-hue="142" data-saturation="84%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="2336.000" class="marker cat_language speech">
+                    <div class="cineraContent"><span class="timecode">38:56</span>Tentatively permit &quot;R***&quot;<span class="cineraCategories"><div title="language" class="category language" data-hue="142" data-saturation="84%"></div><div title="Speech" class="categoryMedium speech">&#128489;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">38:56</span>Tentatively permit &quot;R***&quot;<span class="cineraCategories"><div title="language" class="category language" data-hue="142" data-saturation="84%"></div><div title="Speech" class="categoryMedium speech">&#128489;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">38:56</span>Tentatively permit &quot;R***&quot;<span class="cineraCategories"><div title="language" class="category language" data-hue="142" data-saturation="84%"></div><div title="Speech" class="categoryMedium speech">&#128489;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="2356.000" class="marker cat_collision cat_debug-visualisation cat_movement run">
+                    <div class="cineraContent"><span class="timecode">39:16</span>MoveEntity() now tests the full cube, yet our corner gliding remains not working<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">39:16</span>MoveEntity() now tests the full cube, yet our corner gliding remains not working<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">39:16</span>MoveEntity() now tests the full cube, yet our corner gliding remains not working<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="2521.000" class="marker cat_collision cat_movement programming">
+                    <div class="cineraContent"><span class="timecode">42:01</span>Fix typo in MoveEntity()<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">42:01</span>Fix typo in MoveEntity()<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">42:01</span>Fix typo in MoveEntity()<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="2559.000" class="marker cat_collision cat_movement run">
+                    <div class="cineraContent"><span class="timecode">42:39</span>Consider testing the 2-neighbourhood<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">42:39</span>Consider testing the 2-neighbourhood<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">42:39</span>Consider testing the 2-neighbourhood<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="2710.000" class="marker cat_language authored">
+                    <div class="cineraContent"><span class="timecode">45:10</span><span class="author" data-hue="199" data-saturation="91%">vacyoui</span> Unmentionable what, RPG Maker?<span class="cineraCategories"><div title="language" class="category language" data-hue="142" data-saturation="84%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">45:10</span><span class="author" data-hue="199" data-saturation="91%">vacyoui</span> Unmentionable what, RPG Maker?<span class="cineraCategories"><div title="language" class="category language" data-hue="142" data-saturation="84%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">45:10</span><span class="author" data-hue="199" data-saturation="91%">vacyoui</span> Unmentionable what, RPG Maker?<span class="cineraCategories"><div title="language" class="category language" data-hue="142" data-saturation="84%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="2817.000" class="marker cat_collision cat_movement research">
+                    <div class="cineraContent"><span class="timecode">46:57</span>Determine to widen the gliding movement search space<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">46:57</span>Determine to widen the gliding movement search space<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">46:57</span>Determine to widen the gliding movement search space<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="3115.000" class="marker cat_collision cat_movement research">
+                    <div class="cineraContent"><span class="timecode">51:55</span>Consider classifying our movement direction dynamically as we march through the voxel<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">51:55</span>Consider classifying our movement direction dynamically as we march through the voxel<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">51:55</span>Consider classifying our movement direction dynamically as we march through the voxel<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="3361.000" class="marker cat_collision cat_movement authored">
+                    <div class="cineraContent"><span class="timecode">56:01</span><span class="author" data-hue="279" data-saturation="87%">tk_dev</span> Q: A line drawing algorithm?<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">56:01</span><span class="author" data-hue="279" data-saturation="87%">tk_dev</span> Q: A line drawing algorithm?<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">56:01</span><span class="author" data-hue="279" data-saturation="87%">tk_dev</span> Q: A line drawing algorithm?<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="3397.000" class="marker cat_collision cat_movement research">
+                    <div class="cineraContent"><span class="timecode">56:37</span>Consider drawing a wider line<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">56:37</span>Consider drawing a wider line<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">56:37</span>Consider drawing a wider line<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="3640.000" class="marker cat_collision cat_movement programming">
+                    <div class="cineraContent"><span class="timecode">1:00:40</span>Increase VOXDIM from 2 to 3 in MoveEntity()<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:00:40</span>Increase VOXDIM from 2 to 3 in MoveEntity()<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:00:40</span>Increase VOXDIM from 2 to 3 in MoveEntity()<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="3677.000" class="marker cat_collision cat_movement research">
+                    <div class="cineraContent"><span class="timecode">1:01:17</span>Consider specifying all the possible wider movement directions in MoveEntity(), avoiding oscillation<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:01:17</span>Consider specifying all the possible wider movement directions in MoveEntity(), avoiding oscillation<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:01:17</span>Consider specifying all the possible wider movement directions in MoveEntity(), avoiding oscillation<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="3807.000" class="marker cat_collision cat_movement research">
+                    <div class="cineraContent"><span class="timecode">1:03:27</span>Consider adding an value that directs movement tests based on previous tests<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:03:27</span>Consider adding an value that directs movement tests based on previous tests<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:03:27</span>Consider adding an value that directs movement tests based on previous tests<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="3850.000" class="marker cat_collision cat_movement programming">
+                    <div class="cineraContent"><span class="timecode">1:04:10</span>Introduce the notion of TriedOpposites in MoveEntity()<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:04:10</span>Introduce the notion of TriedOpposites in MoveEntity()<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:04:10</span>Introduce the notion of TriedOpposites in MoveEntity()<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="4011.000" class="marker cat_collision cat_movement run">
+                    <div class="cineraContent"><span class="timecode">1:06:51</span>Our gliding movement code now tests further<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:06:51</span>Our gliding movement code now tests further<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:06:51</span>Our gliding movement code now tests further<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="4038.000" class="marker cat_collision cat_movement programming">
+                    <div class="cineraContent"><span class="timecode">1:07:18</span>Try making MoveEntity() flip and test each axis on separate loops<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:07:18</span>Try making MoveEntity() flip and test each axis on separate loops<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:07:18</span>Try making MoveEntity() flip and test each axis on separate loops<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="4344.000" class="marker cat_collision cat_movement run">
+                    <div class="cineraContent"><span class="timecode">1:12:24</span>Our gliding movement code tests further still, but doesn&#39;t permit corner gliding<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:12:24</span>Our gliding movement code tests further still, but doesn&#39;t permit corner gliding<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:12:24</span>Our gliding movement code tests further still, but doesn&#39;t permit corner gliding<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="4459.000" class="marker cat_collision cat_debug-visualisation run">
+                    <div class="cineraContent"><span class="timecode">1:14:19</span>Consider drawing the glove&#39;s collision box as a sphere<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:14:19</span>Consider drawing the glove&#39;s collision box as a sphere<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:14:19</span>Consider drawing the glove&#39;s collision box as a sphere<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="4535.000" class="marker cat_debug-visualisation programming">
+                    <div class="cineraContent"><span class="timecode">1:15:35</span>Implement the Diagram_Sphere case in RenderDiagrams()<span class="cineraCategories"><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:15:35</span>Implement the Diagram_Sphere case in RenderDiagrams()<span class="cineraCategories"><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:15:35</span>Implement the Diagram_Sphere case in RenderDiagrams()<span class="cineraCategories"><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="4810.000" class="marker cat_nullTopic authored">
+                    <div class="cineraContent"><span class="timecode">1:20:10</span><span class="author" data-hue="70" data-saturation="86%">jarput</span> Has anyone noticed the &quot;noise&quot; on <span class="member" data-hue="125" data-saturation="81%">Casey</span>&#39;s latest streams? The editor seems more blurry to me<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:20:10</span><span class="author" data-hue="70" data-saturation="86%">jarput</span> Has anyone noticed the &quot;noise&quot; on <span class="member" data-hue="125" data-saturation="81%">Casey</span>&#39;s latest streams? The editor seems more blurry to me<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:20:10</span><span class="author" data-hue="70" data-saturation="86%">jarput</span> Has anyone noticed the &quot;noise&quot; on <span class="member" data-hue="125" data-saturation="81%">Casey</span>&#39;s latest streams? The editor seems more blurry to me<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="4817.000" class="marker cat_debug-visualisation cat_mathematics cat_rendering programming">
+                    <div class="cineraContent"><span class="timecode">1:20:17</span>Implement the Diagram_Sphere case in RenderDiagrams() (cont.)<span class="cineraCategories"><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="mathematics" class="category mathematics" data-hue="9" data-saturation="91%"></div><div title="rendering" class="category rendering" data-hue="140" data-saturation="79%"></div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:20:17</span>Implement the Diagram_Sphere case in RenderDiagrams() (cont.)<span class="cineraCategories"><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="mathematics" class="category mathematics" data-hue="9" data-saturation="91%"></div><div title="rendering" class="category rendering" data-hue="140" data-saturation="79%"></div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:20:17</span>Implement the Diagram_Sphere case in RenderDiagrams() (cont.)<span class="cineraCategories"><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="mathematics" class="category mathematics" data-hue="9" data-saturation="91%"></div><div title="rendering" class="category rendering" data-hue="140" data-saturation="79%"></div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="5155.000" class="marker cat_collision cat_movement run">
+                    <div class="cineraContent"><span class="timecode">1:25:55</span>Check out what would be our glove&#39;s collision sphere<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:25:55</span>Check out what would be our glove&#39;s collision sphere<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:25:55</span>Check out what would be our glove&#39;s collision sphere<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="5364.000" class="marker cat_collision cat_movement research">
+                    <div class="cineraContent"><span class="timecode">1:29:24</span>Check how UpdateBest() determines the TestP<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:29:24</span>Check how UpdateBest() determines the TestP<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:29:24</span>Check how UpdateBest() determines the TestP<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="5431.000" class="marker cat_collision cat_debug-visualisation cat_movement run">
+                    <div class="cineraContent"><span class="timecode">1:30:31</span>Break down our collision test<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:30:31</span>Break down our collision test<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:30:31</span>Break down our collision test<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="5574.000" class="marker cat_collision cat_debug-visualisation cat_movement run">
+                    <div class="cineraContent"><span class="timecode">1:32:54</span>Red means you can&#39;t move directly through the current voxel to that voxel<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:32:54</span>Red means you can&#39;t move directly through the current voxel to that voxel<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:32:54</span>Red means you can&#39;t move directly through the current voxel to that voxel<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="5748.000" class="marker cat_collision cat_movement speech">
+                    <div class="cineraContent"><span class="timecode">1:35:48</span>Collision in The Witness: Flood-fill search<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="Speech" class="categoryMedium speech">&#128489;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:35:48</span>Collision in The Witness: Flood-fill search<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="Speech" class="categoryMedium speech">&#128489;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:35:48</span>Collision in The Witness: Flood-fill search<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="movement" class="category movement" data-hue="341" data-saturation="97%"></div><div title="Speech" class="categoryMedium speech">&#128489;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="5827.000" class="marker cat_nullTopic speech">
+                    <div class="cineraContent"><span class="timecode">1:37:07</span>Q&amp;A<span class="cineraCategories"><div title="Speech" class="categoryMedium speech">&#128489;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:37:07</span>Q&amp;A<span class="cineraCategories"><div title="Speech" class="categoryMedium speech">&#128489;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:37:07</span>Q&amp;A<span class="cineraCategories"><div title="Speech" class="categoryMedium speech">&#128489;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="5862.000" class="marker cat_nullTopic authored">
+                    <div class="cineraContent"><span class="timecode">1:37:42</span><span class="author" data-hue="270" data-saturation="89%">teamrandb</span> Q: Greetings <span class="member" data-hue="125" data-saturation="81%">Casey</span>, forgive my rude question, but why did you not post you streaming on twitter?<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:37:42</span><span class="author" data-hue="270" data-saturation="89%">teamrandb</span> Q: Greetings <span class="member" data-hue="125" data-saturation="81%">Casey</span>, forgive my rude question, but why did you not post you streaming on twitter?<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:37:42</span><span class="author" data-hue="270" data-saturation="89%">teamrandb</span> Q: Greetings <span class="member" data-hue="125" data-saturation="81%">Casey</span>, forgive my rude question, but why did you not post you streaming on twitter?<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="5881.000" class="marker cat_nullTopic authored">
+                    <div class="cineraContent"><span class="timecode">1:38:01</span><span class="author" data-hue="212" data-saturation="83%">mixelqueen</span> Q: Instead of switching between -O2 and -Od manually, why not [set] a different hotkey to build release vs debug?<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:38:01</span><span class="author" data-hue="212" data-saturation="83%">mixelqueen</span> Q: Instead of switching between -O2 and -Od manually, why not [set] a different hotkey to build release vs debug?<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:38:01</span><span class="author" data-hue="212" data-saturation="83%">mixelqueen</span> Q: Instead of switching between -O2 and -Od manually, why not [set] a different hotkey to build release vs debug?<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="5898.000" class="marker cat_language research" data-ref="https://github.com/cmuratori/refterm/blob/main/build.bat">
+                    <div class="cineraContent"><span class="timecode">1:38:18</span>Building both -Od and -O2 for refterm<sup>1</sup><span class="cineraCategories"><div title="language" class="category language" data-hue="142" data-saturation="84%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:38:18</span>Building both -Od and -O2 for refterm<sup>1</sup><span class="cineraCategories"><div title="language" class="category language" data-hue="142" data-saturation="84%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:38:18</span>Building both -Od and -O2 for refterm<sup>1</sup><span class="cineraCategories"><div title="language" class="category language" data-hue="142" data-saturation="84%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="5969.000" class="marker cat_threading authored">
+                    <div class="cineraContent"><span class="timecode">1:39:29</span><span class="author" data-hue="14" data-saturation="79%">anusaa</span> Q: On <span class="project" data-hue="69" data-saturation="94%">day 565</span> you said that the multithreading code in <span class="project" data-hue="242" data-saturation="78%">Handmade Hero</span> was crappy and that you learned much more about it since then. But what exactly is bad in that code?<span class="cineraCategories"><div title="threading" class="category threading" data-hue="25" data-saturation="97%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:39:29</span><span class="author" data-hue="14" data-saturation="79%">anusaa</span> Q: On <span class="project" data-hue="69" data-saturation="94%">day 565</span> you said that the multithreading code in <span class="project" data-hue="242" data-saturation="78%">Handmade Hero</span> was crappy and that you learned much more about it since then. But what exactly is bad in that code?<span class="cineraCategories"><div title="threading" class="category threading" data-hue="25" data-saturation="97%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:39:29</span><span class="author" data-hue="14" data-saturation="79%">anusaa</span> Q: On <span class="project" data-hue="69" data-saturation="94%">day 565</span> you said that the multithreading code in <span class="project" data-hue="242" data-saturation="78%">Handmade Hero</span> was crappy and that you learned much more about it since then. But what exactly is bad in that code?<span class="cineraCategories"><div title="threading" class="category threading" data-hue="25" data-saturation="97%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="6016.000" class="marker cat_data-structure cat_language authored">
+                    <div class="cineraContent"><span class="timecode">1:40:16</span><span class="author" data-hue="237" data-saturation="85%">mindmark42</span> Q: Can you explain what a discriminated union is?<span class="cineraCategories"><div title="data structure" class="category data-structure" data-hue="290" data-saturation="90%"></div><div title="language" class="category language" data-hue="142" data-saturation="84%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:40:16</span><span class="author" data-hue="237" data-saturation="85%">mindmark42</span> Q: Can you explain what a discriminated union is?<span class="cineraCategories"><div title="data structure" class="category data-structure" data-hue="290" data-saturation="90%"></div><div title="language" class="category language" data-hue="142" data-saturation="84%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:40:16</span><span class="author" data-hue="237" data-saturation="85%">mindmark42</span> Q: Can you explain what a discriminated union is?<span class="cineraCategories"><div title="data structure" class="category data-structure" data-hue="290" data-saturation="90%"></div><div title="language" class="category language" data-hue="142" data-saturation="84%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="6156.000" class="marker cat_data-structure cat_language authored">
+                    <div class="cineraContent"><span class="timecode">1:42:36</span><span class="author" data-hue="128" data-saturation="87%">davr0s</span> I call it &quot;tagged union&quot;<span class="cineraCategories"><div title="data structure" class="category data-structure" data-hue="290" data-saturation="90%"></div><div title="language" class="category language" data-hue="142" data-saturation="84%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:42:36</span><span class="author" data-hue="128" data-saturation="87%">davr0s</span> I call it &quot;tagged union&quot;<span class="cineraCategories"><div title="data structure" class="category data-structure" data-hue="290" data-saturation="90%"></div><div title="language" class="category language" data-hue="142" data-saturation="84%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:42:36</span><span class="author" data-hue="128" data-saturation="87%">davr0s</span> I call it &quot;tagged union&quot;<span class="cineraCategories"><div title="data structure" class="category data-structure" data-hue="290" data-saturation="90%"></div><div title="language" class="category language" data-hue="142" data-saturation="84%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="6161.000" class="marker cat_data-structure cat_language speech" data-ref="https://en.wikipedia.org/wiki/Disjoint_union">
+                    <div class="cineraContent"><span class="timecode">1:42:41</span>Theoretical discriminated union<sup>2</sup><span class="cineraCategories"><div title="data structure" class="category data-structure" data-hue="290" data-saturation="90%"></div><div title="language" class="category language" data-hue="142" data-saturation="84%"></div><div title="Speech" class="categoryMedium speech">&#128489;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:42:41</span>Theoretical discriminated union<sup>2</sup><span class="cineraCategories"><div title="data structure" class="category data-structure" data-hue="290" data-saturation="90%"></div><div title="language" class="category language" data-hue="142" data-saturation="84%"></div><div title="Speech" class="categoryMedium speech">&#128489;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:42:41</span>Theoretical discriminated union<sup>2</sup><span class="cineraCategories"><div title="data structure" class="category data-structure" data-hue="290" data-saturation="90%"></div><div title="language" class="category language" data-hue="142" data-saturation="84%"></div><div title="Speech" class="categoryMedium speech">&#128489;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="6253.000" class="marker cat_audio cat_library authored">
+                    <div class="cineraContent"><span class="timecode">1:44:13</span><span class="author" data-hue="182" data-saturation="92%">poissonprocess</span> Q: For someone just starting following <span class="project" data-hue="242" data-saturation="78%">Handmade Hero</span>, would you recommend against using DirectSound? It looks to be deprecated now. Should I use xaudio2 or WASAPI?<span class="cineraCategories"><div title="audio" class="category audio" data-hue="287" data-saturation="77%"></div><div title="library" class="category library" data-hue="40" data-saturation="80%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:44:13</span><span class="author" data-hue="182" data-saturation="92%">poissonprocess</span> Q: For someone just starting following <span class="project" data-hue="242" data-saturation="78%">Handmade Hero</span>, would you recommend against using DirectSound? It looks to be deprecated now. Should I use xaudio2 or WASAPI?<span class="cineraCategories"><div title="audio" class="category audio" data-hue="287" data-saturation="77%"></div><div title="library" class="category library" data-hue="40" data-saturation="80%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:44:13</span><span class="author" data-hue="182" data-saturation="92%">poissonprocess</span> Q: For someone just starting following <span class="project" data-hue="242" data-saturation="78%">Handmade Hero</span>, would you recommend against using DirectSound? It looks to be deprecated now. Should I use xaudio2 or WASAPI?<span class="cineraCategories"><div title="audio" class="category audio" data-hue="287" data-saturation="77%"></div><div title="library" class="category library" data-hue="40" data-saturation="80%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="6367.000" class="marker cat_collision authored">
+                    <div class="cineraContent"><span class="timecode">1:46:07</span><span class="author" data-hue="279" data-saturation="87%">tk_dev</span> Q: Does the order in which entities move change the result in your collision detection?<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:46:07</span><span class="author" data-hue="279" data-saturation="87%">tk_dev</span> Q: Does the order in which entities move change the result in your collision detection?<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:46:07</span><span class="author" data-hue="279" data-saturation="87%">tk_dev</span> Q: Does the order in which entities move change the result in your collision detection?<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="6433.000" class="marker cat_ui authored">
+                    <div class="cineraContent"><span class="timecode">1:47:13</span><span class="author" data-hue="254" data-saturation="89%">mextroxtm</span> Q: Do you think the concept of IMGUI is applicable the same way in 3D user interfaces as in VR games? Are there any differences you would see? I might be writing a small research paper about it for university if I get the permission to<span class="cineraCategories"><div title="ui" class="category ui" data-hue="43" data-saturation="94%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:47:13</span><span class="author" data-hue="254" data-saturation="89%">mextroxtm</span> Q: Do you think the concept of IMGUI is applicable the same way in 3D user interfaces as in VR games? Are there any differences you would see? I might be writing a small research paper about it for university if I get the permission to<span class="cineraCategories"><div title="ui" class="category ui" data-hue="43" data-saturation="94%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:47:13</span><span class="author" data-hue="254" data-saturation="89%">mextroxtm</span> Q: Do you think the concept of IMGUI is applicable the same way in 3D user interfaces as in VR games? Are there any differences you would see? I might be writing a small research paper about it for university if I get the permission to<span class="cineraCategories"><div title="ui" class="category ui" data-hue="43" data-saturation="94%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="6482.000" class="marker cat_ui authored">
+                    <div class="cineraContent"><span class="timecode">1:48:02</span><span class="author" data-hue="320" data-saturation="75%">olive_prist</span> Q: You invented IMGUI?<span class="cineraCategories"><div title="ui" class="category ui" data-hue="43" data-saturation="94%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:48:02</span><span class="author" data-hue="320" data-saturation="75%">olive_prist</span> Q: You invented IMGUI?<span class="cineraCategories"><div title="ui" class="category ui" data-hue="43" data-saturation="94%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:48:02</span><span class="author" data-hue="320" data-saturation="75%">olive_prist</span> Q: You invented IMGUI?<span class="cineraCategories"><div title="ui" class="category ui" data-hue="43" data-saturation="94%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="6521.000" class="marker cat_nullTopic authored">
+                    <div class="cineraContent"><span class="timecode">1:48:41</span><span class="author" data-hue="320" data-saturation="75%">olive_prist</span> Q: <span class="member" data-hue="277" data-saturation="78%">Mike Acton</span> recommends sometimes doing deliberate practice for programming as opposed to working on projects. Have you done this yourself? Do you recommend it?<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:48:41</span><span class="author" data-hue="320" data-saturation="75%">olive_prist</span> Q: <span class="member" data-hue="277" data-saturation="78%">Mike Acton</span> recommends sometimes doing deliberate practice for programming as opposed to working on projects. Have you done this yourself? Do you recommend it?<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:48:41</span><span class="author" data-hue="320" data-saturation="75%">olive_prist</span> Q: <span class="member" data-hue="277" data-saturation="78%">Mike Acton</span> recommends sometimes doing deliberate practice for programming as opposed to working on projects. Have you done this yourself? Do you recommend it?<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="6642.000" class="marker cat_ui authored" data-ref="https://en.wikipedia.org/wiki/Immediate_mode_GUI">
+                    <div class="cineraContent"><span class="timecode">1:50:42</span><span class="author" data-hue="200" data-saturation="97%">0lpbm</span> Well, Wikipedia<sup>3</sup> credits <span class="member" data-hue="125" data-saturation="81%">Casey</span>, for the doubters<span class="cineraCategories"><div title="ui" class="category ui" data-hue="43" data-saturation="94%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:50:42</span><span class="author" data-hue="200" data-saturation="97%">0lpbm</span> Well, Wikipedia<sup>3</sup> credits <span class="member" data-hue="125" data-saturation="81%">Casey</span>, for the doubters<span class="cineraCategories"><div title="ui" class="category ui" data-hue="43" data-saturation="94%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:50:42</span><span class="author" data-hue="200" data-saturation="97%">0lpbm</span> Well, Wikipedia<sup>3</sup> credits <span class="member" data-hue="125" data-saturation="81%">Casey</span>, for the doubters<span class="cineraCategories"><div title="ui" class="category ui" data-hue="43" data-saturation="94%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="6693.000" class="marker cat_ui authored">
+                    <div class="cineraContent"><span class="timecode">1:51:33</span><span class="author" data-hue="9" data-saturation="89%">carwynnelson</span> Q: Were there IMGUI interfaces before you coined the term? Or was the idea and the term completely original?<span class="cineraCategories"><div title="ui" class="category ui" data-hue="43" data-saturation="94%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:51:33</span><span class="author" data-hue="9" data-saturation="89%">carwynnelson</span> Q: Were there IMGUI interfaces before you coined the term? Or was the idea and the term completely original?<span class="cineraCategories"><div title="ui" class="category ui" data-hue="43" data-saturation="94%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:51:33</span><span class="author" data-hue="9" data-saturation="89%">carwynnelson</span> Q: Were there IMGUI interfaces before you coined the term? Or was the idea and the term completely original?<span class="cineraCategories"><div title="ui" class="category ui" data-hue="43" data-saturation="94%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="6772.000" class="marker cat_ui authored">
+                    <div class="cineraContent"><span class="timecode">1:52:52</span><span class="author" data-hue="107" data-saturation="87%">thehorseisbrown</span> Would you coin a different term for IMGUI in hindsight? Wouldn&#39;t &quot;code-based&quot; or something in that direction be better?<span class="cineraCategories"><div title="ui" class="category ui" data-hue="43" data-saturation="94%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:52:52</span><span class="author" data-hue="107" data-saturation="87%">thehorseisbrown</span> Would you coin a different term for IMGUI in hindsight? Wouldn&#39;t &quot;code-based&quot; or something in that direction be better?<span class="cineraCategories"><div title="ui" class="category ui" data-hue="43" data-saturation="94%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:52:52</span><span class="author" data-hue="107" data-saturation="87%">thehorseisbrown</span> Would you coin a different term for IMGUI in hindsight? Wouldn&#39;t &quot;code-based&quot; or something in that direction be better?<span class="cineraCategories"><div title="ui" class="category ui" data-hue="43" data-saturation="94%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="6792.000" class="marker cat_geometry authored" data-ref="https://en.wikipedia.org/wiki/Gilbert%E2%80%93Johnson%E2%80%93Keerthi_distance_algorithm">
+                    <div class="cineraContent"><span class="timecode">1:53:12</span><span class="author" data-hue="335" data-saturation="76%">d3dbsp</span> Did you also coin GJK?<sup>4</sup><span class="cineraCategories"><div title="geometry" class="category geometry" data-hue="355" data-saturation="98%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:53:12</span><span class="author" data-hue="335" data-saturation="76%">d3dbsp</span> Did you also coin GJK?<sup>4</sup><span class="cineraCategories"><div title="geometry" class="category geometry" data-hue="355" data-saturation="98%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:53:12</span><span class="author" data-hue="335" data-saturation="76%">d3dbsp</span> Did you also coin GJK?<sup>4</sup><span class="cineraCategories"><div title="geometry" class="category geometry" data-hue="355" data-saturation="98%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="6845.000" class="marker cat_language authored">
+                    <div class="cineraContent"><span class="timecode">1:54:05</span><span class="author" data-hue="184" data-saturation="82%">enemypanda</span> Did you coin JavaScript?<span class="cineraCategories"><div title="language" class="category language" data-hue="142" data-saturation="84%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:54:05</span><span class="author" data-hue="184" data-saturation="82%">enemypanda</span> Did you coin JavaScript?<span class="cineraCategories"><div title="language" class="category language" data-hue="142" data-saturation="84%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:54:05</span><span class="author" data-hue="184" data-saturation="82%">enemypanda</span> Did you coin JavaScript?<span class="cineraCategories"><div title="language" class="category language" data-hue="142" data-saturation="84%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="6873.000" class="marker cat_nullTopic authored" data-ref="https://en.wikipedia.org/wiki/Eric_Veach,https://en.wikipedia.org/wiki/Matt_Pharr">
+                    <div class="cineraContent"><span class="timecode">1:54:33</span><span class="author" data-hue="9" data-saturation="89%">carwynnelson</span> It&#39;s odd that <span class="member" data-hue="125" data-saturation="81%">you</span> don&#39;t have a Wikipedia page<sup>5</sup><sup>,6</sup><span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:54:33</span><span class="author" data-hue="9" data-saturation="89%">carwynnelson</span> It&#39;s odd that <span class="member" data-hue="125" data-saturation="81%">you</span> don&#39;t have a Wikipedia page<sup>5</sup><sup>,6</sup><span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:54:33</span><span class="author" data-hue="9" data-saturation="89%">carwynnelson</span> It&#39;s odd that <span class="member" data-hue="125" data-saturation="81%">you</span> don&#39;t have a Wikipedia page<sup>5</sup><sup>,6</sup><span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="7132.000" class="marker cat_hardware authored">
+                    <div class="cineraContent"><span class="timecode">1:58:52</span><span class="author" data-hue="55" data-saturation="95%">i_am_seabass</span> Q: Microsoft is setting fairly strict hardware requirements for Windows 11. Basically, chips older than two years will not work. Do you think this is a good or bad thing? Seems like it will lead to a lot of waste of perfectly good hardware<span class="cineraCategories"><div title="hardware" class="category hardware" data-hue="284" data-saturation="94%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:58:52</span><span class="author" data-hue="55" data-saturation="95%">i_am_seabass</span> Q: Microsoft is setting fairly strict hardware requirements for Windows 11. Basically, chips older than two years will not work. Do you think this is a good or bad thing? Seems like it will lead to a lot of waste of perfectly good hardware<span class="cineraCategories"><div title="hardware" class="category hardware" data-hue="284" data-saturation="94%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:58:52</span><span class="author" data-hue="55" data-saturation="95%">i_am_seabass</span> Q: Microsoft is setting fairly strict hardware requirements for Windows 11. Basically, chips older than two years will not work. Do you think this is a good or bad thing? Seems like it will lead to a lot of waste of perfectly good hardware<span class="cineraCategories"><div title="hardware" class="category hardware" data-hue="284" data-saturation="94%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="7308.000" class="marker cat_operating-system authored">
+                    <div class="cineraContent"><span class="timecode">2:01:48</span><span class="author" data-hue="241" data-saturation="89%">miltondts</span> Nah… the TPM requirement is about locking down the platform, DRM, etc<span class="cineraCategories"><div title="operating system" class="category operating-system" data-hue="44" data-saturation="93%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">2:01:48</span><span class="author" data-hue="241" data-saturation="89%">miltondts</span> Nah… the TPM requirement is about locking down the platform, DRM, etc<span class="cineraCategories"><div title="operating system" class="category operating-system" data-hue="44" data-saturation="93%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">2:01:48</span><span class="author" data-hue="241" data-saturation="89%">miltondts</span> Nah… the TPM requirement is about locking down the platform, DRM, etc<span class="cineraCategories"><div title="operating system" class="category operating-system" data-hue="44" data-saturation="93%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="7474.000" class="marker cat_physics authored">
+                    <div class="cineraContent"><span class="timecode">2:04:34</span><span class="author" data-hue="212" data-saturation="87%">mougatron</span> Q: Have you ever used any physics engine like Havok, PhysX, or Bullet? If so, do you have any opinion on them?<span class="cineraCategories"><div title="physics" class="category physics" data-hue="242" data-saturation="94%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">2:04:34</span><span class="author" data-hue="212" data-saturation="87%">mougatron</span> Q: Have you ever used any physics engine like Havok, PhysX, or Bullet? If so, do you have any opinion on them?<span class="cineraCategories"><div title="physics" class="category physics" data-hue="242" data-saturation="94%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">2:04:34</span><span class="author" data-hue="212" data-saturation="87%">mougatron</span> Q: Have you ever used any physics engine like Havok, PhysX, or Bullet? If so, do you have any opinion on them?<span class="cineraCategories"><div title="physics" class="category physics" data-hue="242" data-saturation="94%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="7503.000" class="marker cat_operating-system authored">
+                    <div class="cineraContent"><span class="timecode">2:05:03</span><span class="author" data-hue="153" data-saturation="93%">beastexmachina</span> Q: Same opinion for trusted modules in embedded systems?<span class="cineraCategories"><div title="operating system" class="category operating-system" data-hue="44" data-saturation="93%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">2:05:03</span><span class="author" data-hue="153" data-saturation="93%">beastexmachina</span> Q: Same opinion for trusted modules in embedded systems?<span class="cineraCategories"><div title="operating system" class="category operating-system" data-hue="44" data-saturation="93%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">2:05:03</span><span class="author" data-hue="153" data-saturation="93%">beastexmachina</span> Q: Same opinion for trusted modules in embedded systems?<span class="cineraCategories"><div title="operating system" class="category operating-system" data-hue="44" data-saturation="93%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="7604.000" class="marker cat_nullTopic speech">
+                    <div class="cineraContent"><span class="timecode">2:06:44</span>Do we have any Iranians watching?<span class="cineraCategories"><div title="Speech" class="categoryMedium speech">&#128489;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">2:06:44</span>Do we have any Iranians watching?<span class="cineraCategories"><div title="Speech" class="categoryMedium speech">&#128489;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">2:06:44</span>Do we have any Iranians watching?<span class="cineraCategories"><div title="Speech" class="categoryMedium speech">&#128489;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="7644.000" class="marker cat_nullTopic authored">
+                    <div class="cineraContent"><span class="timecode">2:07:24</span><span class="author" data-hue="143" data-saturation="96%">xpaw</span> Does twitch work in Iran?<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">2:07:24</span><span class="author" data-hue="143" data-saturation="96%">xpaw</span> Does twitch work in Iran?<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">2:07:24</span><span class="author" data-hue="143" data-saturation="96%">xpaw</span> Does twitch work in Iran?<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="7665.000" class="marker cat_food speech">
+                    <div class="cineraContent"><span class="timecode">2:07:45</span>Persian-style grilled meats<span class="cineraCategories"><div title="food" class="category food" data-hue="157" data-saturation="98%"></div><div title="Speech" class="categoryMedium speech">&#128489;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">2:07:45</span>Persian-style grilled meats<span class="cineraCategories"><div title="food" class="category food" data-hue="157" data-saturation="98%"></div><div title="Speech" class="categoryMedium speech">&#128489;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">2:07:45</span>Persian-style grilled meats<span class="cineraCategories"><div title="food" class="category food" data-hue="157" data-saturation="98%"></div><div title="Speech" class="categoryMedium speech">&#128489;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="7691.000" class="marker cat_food authored">
+                    <div class="cineraContent"><span class="timecode">2:08:11</span><span class="author" data-hue="113" data-saturation="86%">navidhg</span> Kebab koubideh<span class="cineraCategories"><div title="food" class="category food" data-hue="157" data-saturation="98%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">2:08:11</span><span class="author" data-hue="113" data-saturation="86%">navidhg</span> Kebab koubideh<span class="cineraCategories"><div title="food" class="category food" data-hue="157" data-saturation="98%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">2:08:11</span><span class="author" data-hue="113" data-saturation="86%">navidhg</span> Kebab koubideh<span class="cineraCategories"><div title="food" class="category food" data-hue="157" data-saturation="98%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="7702.000" class="marker cat_food speech">
+                    <div class="cineraContent"><span class="timecode">2:08:22</span>Mediterranean grilled meats<span class="cineraCategories"><div title="food" class="category food" data-hue="157" data-saturation="98%"></div><div title="Speech" class="categoryMedium speech">&#128489;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">2:08:22</span>Mediterranean grilled meats<span class="cineraCategories"><div title="food" class="category food" data-hue="157" data-saturation="98%"></div><div title="Speech" class="categoryMedium speech">&#128489;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">2:08:22</span>Mediterranean grilled meats<span class="cineraCategories"><div title="food" class="category food" data-hue="157" data-saturation="98%"></div><div title="Speech" class="categoryMedium speech">&#128489;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="7816.000" class="marker cat_nullTopic authored">
+                    <div class="cineraContent"><span class="timecode">2:10:16</span><span class="author" data-hue="243" data-saturation="95%">f__stein</span> <span class="member" data-hue="272" data-saturation="80%">boop</span> is Iranian, right? At least he spoke about speaking Farsi<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">2:10:16</span><span class="author" data-hue="243" data-saturation="95%">f__stein</span> <span class="member" data-hue="272" data-saturation="80%">boop</span> is Iranian, right? At least he spoke about speaking Farsi<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">2:10:16</span><span class="author" data-hue="243" data-saturation="95%">f__stein</span> <span class="member" data-hue="272" data-saturation="80%">boop</span> is Iranian, right? At least he spoke about speaking Farsi<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="7840.000" class="marker cat_food speech">
+                    <div class="cineraContent"><span class="timecode">2:10:40</span>Getting better at grilled chicken<span class="cineraCategories"><div title="food" class="category food" data-hue="157" data-saturation="98%"></div><div title="Speech" class="categoryMedium speech">&#128489;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">2:10:40</span>Getting better at grilled chicken<span class="cineraCategories"><div title="food" class="category food" data-hue="157" data-saturation="98%"></div><div title="Speech" class="categoryMedium speech">&#128489;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">2:10:40</span>Getting better at grilled chicken<span class="cineraCategories"><div title="food" class="category food" data-hue="157" data-saturation="98%"></div><div title="Speech" class="categoryMedium speech">&#128489;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="7880.000" class="marker cat_food authored">
+                    <div class="cineraContent"><span class="timecode">2:11:20</span><span class="author" data-hue="31" data-saturation="79%">amirh12</span> Joujeh kebab<span class="cineraCategories"><div title="food" class="category food" data-hue="157" data-saturation="98%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">2:11:20</span><span class="author" data-hue="31" data-saturation="79%">amirh12</span> Joujeh kebab<span class="cineraCategories"><div title="food" class="category food" data-hue="157" data-saturation="98%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">2:11:20</span><span class="author" data-hue="31" data-saturation="79%">amirh12</span> Joujeh kebab<span class="cineraCategories"><div title="food" class="category food" data-hue="157" data-saturation="98%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="7885.000" class="marker cat_food speech">
+                    <div class="cineraContent"><span class="timecode">2:11:25</span>Main problem figuring out the doneness of joujeh kebab<span class="cineraCategories"><div title="food" class="category food" data-hue="157" data-saturation="98%"></div><div title="Speech" class="categoryMedium speech">&#128489;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">2:11:25</span>Main problem figuring out the doneness of joujeh kebab<span class="cineraCategories"><div title="food" class="category food" data-hue="157" data-saturation="98%"></div><div title="Speech" class="categoryMedium speech">&#128489;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">2:11:25</span>Main problem figuring out the doneness of joujeh kebab<span class="cineraCategories"><div title="food" class="category food" data-hue="157" data-saturation="98%"></div><div title="Speech" class="categoryMedium speech">&#128489;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="7917.000" class="marker cat_food authored">
+                    <div class="cineraContent"><span class="timecode">2:11:57</span><span class="author" data-hue="282" data-saturation="92%">vertual1</span> Touch<span class="cineraCategories"><div title="food" class="category food" data-hue="157" data-saturation="98%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">2:11:57</span><span class="author" data-hue="282" data-saturation="92%">vertual1</span> Touch<span class="cineraCategories"><div title="food" class="category food" data-hue="157" data-saturation="98%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">2:11:57</span><span class="author" data-hue="282" data-saturation="92%">vertual1</span> Touch<span class="cineraCategories"><div title="food" class="category food" data-hue="157" data-saturation="98%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="7932.000" class="marker cat_food authored" data-ref="https://www.goodiesmedmarket.com/">
+                    <div class="cineraContent"><span class="timecode">2:12:12</span><span class="author" data-hue="170" data-saturation="94%">esert</span> If you want to get Middle East / Levant-type of seasonings and other produce in Seattle, try Goodies Mediterranean Market<sup>7</sup><span class="cineraCategories"><div title="food" class="category food" data-hue="157" data-saturation="98%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">2:12:12</span><span class="author" data-hue="170" data-saturation="94%">esert</span> If you want to get Middle East / Levant-type of seasonings and other produce in Seattle, try Goodies Mediterranean Market<sup>7</sup><span class="cineraCategories"><div title="food" class="category food" data-hue="157" data-saturation="98%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">2:12:12</span><span class="author" data-hue="170" data-saturation="94%">esert</span> If you want to get Middle East / Levant-type of seasonings and other produce in Seattle, try Goodies Mediterranean Market<sup>7</sup><span class="cineraCategories"><div title="food" class="category food" data-hue="157" data-saturation="98%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="7997.000" class="marker cat_food authored">
+                    <div class="cineraContent"><span class="timecode">2:13:17</span><span class="author" data-hue="170" data-saturation="94%">esert</span> Yes, in Lake City. They also have house-made kebabs, ready to cook<span class="cineraCategories"><div title="food" class="category food" data-hue="157" data-saturation="98%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">2:13:17</span><span class="author" data-hue="170" data-saturation="94%">esert</span> Yes, in Lake City. They also have house-made kebabs, ready to cook<span class="cineraCategories"><div title="food" class="category food" data-hue="157" data-saturation="98%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">2:13:17</span><span class="author" data-hue="170" data-saturation="94%">esert</span> Yes, in Lake City. They also have house-made kebabs, ready to cook<span class="cineraCategories"><div title="food" class="category food" data-hue="157" data-saturation="98%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="8008.000" class="marker cat_food speech">
+                    <div class="cineraContent"><span class="timecode">2:13:28</span>Skewering before coming to room temperature<span class="cineraCategories"><div title="food" class="category food" data-hue="157" data-saturation="98%"></div><div title="Speech" class="categoryMedium speech">&#128489;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">2:13:28</span>Skewering before coming to room temperature<span class="cineraCategories"><div title="food" class="category food" data-hue="157" data-saturation="98%"></div><div title="Speech" class="categoryMedium speech">&#128489;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">2:13:28</span>Skewering before coming to room temperature<span class="cineraCategories"><div title="food" class="category food" data-hue="157" data-saturation="98%"></div><div title="Speech" class="categoryMedium speech">&#128489;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="8067.000" class="marker cat_food authored">
+                    <div class="cineraContent"><span class="timecode">2:14:27</span><span class="author" data-hue="241" data-saturation="89%">miltondts</span> Does your skewer rotate?<span class="cineraCategories"><div title="food" class="category food" data-hue="157" data-saturation="98%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">2:14:27</span><span class="author" data-hue="241" data-saturation="89%">miltondts</span> Does your skewer rotate?<span class="cineraCategories"><div title="food" class="category food" data-hue="157" data-saturation="98%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">2:14:27</span><span class="author" data-hue="241" data-saturation="89%">miltondts</span> Does your skewer rotate?<span class="cineraCategories"><div title="food" class="category food" data-hue="157" data-saturation="98%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="8069.000" class="marker cat_food speech">
+                    <div class="cineraContent"><span class="timecode">2:14:29</span>Rotating skewers manually<span class="cineraCategories"><div title="food" class="category food" data-hue="157" data-saturation="98%"></div><div title="Speech" class="categoryMedium speech">&#128489;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">2:14:29</span>Rotating skewers manually<span class="cineraCategories"><div title="food" class="category food" data-hue="157" data-saturation="98%"></div><div title="Speech" class="categoryMedium speech">&#128489;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">2:14:29</span>Rotating skewers manually<span class="cineraCategories"><div title="food" class="category food" data-hue="157" data-saturation="98%"></div><div title="Speech" class="categoryMedium speech">&#128489;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="8159.000" class="marker cat_food authored">
+                    <div class="cineraContent"><span class="timecode">2:15:59</span><span class="author" data-hue="46" data-saturation="78%">sir_pinecone</span> How about using an infrared thermometer and then remove before it hits the target temperature, because it&#39;ll continue to cook for a bit as it sits?<span class="cineraCategories"><div title="food" class="category food" data-hue="157" data-saturation="98%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">2:15:59</span><span class="author" data-hue="46" data-saturation="78%">sir_pinecone</span> How about using an infrared thermometer and then remove before it hits the target temperature, because it&#39;ll continue to cook for a bit as it sits?<span class="cineraCategories"><div title="food" class="category food" data-hue="157" data-saturation="98%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">2:15:59</span><span class="author" data-hue="46" data-saturation="78%">sir_pinecone</span> How about using an infrared thermometer and then remove before it hits the target temperature, because it&#39;ll continue to cook for a bit as it sits?<span class="cineraCategories"><div title="food" class="category food" data-hue="157" data-saturation="98%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="8191.000" class="marker cat_food authored">
+                    <div class="cineraContent"><span class="timecode">2:16:31</span><span class="author" data-hue="241" data-saturation="89%">miltondts</span> Also, I don&#39;t know if this is common, but I see the meat is not done all at the same time and they cut the meat on the skewer and leave the rest<span class="cineraCategories"><div title="food" class="category food" data-hue="157" data-saturation="98%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">2:16:31</span><span class="author" data-hue="241" data-saturation="89%">miltondts</span> Also, I don&#39;t know if this is common, but I see the meat is not done all at the same time and they cut the meat on the skewer and leave the rest<span class="cineraCategories"><div title="food" class="category food" data-hue="157" data-saturation="98%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">2:16:31</span><span class="author" data-hue="241" data-saturation="89%">miltondts</span> Also, I don&#39;t know if this is common, but I see the meat is not done all at the same time and they cut the meat on the skewer and leave the rest<span class="cineraCategories"><div title="food" class="category food" data-hue="157" data-saturation="98%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="8260.000" class="marker cat_nullTopic speech">
+                    <div class="cineraContent"><span class="timecode">2:17:40</span>Wrap it up<span class="cineraCategories"><div title="Speech" class="categoryMedium speech">&#128489;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">2:17:40</span>Wrap it up<span class="cineraCategories"><div title="Speech" class="categoryMedium speech">&#128489;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">2:17:40</span>Wrap it up<span class="cineraCategories"><div title="Speech" class="categoryMedium speech">&#128489;</div></span></div>
+                    </div>
+                </div>
+            </div>
+                <a class="episodeMarker next" href="https://hero.handmade.network/episode/code/day641/"><div>&#9196;</div><div>Next: 'Voxel Flood Fill for Collision Search'</div><div>&#9196;</div></a>
+            </div>
+        </div>
+        </div>
+    <script type="text/javascript" src="https://handmade.network/public/annotations/cinera_player_post.js?r=285016ab"></script>
+    </body>
+</html>

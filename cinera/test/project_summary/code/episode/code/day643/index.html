@@ -1,0 +1,1334 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="generator" content="Cinera 0.10.30">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="keywords" content="collision, debug visualisation, entity system, gameplay, hot reloading, input handling, procedural generation, rendering, Chat Comment, In-Game, Programming, Rant, Research, Speech">
+
+        <link rel="stylesheet" type="text/css" href="https://handmade.network/public/annotations/cinera.css?r=39c76375">
+        <link rel="stylesheet" type="text/css" href="https://handmade.network/public/annotations/cinera__hero.css?r=29c3877c">
+        <link rel="stylesheet" type="text/css" href="https://handmade.network/public/annotations/cinera_topics.css?r=8e300c51">
+        <script type="text/javascript" src="https://handmade.network/public/annotations/cinera_pre.js?r=3e2343d1"></script>
+        <script type="text/javascript" src="https://handmade.network/public/annotations/cinera_player_pre.js?r=5587322c"></script>
+
+        <meta property="cinera:type" content="entry">
+        <meta property="cinera:title" content="Hunting for Collision Bugs">
+        <meta property="cinera:project" content="Handmade Hero">
+        <meta property="cinera:project_lineage" content=" / Handmade Hero">
+    </head>
+    <body>
+        <div class="cinera">
+            <script type="text/javascript" src="https://handmade.network/public/annotations/cinera_clear.js?r=00000000"></script>
+            <div class="cineraMenus hero">
+            <span class="episode_name">Hunting for Collision Bugs</span>
+            <div class="menu references">
+                <span>References &#9660;</span>
+                <div class="refs references_container">
+                    <a data-id="https://www.kickstarter.com/projects/annarettberg/meow-the-infinite-book-two" href="https://www.kickstarter.com/projects/annarettberg/meow-the-infinite-book-two" target="_blank" class="ref">
+                        <span class="ref_content">
+                            <div class="source">Kickstarter</div>
+                            <div class="ref_title">Meow the Infinite: Book Two</div>
+                        </span>
+                        <div class="ref_indices">
+                            <span data-timestamp="0.000" class="timecode"><span class="ref_index">[1]</span><span class="time">0:00</span></span><span data-timestamp="6837.000" class="timecode"><span class="ref_index">[3]</span><span class="time">1:53:57</span></span><span data-timestamp="8630.000" class="timecode"><span class="ref_index">[8]</span><span class="time">2:23:50</span></span>
+                        </div>
+                    </a>
+                    <a data-id="https://www.consolidatedpress.com/" href="https://www.consolidatedpress.com/" target="_blank" class="ref">
+                        <span class="ref_content">
+                            <div class="ref_title">Consolidated Press</div>
+                        </span>
+                        <div class="ref_indices">
+                            <span data-timestamp="0.000" class="timecode"><span class="ref_index">[2]</span><span class="time">0:00</span></span>
+                        </div>
+                    </a>
+                    <a data-id="https://starcodegalaxy.com/" href="https://starcodegalaxy.com/" target="_blank" class="ref">
+                        <span class="ref_content">
+                            <div class="ref_title">Star Code Galaxy</div>
+                        </span>
+                        <div class="ref_indices">
+                            <span data-timestamp="7036.000" class="timecode"><span class="ref_index">[4]</span><span class="time">1:57:16</span></span><span data-timestamp="7146.000" class="timecode"><span class="ref_index">[5]</span><span class="time">1:59:06</span></span><span data-timestamp="7572.000" class="timecode"><span class="ref_index">[6]</span><span class="time">2:06:12</span></span>
+                        </div>
+                    </a>
+                    <a data-id="https://www.sparkpost.com/resources/email-explained/dmarc-explained/" href="https://www.sparkpost.com/resources/email-explained/dmarc-explained/" target="_blank" class="ref">
+                        <span class="ref_content">
+                            <div class="source">SparkPost</div>
+                            <div class="ref_title">What Is DMARC?</div>
+                        </span>
+                        <div class="ref_indices">
+                            <span data-timestamp="7961.000" class="timecode"><span class="ref_index">[7]</span><span class="time">2:12:41</span></span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="menu filter">
+                <span><img src="https://handmade.network/public/annotations/cinera_icon_filter.png?r=3d831e54"></span>
+                <div class="filter_container">
+                   <div class="filter_header">
+                       <div class="filter_mode exclusive">Filter mode: </div>
+                       <div class="filter_titles">
+                           <div class="filter_title">Topics</div>
+                           <div class="filter_title">Media</div>
+                       </div>
+                   </div>
+                   <div class="filters">
+                        <div class="filter_topics">
+                            <div class="filter_content collision">
+                                <span class="icon category collision" data-hue="342" data-saturation="93%"></span><span class="cineraText">collision</span>
+                            </div>
+                            <div class="filter_content debug-visualisation">
+                                <span class="icon category debug-visualisation" data-hue="60" data-saturation="86%"></span><span class="cineraText">debug visualisation</span>
+                            </div>
+                            <div class="filter_content entity-system">
+                                <span class="icon category entity-system" data-hue="275" data-saturation="92%"></span><span class="cineraText">entity system</span>
+                            </div>
+                            <div class="filter_content gameplay">
+                                <span class="icon category gameplay" data-hue="314" data-saturation="96%"></span><span class="cineraText">gameplay</span>
+                            </div>
+                            <div class="filter_content hot-reloading">
+                                <span class="icon category hot-reloading" data-hue="45" data-saturation="78%"></span><span class="cineraText">hot reloading</span>
+                            </div>
+                            <div class="filter_content input-handling">
+                                <span class="icon category input-handling" data-hue="335" data-saturation="94%"></span><span class="cineraText">input handling</span>
+                            </div>
+                            <div class="filter_content procedural-generation">
+                                <span class="icon category procedural-generation" data-hue="186" data-saturation="87%"></span><span class="cineraText">procedural generation</span>
+                            </div>
+                            <div class="filter_content rendering">
+                                <span class="icon category rendering" data-hue="140" data-saturation="79%"></span><span class="cineraText">rendering</span>
+                            </div>
+                            <div title="Timestamps that don't fit into the above topic(s) may be filtered using this pseudo-topic" class="filter_content nullTopic">
+                                <span class="icon category nullTopic"></span><span class="cineraText">(null topic)</span>
+                            </div>
+                        </div>
+                        <div class="filter_media">
+                            <div class="filter_content authored">
+                                <span class="icon">&#128490;</span><span class="cineraText">Chat Comment</span>
+                            </div>
+                            <div class="filter_content run">
+                                <span class="icon">&#127939;</span><span class="cineraText">In-Game</span>
+                            </div>
+                            <div class="filter_content programming">
+                                <span class="icon">&#128430;</span><span class="cineraText">Programming</span><span class="cineraDefaultMediumIndicator" title="Default medium
+Timestamps lacking a media icon are in this medium">&#128969;</span>
+                            </div>
+                            <div class="filter_content rant">
+                                <span class="icon">&#128162;</span><span class="cineraText">Rant</span>
+                            </div>
+                            <div class="filter_content research">
+                                <span class="icon">&#128214;</span><span class="cineraText">Research</span>
+                            </div>
+                            <div class="filter_content speech">
+                                <span class="icon">&#128489;</span><span class="cineraText">Speech</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="menu views">
+                <div class="view" data-id="theatre" title="Theatre mode">&#127917;</div>
+                <div class="views_container">
+                    <div class="view" data-id="super" title="SUPERtheatre mode">&#127967;</div>
+                </div>
+            </div>
+            <div class="menu link">
+                <span>&#128279;</span>
+                <div class="link_container">
+                    <div id="cineraLinkMode">Link to: current timestamp</div>
+                    <textarea title="Click to copy to clipboard" id="cineraLink" readonly spellcheck="false"></textarea>
+                </div>
+            </div>
+            <div class="menu credits">
+                <span>Credits</span>
+                <div class="credits_container">
+                    <span class="credit">
+                        <a class="person" href="https://handmadehero.org/" target="_blank">
+                            <div class="role">Host</div>
+                            <div class="name">Casey Muratori</div>
+                        </a>
+                        <a class="support" href="https://handmadehero.org/fund" target="_blank"><img src="https://handmade.network/public/annotations/cinera_sprite_sendowl.png?r=6899f6b0"></a>
+                    </span>
+                    <span class="credit">
+                        <a class="person" href="https://miblo.net/" target="_blank">
+                            <div class="role">Indexer</div>
+                            <div class="name">Matt Mascarenhas</div>
+                        </a>
+                        <a class="support" href="https://miblo.net/cinera#pledge" target="_blank"><img src="https://handmade.network/public/annotations/cinera_sprite_sendowl.png?r=6899f6b0"></a>
+                    </span>
+                </div>
+            </div>
+            <div class="cineraHelp">
+                <span>?</span>
+                <div class="help_container">
+                    <span class="help_key">?</span><h1>Keyboard Navigation</h1>
+
+                    <h2>Global Keys</h2>
+                    <span class="help_key">[</span>, <span class="help_key">&lt;</span> / <span class="help_key">]</span>, <span class="help_key">&gt;</span> <span class="help_text">Jump to previous / next episode</span><br>
+                    <span class="help_key">W</span>, <span class="help_key">K</span>, <span class="help_key">P</span> / <span class="help_key">S</span>, <span class="help_key">J</span>, <span class="help_key">N</span> <span class="help_text">Jump to previous / next timestamp</span><br>
+                    <span class="help_key">t</span> / <span class="help_key">T</span> <span class="help_text">Toggle theatre / SUPERtheatre mode</span><br>
+                    <span class="help_key">V</span> <span class="help_text">Revert filter to original state</span> <span class="help_key">Y</span> <span class="help_text">Select link (requires manual Ctrl-c)</span>
+
+                    <h2>Menu toggling</h2>
+                    <span class="help_key unavailable">q</span> <span class="help_text unavailable">Quotes</span>
+                    <span class="help_key">r</span> <span class="help_text">References</span>
+                    <span class="help_key">f</span> <span class="help_text">Filter</span>
+                    <span class="help_key">y</span> <span class="help_text">Link</span>
+                    <span class="help_key">c</span> <span class="help_text">Credits</span>
+
+                    <h2>In-Menu and <span class="help_title_key help_custom_index">Index</span> Controls</h2>
+                    <div class="help_paragraph">
+                        <div class="key_block">
+                            <div>
+                                <span class="help_key">a</span>
+                            </div>
+                            <div>
+                                <span class="help_key help_custom_index">w</span><br>
+                                <span class="help_key help_custom_index">s</span>
+                            </div>
+                            <div>
+                                <span class="help_key">d</span>
+                            </div>
+                        </div>
+                        <div class="key_block">
+                            <span class="help_key">h</span>
+                            <span class="help_key help_custom_index">j</span>
+                            <span class="help_key help_custom_index">k</span>
+                            <span class="help_key">l</span>
+                        </div>
+                        <div class="key_block">
+                            <div>
+                                <span class="help_key">←</span>
+                            </div>
+                            <div>
+                                <span class="help_key">↑</span><br>
+                                <span class="help_key">↓</span>
+                            </div>
+                            <div>
+                                <span class="help_key">→</span>
+                            </div>
+                        </div>
+                    </div><br>
+                    <div class="help_paragraph">
+                        <span class="help_key help_custom_index">Esc</span> <span class="help_text">Close menu / unfocus timestamp</span>
+                    </div>
+                    <br>
+                    <h2><span class="unavailable">Quotes and</span> References Menus and Index</h2>
+                    <span class="help_key word">Enter</span> <span class="help_text">Jump to timestamp</span><br>
+
+                    <h2><span class="unavailable">Quotes,</span> References and Credits Menus</h2>                    <span class="help_key">o</span> <span class="help_text">Open URL (in new tab)</span>
+
+                    <h2>Filter Menu</h2>
+                    <span class="help_key">x</span>, <span class="help_key word">Space</span> <span class="help_text">Toggle category and focus next</span><br>
+                    <span class="help_key">X</span>, <span class="help_key word modifier">Shift</span><span class="help_key word">Space</span> <span class="help_text">Toggle category and focus previous</span><br>
+                    <span class="help_key">v</span> <span class="help_text">Invert topics / media as per focus</span>
+
+                    <h2>Filter and Link Menus</h2>
+                    <span class="help_key">z</span> <span class="help_text">Toggle filter / linking mode</span>
+
+                    <h2>Credits Menu</h2>
+                    <span class="help_key word">Enter</span> <span class="help_text">Open URL (in new tab)</span><br>
+                </div>
+            </div>
+        </div>
+        <script src="https://www.youtube.com/iframe_api"></script>
+        <div class="cineraPlayerContainer">
+            <div class="video_container" data-platform="youtube" data-videoId="HEU6qal7qD8"></div>
+            <div class="markers_container hero">
+                <a class="episodeMarker prev" href="https://hero.handmade.network/episode/code/day642/"><div>&#9195;</div><div>Previous: 'Debugging Voxel Collision Bounds'</div><div>&#9195;</div></a>
+            <div class="markers">
+                <div data-timestamp="0.000" class="marker cat_nullTopic speech" data-ref="https://www.kickstarter.com/projects/annarettberg/meow-the-infinite-book-two,https://www.consolidatedpress.com/">
+                    <div class="cineraContent"><span class="timecode">0:00</span>Welcome to the stream, with a plug of Meow the Infinite: Book Two<sup>1</sup> and Consolidated Press printers<sup>2</sup><span class="cineraCategories"><div title="Speech" class="categoryMedium speech">&#128489;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">0:00</span>Welcome to the stream, with a plug of Meow the Infinite: Book Two<sup>1</sup> and Consolidated Press printers<sup>2</sup><span class="cineraCategories"><div title="Speech" class="categoryMedium speech">&#128489;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">0:00</span>Welcome to the stream, with a plug of Meow the Infinite: Book Two<sup>1</sup> and Consolidated Press printers<sup>2</sup><span class="cineraCategories"><div title="Speech" class="categoryMedium speech">&#128489;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="100.000" class="marker cat_nullTopic rant speech">
+                    <div class="cineraContent"><span class="timecode">1:40</span>Problems with spam filtering of Molly Rocket&#39;s newsletter<span class="cineraCategories"><div title="Rant" class="categoryMedium rant">&#128162;</div><div title="Speech" class="categoryMedium speech">&#128489;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:40</span>Problems with spam filtering of Molly Rocket&#39;s newsletter<span class="cineraCategories"><div title="Rant" class="categoryMedium rant">&#128162;</div><div title="Speech" class="categoryMedium speech">&#128489;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:40</span>Problems with spam filtering of Molly Rocket&#39;s newsletter<span class="cineraCategories"><div title="Rant" class="categoryMedium rant">&#128162;</div><div title="Speech" class="categoryMedium speech">&#128489;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="452.000" class="marker cat_collision speech">
+                    <div class="cineraContent"><span class="timecode">7:32</span>Determine to handle embedding recovery<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="Speech" class="categoryMedium speech">&#128489;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">7:32</span>Determine to handle embedding recovery<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="Speech" class="categoryMedium speech">&#128489;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">7:32</span>Determine to handle embedding recovery<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="Speech" class="categoryMedium speech">&#128489;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="511.000" class="marker cat_collision run">
+                    <div class="cineraContent"><span class="timecode">8:31</span>Demo collision embedding<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">8:31</span>Demo collision embedding<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">8:31</span>Demo collision embedding<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="687.000" class="marker cat_collision programming">
+                    <div class="cineraContent"><span class="timecode">11:27</span>Reproduce a corner embedding case and rebuild in -Od<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">11:27</span>Reproduce a corner embedding case and rebuild in -Od<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">11:27</span>Reproduce a corner embedding case and rebuild in -Od<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="730.000" class="marker cat_collision programming">
+                    <div class="cineraContent"><span class="timecode">12:10</span>Rebuild in -Od<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">12:10</span>Rebuild in -Od<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">12:10</span>Rebuild in -Od<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="796.000" class="marker cat_collision run">
+                    <div class="cineraContent"><span class="timecode">13:16</span>Step through MoveEntity() while embedded in the corner<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">13:16</span>Step through MoveEntity() while embedded in the corner<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">13:16</span>Step through MoveEntity() while embedded in the corner<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="1082.000" class="marker cat_collision programming">
+                    <div class="cineraContent"><span class="timecode">18:02</span>Rebuild in -O2<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">18:02</span>Rebuild in -O2<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">18:02</span>Rebuild in -O2<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="1091.000" class="marker cat_collision run">
+                    <div class="cineraContent"><span class="timecode">18:11</span>Compare the recorded Occupied cells with the visible scene<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">18:11</span>Compare the recorded Occupied cells with the visible scene<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">18:11</span>Compare the recorded Occupied cells with the visible scene<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="1130.000" class="marker cat_collision programming">
+                    <div class="cineraContent"><span class="timecode">18:50</span>Rebuild in -Od<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">18:50</span>Rebuild in -Od<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">18:50</span>Rebuild in -Od<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="1144.000" class="marker cat_collision run">
+                    <div class="cineraContent"><span class="timecode">19:04</span>Step through MoveEntity() while embedded in the corner, and consider the Occupied cells to match the scene<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">19:04</span>Step through MoveEntity() while embedded in the corner, and consider the Occupied cells to match the scene<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">19:04</span>Step through MoveEntity() while embedded in the corner, and consider the Occupied cells to match the scene<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="1281.000" class="marker cat_collision run">
+                    <div class="cineraContent"><span class="timecode">21:21</span>Step through the collision flood search in MoveEntity()<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">21:21</span>Step through the collision flood search in MoveEntity()<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">21:21</span>Step through the collision flood search in MoveEntity()<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="1437.000" class="marker cat_collision programming">
+                    <div class="cineraContent"><span class="timecode">23:57</span>Fix the logic of the Occupied tests in MoveEntity()<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">23:57</span>Fix the logic of the Occupied tests in MoveEntity()<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">23:57</span>Fix the logic of the Occupied tests in MoveEntity()<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="1546.000" class="marker cat_collision run">
+                    <div class="cineraContent"><span class="timecode">25:46</span>Embedding is fixed<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">25:46</span>Embedding is fixed<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">25:46</span>Embedding is fixed<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="1573.000" class="marker cat_collision run">
+                    <div class="cineraContent"><span class="timecode">26:13</span>We appear to tunnel<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">26:13</span>We appear to tunnel<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">26:13</span>We appear to tunnel<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="1923.000" class="marker cat_collision run">
+                    <div class="cineraContent"><span class="timecode">32:03</span>The collision seems stable otherwise<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">32:03</span>The collision seems stable otherwise<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">32:03</span>The collision seems stable otherwise<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="2001.000" class="marker cat_collision run">
+                    <div class="cineraContent"><span class="timecode">33:21</span>Reproduce our tunnelling bug<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">33:21</span>Reproduce our tunnelling bug<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">33:21</span>Reproduce our tunnelling bug<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="2131.000" class="marker cat_collision research">
+                    <div class="cineraContent"><span class="timecode">35:31</span>Consider our tunnelling bug<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">35:31</span>Consider our tunnelling bug<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">35:31</span>Consider our tunnelling bug<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="2360.000" class="marker cat_debug-visualisation programming">
+                    <div class="cineraContent"><span class="timecode">39:20</span>Augment diagram_group with ResetCounter and make DIAGRAM_Reset() let 16 diagrams pile up<span class="cineraCategories"><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">39:20</span>Augment diagram_group with ResetCounter and make DIAGRAM_Reset() let 16 diagrams pile up<span class="cineraCategories"><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">39:20</span>Augment diagram_group with ResetCounter and make DIAGRAM_Reset() let 16 diagrams pile up<span class="cineraCategories"><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="2401.000" class="marker cat_debug-visualisation run">
+                    <div class="cineraContent"><span class="timecode">40:01</span>Our diagrams keep on piling up<span class="cineraCategories"><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">40:01</span>Our diagrams keep on piling up<span class="cineraCategories"><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">40:01</span>Our diagrams keep on piling up<span class="cineraCategories"><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="2416.000" class="marker cat_debug-visualisation programming">
+                    <div class="cineraContent"><span class="timecode">40:16</span>Fix DIAGRAM_Reset() to reset the ResetCounter<span class="cineraCategories"><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">40:16</span>Fix DIAGRAM_Reset() to reset the ResetCounter<span class="cineraCategories"><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">40:16</span>Fix DIAGRAM_Reset() to reset the ResetCounter<span class="cineraCategories"><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="2433.000" class="marker cat_collision run">
+                    <div class="cineraContent"><span class="timecode">40:33</span>Reproduce our tunnelling bug<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">40:33</span>Reproduce our tunnelling bug<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">40:33</span>Reproduce our tunnelling bug<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="2540.000" class="marker cat_collision run">
+                    <div class="cineraContent"><span class="timecode">42:20</span>Consider increasing the wall collision volume height<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">42:20</span>Consider increasing the wall collision volume height<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">42:20</span>Consider increasing the wall collision volume height<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="2631.000" class="marker cat_collision cat_procedural-generation research">
+                    <div class="cineraContent"><span class="timecode">43:51</span>Reacquaint ourselves with the collision volume code<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="procedural generation" class="category procedural-generation" data-hue="186" data-saturation="87%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">43:51</span>Reacquaint ourselves with the collision volume code<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="procedural generation" class="category procedural-generation" data-hue="186" data-saturation="87%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">43:51</span>Reacquaint ourselves with the collision volume code<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="procedural generation" class="category procedural-generation" data-hue="186" data-saturation="87%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="2731.000" class="marker cat_collision cat_procedural-generation programming">
+                    <div class="cineraContent"><span class="timecode">45:31</span>Increase the wall collision volume height in GenerateRoom()<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="procedural generation" class="category procedural-generation" data-hue="186" data-saturation="87%"></div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">45:31</span>Increase the wall collision volume height in GenerateRoom()<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="procedural generation" class="category procedural-generation" data-hue="186" data-saturation="87%"></div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">45:31</span>Increase the wall collision volume height in GenerateRoom()<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="procedural generation" class="category procedural-generation" data-hue="186" data-saturation="87%"></div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="2780.000" class="marker cat_collision cat_procedural-generation run">
+                    <div class="cineraContent"><span class="timecode">46:20</span>The wall collision volume isn&#39;t much higher<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="procedural generation" class="category procedural-generation" data-hue="186" data-saturation="87%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">46:20</span>The wall collision volume isn&#39;t much higher<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="procedural generation" class="category procedural-generation" data-hue="186" data-saturation="87%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">46:20</span>The wall collision volume isn&#39;t much higher<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="procedural generation" class="category procedural-generation" data-hue="186" data-saturation="87%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="2793.000" class="marker cat_collision cat_procedural-generation programming">
+                    <div class="cineraContent"><span class="timecode">46:33</span>Increase the wall collision volume height by FullWallHeight in GenerateRoom()<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="procedural generation" class="category procedural-generation" data-hue="186" data-saturation="87%"></div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">46:33</span>Increase the wall collision volume height by FullWallHeight in GenerateRoom()<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="procedural generation" class="category procedural-generation" data-hue="186" data-saturation="87%"></div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">46:33</span>Increase the wall collision volume height by FullWallHeight in GenerateRoom()<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="procedural generation" class="category procedural-generation" data-hue="186" data-saturation="87%"></div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="2815.000" class="marker cat_collision run">
+                    <div class="cineraContent"><span class="timecode">46:55</span>Reproduce our tunnelling bug with taller wall collision volumes<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">46:55</span>Reproduce our tunnelling bug with taller wall collision volumes<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">46:55</span>Reproduce our tunnelling bug with taller wall collision volumes<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="2970.000" class="marker cat_collision run">
+                    <div class="cineraContent"><span class="timecode">49:30</span>Some corner wall collision volumes fail to light up for collision<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">49:30</span>Some corner wall collision volumes fail to light up for collision<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">49:30</span>Some corner wall collision volumes fail to light up for collision<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="3052.000" class="marker cat_collision cat_debug-visualisation programming">
+                    <div class="cineraContent"><span class="timecode">50:52</span>Toggle on collision volume drawing in UpdateAndRenderEntities()<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">50:52</span>Toggle on collision volume drawing in UpdateAndRenderEntities()<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">50:52</span>Toggle on collision volume drawing in UpdateAndRenderEntities()<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="3087.000" class="marker cat_collision cat_debug-visualisation run">
+                    <div class="cineraContent"><span class="timecode">51:27</span>All wall collision volumes are present<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">51:27</span>All wall collision volumes are present<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">51:27</span>All wall collision volumes are present<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="3143.000" class="marker cat_collision run">
+                    <div class="cineraContent"><span class="timecode">52:23</span>Consider the collision volume&#39;s failure to light up<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">52:23</span>Consider the collision volume&#39;s failure to light up<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">52:23</span>Consider the collision volume&#39;s failure to light up<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="3191.000" class="marker cat_collision cat_debug-visualisation programming">
+                    <div class="cineraContent"><span class="timecode">53:11</span>Toggle off collision volume drawing in UpdateAndRenderEntities()<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">53:11</span>Toggle off collision volume drawing in UpdateAndRenderEntities()<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">53:11</span>Toggle off collision volume drawing in UpdateAndRenderEntities()<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="3202.000" class="marker cat_collision run">
+                    <div class="cineraContent"><span class="timecode">53:22</span>Reproduce our tunnelling bug<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">53:22</span>Reproduce our tunnelling bug<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">53:22</span>Reproduce our tunnelling bug<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="3219.000" class="marker cat_collision run">
+                    <div class="cineraContent"><span class="timecode">53:39</span>Consider adding diagram freezing and single-stepping<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">53:39</span>Consider adding diagram freezing and single-stepping<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">53:39</span>Consider adding diagram freezing and single-stepping<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="3376.000" class="marker cat_collision research">
+                    <div class="cineraContent"><span class="timecode">56:16</span>Scour CollidesAtP(), ShapesCollide() and RefineVoxelPlacement() for bugs<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">56:16</span>Scour CollidesAtP(), ShapesCollide() and RefineVoxelPlacement() for bugs<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">56:16</span>Scour CollidesAtP(), ShapesCollide() and RefineVoxelPlacement() for bugs<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="3817.000" class="marker cat_collision cat_debug-visualisation programming">
+                    <div class="cineraContent"><span class="timecode">1:03:37</span>Diagram collision voxel corners coloured by their Occupied status<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:03:37</span>Diagram collision voxel corners coloured by their Occupied status<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:03:37</span>Diagram collision voxel corners coloured by their Occupied status<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="3996.000" class="marker cat_collision cat_debug-visualisation run">
+                    <div class="cineraContent"><span class="timecode">1:06:36</span>Check out our coloured collision voxel corners<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:06:36</span>Check out our coloured collision voxel corners<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:06:36</span>Check out our coloured collision voxel corners<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="4054.000" class="marker cat_entity-system cat_rendering programming">
+                    <div class="cineraContent"><span class="timecode">1:07:34</span>Toggle off PushCube() in UpdateAndRenderEntities()<span class="cineraCategories"><div title="entity system" class="category entity-system" data-hue="275" data-saturation="92%"></div><div title="rendering" class="category rendering" data-hue="140" data-saturation="79%"></div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:07:34</span>Toggle off PushCube() in UpdateAndRenderEntities()<span class="cineraCategories"><div title="entity system" class="category entity-system" data-hue="275" data-saturation="92%"></div><div title="rendering" class="category rendering" data-hue="140" data-saturation="79%"></div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:07:34</span>Toggle off PushCube() in UpdateAndRenderEntities()<span class="cineraCategories"><div title="entity system" class="category entity-system" data-hue="275" data-saturation="92%"></div><div title="rendering" class="category rendering" data-hue="140" data-saturation="79%"></div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="4087.000" class="marker cat_collision run">
+                    <div class="cineraContent"><span class="timecode">1:08:07</span>Try to reproduce our tunnelling bug<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:08:07</span>Try to reproduce our tunnelling bug<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:08:07</span>Try to reproduce our tunnelling bug<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="4112.000" class="marker cat_collision cat_debug-visualisation programming">
+                    <div class="cineraContent"><span class="timecode">1:08:32</span>Toggle on collision volume drawing in UpdateAndRenderEntities()<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:08:32</span>Toggle on collision volume drawing in UpdateAndRenderEntities()<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:08:32</span>Toggle on collision volume drawing in UpdateAndRenderEntities()<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="4126.000" class="marker cat_collision cat_debug-visualisation run">
+                    <div class="cineraContent"><span class="timecode">1:08:46</span>Reproduce our tunnelling bug, with corners oddly coloured black<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:08:46</span>Reproduce our tunnelling bug, with corners oddly coloured black<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:08:46</span>Reproduce our tunnelling bug, with corners oddly coloured black<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="4224.000" class="marker cat_debug-visualisation programming">
+                    <div class="cineraContent"><span class="timecode">1:10:24</span>Make DIAGRAM_Reset() let 32 diagrams pile up<span class="cineraCategories"><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:10:24</span>Make DIAGRAM_Reset() let 32 diagrams pile up<span class="cineraCategories"><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:10:24</span>Make DIAGRAM_Reset() let 32 diagrams pile up<span class="cineraCategories"><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="4304.000" class="marker cat_collision cat_debug-visualisation run">
+                    <div class="cineraContent"><span class="timecode">1:11:44</span>Reproduce our tunnelling bug, and try to capture the diagrams<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:11:44</span>Reproduce our tunnelling bug, and try to capture the diagrams<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:11:44</span>Reproduce our tunnelling bug, and try to capture the diagrams<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="4380.000" class="marker cat_debug-visualisation cat_input-handling programming">
+                    <div class="cineraContent"><span class="timecode">1:13:00</span>Set Shift-F9 as a hotkey for diagram capturing<span class="cineraCategories"><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="input handling" class="category input-handling" data-hue="335" data-saturation="94%"></div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:13:00</span>Set Shift-F9 as a hotkey for diagram capturing<span class="cineraCategories"><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="input handling" class="category input-handling" data-hue="335" data-saturation="94%"></div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:13:00</span>Set Shift-F9 as a hotkey for diagram capturing<span class="cineraCategories"><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="input handling" class="category input-handling" data-hue="335" data-saturation="94%"></div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="4485.000" class="marker cat_collision cat_debug-visualisation run">
+                    <div class="cineraContent"><span class="timecode">1:14:45</span>Try to reproduce our tunnelling bug<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:14:45</span>Try to reproduce our tunnelling bug<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:14:45</span>Try to reproduce our tunnelling bug<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="4620.000" class="marker cat_collision cat_debug-visualisation run">
+                    <div class="cineraContent"><span class="timecode">1:17:00</span>Reproduce our tunnelling bug, and capture the diagrams<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:17:00</span>Reproduce our tunnelling bug, and capture the diagrams<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:17:00</span>Reproduce our tunnelling bug, and capture the diagrams<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="4625.000" class="marker cat_collision cat_debug-visualisation run">
+                    <div class="cineraContent"><span class="timecode">1:17:05</span>Inspect our tunnelling bug diagrams<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:17:05</span>Inspect our tunnelling bug diagrams<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:17:05</span>Inspect our tunnelling bug diagrams<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="4699.000" class="marker cat_collision cat_debug-visualisation research">
+                    <div class="cineraContent"><span class="timecode">1:18:19</span>The pink marks are the root-finding ones drawn by RefineVoxelPlacement()<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:18:19</span>The pink marks are the root-finding ones drawn by RefineVoxelPlacement()<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:18:19</span>The pink marks are the root-finding ones drawn by RefineVoxelPlacement()<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="4734.000" class="marker cat_collision cat_debug-visualisation run">
+                    <div class="cineraContent"><span class="timecode">1:18:54</span>Inspect our tunnelling bug diagrams (cont.)<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:18:54</span>Inspect our tunnelling bug diagrams (cont.)<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:18:54</span>Inspect our tunnelling bug diagrams (cont.)<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="4761.000" class="marker cat_collision cat_debug-visualisation research">
+                    <div class="cineraContent"><span class="timecode">1:19:21</span>Consider our tunnelling bug<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:19:21</span>Consider our tunnelling bug<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:19:21</span>Consider our tunnelling bug<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="4815.000" class="marker cat_collision cat_debug-visualisation run">
+                    <div class="cineraContent"><span class="timecode">1:20:15</span>We shouldn&#39;t see a great mass of red Occupied corners<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:20:15</span>We shouldn&#39;t see a great mass of red Occupied corners<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:20:15</span>We shouldn&#39;t see a great mass of red Occupied corners<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="4890.000" class="marker cat_collision research">
+                    <div class="cineraContent"><span class="timecode">1:21:30</span>Scour CheckCorners() for bugs in the collision voxel stack push<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:21:30</span>Scour CheckCorners() for bugs in the collision voxel stack push<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:21:30</span>Scour CheckCorners() for bugs in the collision voxel stack push<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="5046.000" class="marker cat_collision run">
+                    <div class="cineraContent"><span class="timecode">1:24:06</span>Hypothesis: Maybe RefineVoxelPlacement() can accidentally place you in an embedded position?<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:24:06</span>Hypothesis: Maybe RefineVoxelPlacement() can accidentally place you in an embedded position?<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:24:06</span>Hypothesis: Maybe RefineVoxelPlacement() can accidentally place you in an embedded position?<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="5120.000" class="marker cat_collision research">
+                    <div class="cineraContent"><span class="timecode">1:25:20</span>Scour RefineVoxelPlacement() for bugs<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:25:20</span>Scour RefineVoxelPlacement() for bugs<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:25:20</span>Scour RefineVoxelPlacement() for bugs<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="5172.000" class="marker cat_collision programming">
+                    <div class="cineraContent"><span class="timecode">1:26:12</span>Toggle off the embedded corner occupancy resetting in CheckCorners()<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:26:12</span>Toggle off the embedded corner occupancy resetting in CheckCorners()<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:26:12</span>Toggle off the embedded corner occupancy resetting in CheckCorners()<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="5197.000" class="marker cat_collision run">
+                    <div class="cineraContent"><span class="timecode">1:26:37</span>Try to, but never reproduce our tunnelling bug<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:26:37</span>Try to, but never reproduce our tunnelling bug<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:26:37</span>Try to, but never reproduce our tunnelling bug<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="5342.000" class="marker cat_collision research">
+                    <div class="cineraContent"><span class="timecode">1:29:02</span>Scour GetClosestPointInBoxConservative() and RefineVoxelPlacement() for bugs<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:29:02</span>Scour GetClosestPointInBoxConservative() and RefineVoxelPlacement() for bugs<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:29:02</span>Scour GetClosestPointInBoxConservative() and RefineVoxelPlacement() for bugs<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="5493.000" class="marker cat_collision programming">
+                    <div class="cineraContent"><span class="timecode">1:31:33</span>Assert in MoveEntity() that the target cell remains the same after RefineVoxelPlacement()<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:31:33</span>Assert in MoveEntity() that the target cell remains the same after RefineVoxelPlacement()<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:31:33</span>Assert in MoveEntity() that the target cell remains the same after RefineVoxelPlacement()<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="5561.000" class="marker cat_collision run">
+                    <div class="cineraContent"><span class="timecode">1:32:41</span>Try to reproduce our tunnelling bug<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:32:41</span>Try to reproduce our tunnelling bug<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:32:41</span>Try to reproduce our tunnelling bug<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="5610.000" class="marker cat_collision programming">
+                    <div class="cineraContent"><span class="timecode">1:33:30</span>Assert in MoveEntity() that the Corners are not embedded<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:33:30</span>Assert in MoveEntity() that the Corners are not embedded<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:33:30</span>Assert in MoveEntity() that the Corners are not embedded<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="5634.000" class="marker cat_collision run">
+                    <div class="cineraContent"><span class="timecode">1:33:54</span>Immediately hit that assertion because the glove begins embedded<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:33:54</span>Immediately hit that assertion because the glove begins embedded<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:33:54</span>Immediately hit that assertion because the glove begins embedded<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="5647.000" class="marker cat_collision programming">
+                    <div class="cineraContent"><span class="timecode">1:34:07</span>Comment out the Corner not embedded assertion in MoveEntity()<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:34:07</span>Comment out the Corner not embedded assertion in MoveEntity()<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:34:07</span>Comment out the Corner not embedded assertion in MoveEntity()<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="5658.000" class="marker cat_collision run">
+                    <div class="cineraContent"><span class="timecode">1:34:18</span>Our glove begins embedded<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:34:18</span>Our glove begins embedded<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:34:18</span>Our glove begins embedded<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="5665.000" class="marker cat_collision cat_entity-system programming">
+                    <div class="cineraContent"><span class="timecode">1:34:25</span>Re-enable the Corner not embedded assertion in MoveEntity() and make AddPlayer() spawn the glove to the side<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="entity system" class="category entity-system" data-hue="275" data-saturation="92%"></div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:34:25</span>Re-enable the Corner not embedded assertion in MoveEntity() and make AddPlayer() spawn the glove to the side<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="entity system" class="category entity-system" data-hue="275" data-saturation="92%"></div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:34:25</span>Re-enable the Corner not embedded assertion in MoveEntity() and make AddPlayer() spawn the glove to the side<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="entity system" class="category entity-system" data-hue="275" data-saturation="92%"></div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="5691.000" class="marker cat_collision run">
+                    <div class="cineraContent"><span class="timecode">1:34:51</span>Hit our assertion upon moving<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:34:51</span>Hit our assertion upon moving<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:34:51</span>Hit our assertion upon moving<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="5725.000" class="marker cat_collision cat_debug-visualisation programming">
+                    <div class="cineraContent"><span class="timecode">1:35:25</span>Change that assertion in MoveEntity() to call DIAGRAM_Capture()<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:35:25</span>Change that assertion in MoveEntity() to call DIAGRAM_Capture()<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:35:25</span>Change that assertion in MoveEntity() to call DIAGRAM_Capture()<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="5747.000" class="marker cat_collision cat_debug-visualisation run">
+                    <div class="cineraContent"><span class="timecode">1:35:47</span>Inspect our embedding-triggered diagrams<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:35:47</span>Inspect our embedding-triggered diagrams<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:35:47</span>Inspect our embedding-triggered diagrams<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="5787.000" class="marker cat_collision cat_entity-system programming">
+                    <div class="cineraContent"><span class="timecode">1:36:27</span>Shrink the hero&#39;s head collision volume in AddPlayer()<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="entity system" class="category entity-system" data-hue="275" data-saturation="92%"></div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:36:27</span>Shrink the hero&#39;s head collision volume in AddPlayer()<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="entity system" class="category entity-system" data-hue="275" data-saturation="92%"></div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:36:27</span>Shrink the hero&#39;s head collision volume in AddPlayer()<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="entity system" class="category entity-system" data-hue="275" data-saturation="92%"></div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="5815.000" class="marker cat_collision run">
+                    <div class="cineraContent"><span class="timecode">1:36:55</span>We embed on a corner<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:36:55</span>We embed on a corner<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:36:55</span>We embed on a corner<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="5850.000" class="marker cat_collision cat_debug-visualisation programming">
+                    <div class="cineraContent"><span class="timecode">1:37:30</span>Revert our embedding-triggered DIAGRAM_Capture() call to an assertion in MoveEntity()<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:37:30</span>Revert our embedding-triggered DIAGRAM_Capture() call to an assertion in MoveEntity()<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:37:30</span>Revert our embedding-triggered DIAGRAM_Capture() call to an assertion in MoveEntity()<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="5876.000" class="marker cat_collision run">
+                    <div class="cineraContent"><span class="timecode">1:37:56</span>Hit that assertion at the doorway<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:37:56</span>Hit that assertion at the doorway<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:37:56</span>Hit that assertion at the doorway<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="5884.000" class="marker cat_entity-system programming">
+                    <div class="cineraContent"><span class="timecode">1:38:04</span>Disable the hero&#39;s head collision volume in AddPlayer()<span class="cineraCategories"><div title="entity system" class="category entity-system" data-hue="275" data-saturation="92%"></div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:38:04</span>Disable the hero&#39;s head collision volume in AddPlayer()<span class="cineraCategories"><div title="entity system" class="category entity-system" data-hue="275" data-saturation="92%"></div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:38:04</span>Disable the hero&#39;s head collision volume in AddPlayer()<span class="cineraCategories"><div title="entity system" class="category entity-system" data-hue="275" data-saturation="92%"></div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="5897.000" class="marker cat_collision run">
+                    <div class="cineraContent"><span class="timecode">1:38:17</span>Hit that assertion at the doorway<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:38:17</span>Hit that assertion at the doorway<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:38:17</span>Hit that assertion at the doorway<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="5991.000" class="marker cat_collision programming">
+                    <div class="cineraContent"><span class="timecode">1:39:51</span>Change MoveEntity() to detect embedding, then perform and capture the collision search<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:39:51</span>Change MoveEntity() to detect embedding, then perform and capture the collision search<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:39:51</span>Change MoveEntity() to detect embedding, then perform and capture the collision search<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="6038.000" class="marker cat_collision run">
+                    <div class="cineraContent"><span class="timecode">1:40:38</span>We detect occupied corners where there are no colliders<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:40:38</span>We detect occupied corners where there are no colliders<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:40:38</span>We detect occupied corners where there are no colliders<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="6113.000" class="marker cat_collision research">
+                    <div class="cineraContent"><span class="timecode">1:41:53</span>Scour CheckCorners() for bugs<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:41:53</span>Scour CheckCorners() for bugs<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:41:53</span>Scour CheckCorners() for bugs<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="6314.000" class="marker cat_collision programming">
+                    <div class="cineraContent"><span class="timecode">1:45:14</span>Make CheckCorners() always recompute corner occupation<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:45:14</span>Make CheckCorners() always recompute corner occupation<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:45:14</span>Make CheckCorners() always recompute corner occupation<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="6328.000" class="marker cat_collision run">
+                    <div class="cineraContent"><span class="timecode">1:45:28</span>We still detect occupied corners where there are no colliders<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:45:28</span>We still detect occupied corners where there are no colliders<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:45:28</span>We still detect occupied corners where there are no colliders<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="6362.000" class="marker cat_collision programming">
+                    <div class="cineraContent"><span class="timecode">1:46:02</span>Revert CheckCorners() to only compute corner occupation for CornerCode 0<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:46:02</span>Revert CheckCorners() to only compute corner occupation for CornerCode 0<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:46:02</span>Revert CheckCorners() to only compute corner occupation for CornerCode 0<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="6368.000" class="marker cat_collision research">
+                    <div class="cineraContent"><span class="timecode">1:46:08</span>Our options: 1) Testing the wrong TestP; 2) Buggy CollidesAtP()<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:46:08</span>Our options: 1) Testing the wrong TestP; 2) Buggy CollidesAtP()<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:46:08</span>Our options: 1) Testing the wrong TestP; 2) Buggy CollidesAtP()<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="6422.000" class="marker cat_collision cat_debug-visualisation programming">
+                    <div class="cineraContent"><span class="timecode">1:47:02</span>Re-enable the collision diagramming in ShapesCollide()<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:47:02</span>Re-enable the collision diagramming in ShapesCollide()<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:47:02</span>Re-enable the collision diagramming in ShapesCollide()<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="6433.000" class="marker cat_collision cat_debug-visualisation run">
+                    <div class="cineraContent"><span class="timecode">1:47:13</span>We see a giant jumble of collision diagrams<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:47:13</span>We see a giant jumble of collision diagrams<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:47:13</span>We see a giant jumble of collision diagrams<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="debug visualisation" class="category debug-visualisation" data-hue="60" data-saturation="86%"></div><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="6481.000" class="marker cat_collision speech">
+                    <div class="cineraContent"><span class="timecode">1:48:01</span>Plan to add diagram single-stepping, debug the incorrect collider points, then handle embedding<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="Speech" class="categoryMedium speech">&#128489;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:48:01</span>Plan to add diagram single-stepping, debug the incorrect collider points, then handle embedding<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="Speech" class="categoryMedium speech">&#128489;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:48:01</span>Plan to add diagram single-stepping, debug the incorrect collider points, then handle embedding<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="Speech" class="categoryMedium speech">&#128489;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="6584.000" class="marker cat_nullTopic speech">
+                    <div class="cineraContent"><span class="timecode">1:49:44</span>Q&amp;A<span class="cineraCategories"><div title="Speech" class="categoryMedium speech">&#128489;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:49:44</span>Q&amp;A<span class="cineraCategories"><div title="Speech" class="categoryMedium speech">&#128489;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:49:44</span>Q&amp;A<span class="cineraCategories"><div title="Speech" class="categoryMedium speech">&#128489;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="6630.000" class="marker cat_hot-reloading authored">
+                    <div class="cineraContent"><span class="timecode">1:50:30</span><span class="author" data-hue="187" data-saturation="84%">x13pixels</span> Q: The <span class="project" data-hue="298" data-saturation="95%">RemedyBG</span> bug seen earlier with the MoveEntity() breakpoint happened because a function breakpoint, currently, is only added to the first valid location found. When hot reloading, two DLLs are loaded in the process: handmade_game_temp.dll and 1_handmade_game_temp.dll. The breakpoint ends up getting added to the DLL that is still loaded but not executing any code. Looks like this is intentional in <span class="project" data-hue="242" data-saturation="78%">Handmade Hero</span> (Win32Unloaded doesn&#39;t call FreeLibrary). In any case, my apologies for the inconvenience<span class="cineraCategories"><div title="hot reloading" class="category hot-reloading" data-hue="45" data-saturation="78%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:50:30</span><span class="author" data-hue="187" data-saturation="84%">x13pixels</span> Q: The <span class="project" data-hue="298" data-saturation="95%">RemedyBG</span> bug seen earlier with the MoveEntity() breakpoint happened because a function breakpoint, currently, is only added to the first valid location found. When hot reloading, two DLLs are loaded in the process: handmade_game_temp.dll and 1_handmade_game_temp.dll. The breakpoint ends up getting added to the DLL that is still loaded but not executing any code. Looks like this is intentional in <span class="project" data-hue="242" data-saturation="78%">Handmade Hero</span> (Win32Unloaded doesn&#39;t call FreeLibrary). In any case, my apologies for the inconvenience<span class="cineraCategories"><div title="hot reloading" class="category hot-reloading" data-hue="45" data-saturation="78%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:50:30</span><span class="author" data-hue="187" data-saturation="84%">x13pixels</span> Q: The <span class="project" data-hue="298" data-saturation="95%">RemedyBG</span> bug seen earlier with the MoveEntity() breakpoint happened because a function breakpoint, currently, is only added to the first valid location found. When hot reloading, two DLLs are loaded in the process: handmade_game_temp.dll and 1_handmade_game_temp.dll. The breakpoint ends up getting added to the DLL that is still loaded but not executing any code. Looks like this is intentional in <span class="project" data-hue="242" data-saturation="78%">Handmade Hero</span> (Win32Unloaded doesn&#39;t call FreeLibrary). In any case, my apologies for the inconvenience<span class="cineraCategories"><div title="hot reloading" class="category hot-reloading" data-hue="45" data-saturation="78%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="6714.000" class="marker cat_nullTopic speech">
+                    <div class="cineraContent"><span class="timecode">1:51:54</span>How do breakpoints work on overloaded functions?<span class="cineraCategories"><div title="Speech" class="categoryMedium speech">&#128489;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:51:54</span>How do breakpoints work on overloaded functions?<span class="cineraCategories"><div title="Speech" class="categoryMedium speech">&#128489;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:51:54</span>How do breakpoints work on overloaded functions?<span class="cineraCategories"><div title="Speech" class="categoryMedium speech">&#128489;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="6751.000" class="marker cat_nullTopic authored">
+                    <div class="cineraContent"><span class="timecode">1:52:31</span><span class="author" data-hue="187" data-saturation="84%">x13pixels</span> Special handling for overloaded functions, yes, but not multiple modules<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:52:31</span><span class="author" data-hue="187" data-saturation="84%">x13pixels</span> Special handling for overloaded functions, yes, but not multiple modules<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:52:31</span><span class="author" data-hue="187" data-saturation="84%">x13pixels</span> Special handling for overloaded functions, yes, but not multiple modules<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="6786.000" class="marker cat_nullTopic authored">
+                    <div class="cineraContent"><span class="timecode">1:53:06</span><span class="author" data-hue="187" data-saturation="84%">x13pixels</span> Exactly, yes. Overloaded functions have their arguments hashed, etc.<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:53:06</span><span class="author" data-hue="187" data-saturation="84%">x13pixels</span> Exactly, yes. Overloaded functions have their arguments hashed, etc.<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:53:06</span><span class="author" data-hue="187" data-saturation="84%">x13pixels</span> Exactly, yes. Overloaded functions have their arguments hashed, etc.<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="6798.000" class="marker cat_nullTopic speech">
+                    <div class="cineraContent"><span class="timecode">1:53:18</span>Wrap it up<span class="cineraCategories"><div title="Speech" class="categoryMedium speech">&#128489;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:53:18</span>Wrap it up<span class="cineraCategories"><div title="Speech" class="categoryMedium speech">&#128489;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:53:18</span>Wrap it up<span class="cineraCategories"><div title="Speech" class="categoryMedium speech">&#128489;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="6837.000" class="marker cat_nullTopic research" data-ref="https://www.kickstarter.com/projects/annarettberg/meow-the-infinite-book-two">
+                    <div class="cineraContent"><span class="timecode">1:53:57</span>Plug Meow the Infinite: Book Two<sup>3</sup><span class="cineraCategories"><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:53:57</span>Plug Meow the Infinite: Book Two<sup>3</sup><span class="cineraCategories"><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:53:57</span>Plug Meow the Infinite: Book Two<sup>3</sup><span class="cineraCategories"><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="6855.000" class="marker cat_nullTopic authored">
+                    <div class="cineraContent"><span class="timecode">1:54:15</span><span class="author" data-hue="270" data-saturation="83%">floorislava</span> Q: You have subscriber-only chat on for Q&amp;A<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:54:15</span><span class="author" data-hue="270" data-saturation="83%">floorislava</span> Q: You have subscriber-only chat on for Q&amp;A<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:54:15</span><span class="author" data-hue="270" data-saturation="83%">floorislava</span> Q: You have subscriber-only chat on for Q&amp;A<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="7017.000" class="marker cat_nullTopic speech">
+                    <div class="cineraContent"><span class="timecode">1:56:57</span>Q&amp;A (now with non-subscriber chat)<span class="cineraCategories"><div title="Speech" class="categoryMedium speech">&#128489;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:56:57</span>Q&amp;A (now with non-subscriber chat)<span class="cineraCategories"><div title="Speech" class="categoryMedium speech">&#128489;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:56:57</span>Q&amp;A (now with non-subscriber chat)<span class="cineraCategories"><div title="Speech" class="categoryMedium speech">&#128489;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="7036.000" class="marker cat_nullTopic authored" data-ref="https://starcodegalaxy.com/">
+                    <div class="cineraContent"><span class="timecode">1:57:16</span><span class="author" data-hue="244" data-saturation="74%">akuma__</span> Sorry if this has been asked 1000 times, but any news on Star Code Galaxy?<sup>4</sup><span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:57:16</span><span class="author" data-hue="244" data-saturation="74%">akuma__</span> Sorry if this has been asked 1000 times, but any news on Star Code Galaxy?<sup>4</sup><span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:57:16</span><span class="author" data-hue="244" data-saturation="74%">akuma__</span> Sorry if this has been asked 1000 times, but any news on Star Code Galaxy?<sup>4</sup><span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="7146.000" class="marker cat_nullTopic authored" data-ref="https://starcodegalaxy.com/">
+                    <div class="cineraContent"><span class="timecode">1:59:06</span><span class="author" data-hue="26" data-saturation="96%">manekenpix</span> <span class="member" data-hue="125" data-saturation="81%">Casey</span>, does Star Code Galaxy<sup>5</sup> have a subscriber limit number or something? I never get emails from it, and they&#39;re not in my spam folder<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">1:59:06</span><span class="author" data-hue="26" data-saturation="96%">manekenpix</span> <span class="member" data-hue="125" data-saturation="81%">Casey</span>, does Star Code Galaxy<sup>5</sup> have a subscriber limit number or something? I never get emails from it, and they&#39;re not in my spam folder<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">1:59:06</span><span class="author" data-hue="26" data-saturation="96%">manekenpix</span> <span class="member" data-hue="125" data-saturation="81%">Casey</span>, does Star Code Galaxy<sup>5</sup> have a subscriber limit number or something? I never get emails from it, and they&#39;re not in my spam folder<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="7304.000" class="marker cat_nullTopic authored">
+                    <div class="cineraContent"><span class="timecode">2:01:44</span><span class="author" data-hue="295" data-saturation="74%">internationalizationist</span> Q: By the way, does live looping still work?<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">2:01:44</span><span class="author" data-hue="295" data-saturation="74%">internationalizationist</span> Q: By the way, does live looping still work?<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">2:01:44</span><span class="author" data-hue="295" data-saturation="74%">internationalizationist</span> Q: By the way, does live looping still work?<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="7311.000" class="marker cat_nullTopic run">
+                    <div class="cineraContent"><span class="timecode">2:01:51</span>Live looping crashes the game<span class="cineraCategories"><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">2:01:51</span>Live looping crashes the game<span class="cineraCategories"><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">2:01:51</span>Live looping crashes the game<span class="cineraCategories"><div title="In-Game" class="categoryMedium run">&#127939;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="7376.000" class="marker cat_nullTopic authored">
+                    <div class="cineraContent"><span class="timecode">2:02:56</span><span class="author" data-hue="54" data-saturation="84%">vmttmv</span> Don&#39;t know if it&#39;s a known thing, but for me at least GMail&#39;s spam filters have been dog for the last 12 months or so<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">2:02:56</span><span class="author" data-hue="54" data-saturation="84%">vmttmv</span> Don&#39;t know if it&#39;s a known thing, but for me at least GMail&#39;s spam filters have been dog for the last 12 months or so<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">2:02:56</span><span class="author" data-hue="54" data-saturation="84%">vmttmv</span> Don&#39;t know if it&#39;s a known thing, but for me at least GMail&#39;s spam filters have been dog for the last 12 months or so<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="7523.000" class="marker cat_collision authored">
+                    <div class="cineraContent"><span class="timecode">2:05:23</span><span class="author" data-hue="295" data-saturation="74%">internationalizationist</span> Q: Why doesn&#39;t that help? We recorded the entire state of the game every frame, and the replaying would have reproduced the bug<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">2:05:23</span><span class="author" data-hue="295" data-saturation="74%">internationalizationist</span> Q: Why doesn&#39;t that help? We recorded the entire state of the game every frame, and the replaying would have reproduced the bug<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">2:05:23</span><span class="author" data-hue="295" data-saturation="74%">internationalizationist</span> Q: Why doesn&#39;t that help? We recorded the entire state of the game every frame, and the replaying would have reproduced the bug<span class="cineraCategories"><div title="collision" class="category collision" data-hue="342" data-saturation="93%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="7572.000" class="marker cat_nullTopic authored" data-ref="https://starcodegalaxy.com/">
+                    <div class="cineraContent"><span class="timecode">2:06:12</span><span class="author" data-hue="26" data-saturation="96%">manekenpix</span> Q: I just subscribed to Star Code Galaxy,<sup>6</sup> but I didn&#39;t get any confirmation email. Not sure if I should expect one<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">2:06:12</span><span class="author" data-hue="26" data-saturation="96%">manekenpix</span> Q: I just subscribed to Star Code Galaxy,<sup>6</sup> but I didn&#39;t get any confirmation email. Not sure if I should expect one<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">2:06:12</span><span class="author" data-hue="26" data-saturation="96%">manekenpix</span> Q: I just subscribed to Star Code Galaxy,<sup>6</sup> but I didn&#39;t get any confirmation email. Not sure if I should expect one<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="7601.000" class="marker cat_gameplay authored">
+                    <div class="cineraContent"><span class="timecode">2:06:41</span><span class="author" data-hue="285" data-saturation="97%">tomisqi</span> Q: I read in email that the Handmade engine is mostly done and that from now, we will be doing gameplay programming? Expect to finish in 2022?<span class="cineraCategories"><div title="gameplay" class="category gameplay" data-hue="314" data-saturation="96%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">2:06:41</span><span class="author" data-hue="285" data-saturation="97%">tomisqi</span> Q: I read in email that the Handmade engine is mostly done and that from now, we will be doing gameplay programming? Expect to finish in 2022?<span class="cineraCategories"><div title="gameplay" class="category gameplay" data-hue="314" data-saturation="96%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">2:06:41</span><span class="author" data-hue="285" data-saturation="97%">tomisqi</span> Q: I read in email that the Handmade engine is mostly done and that from now, we will be doing gameplay programming? Expect to finish in 2022?<span class="cineraCategories"><div title="gameplay" class="category gameplay" data-hue="314" data-saturation="96%"></div><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="7634.000" class="marker cat_nullTopic authored">
+                    <div class="cineraContent"><span class="timecode">2:07:14</span><span class="author" data-hue="240" data-saturation="82%">clayfreeman</span> How should I proceed if I use G Suite and your website thinks I&#39;m already subscribed? I never got a confirmation e-mail from you<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">2:07:14</span><span class="author" data-hue="240" data-saturation="82%">clayfreeman</span> How should I proceed if I use G Suite and your website thinks I&#39;m already subscribed? I never got a confirmation e-mail from you<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">2:07:14</span><span class="author" data-hue="240" data-saturation="82%">clayfreeman</span> How should I proceed if I use G Suite and your website thinks I&#39;m already subscribed? I never got a confirmation e-mail from you<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="7692.000" class="marker cat_nullTopic authored">
+                    <div class="cineraContent"><span class="timecode">2:08:12</span><span class="author" data-hue="171" data-saturation="94%">hquil</span> Q: Wouldn&#39;t double opt-in through confirmation help? Because the subscriber will fish it out, mark it as trusted and click on a link<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">2:08:12</span><span class="author" data-hue="171" data-saturation="94%">hquil</span> Q: Wouldn&#39;t double opt-in through confirmation help? Because the subscriber will fish it out, mark it as trusted and click on a link<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">2:08:12</span><span class="author" data-hue="171" data-saturation="94%">hquil</span> Q: Wouldn&#39;t double opt-in through confirmation help? Because the subscriber will fish it out, mark it as trusted and click on a link<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="7746.000" class="marker cat_nullTopic authored">
+                    <div class="cineraContent"><span class="timecode">2:09:06</span><span class="author" data-hue="99" data-saturation="88%">qyxat</span> Q: You should make a DMARC record. Most services reject email from domains without it<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">2:09:06</span><span class="author" data-hue="99" data-saturation="88%">qyxat</span> Q: You should make a DMARC record. Most services reject email from domains without it<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">2:09:06</span><span class="author" data-hue="99" data-saturation="88%">qyxat</span> Q: You should make a DMARC record. Most services reject email from domains without it<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="7835.000" class="marker cat_nullTopic authored">
+                    <div class="cineraContent"><span class="timecode">2:10:35</span><span class="author" data-hue="240" data-saturation="82%">clayfreeman</span> &quot;v=DMARC1; p=reject; sp=reject; adkim=s; aspf=s&quot; is ideal<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">2:10:35</span><span class="author" data-hue="240" data-saturation="82%">clayfreeman</span> &quot;v=DMARC1; p=reject; sp=reject; adkim=s; aspf=s&quot; is ideal<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">2:10:35</span><span class="author" data-hue="240" data-saturation="82%">clayfreeman</span> &quot;v=DMARC1; p=reject; sp=reject; adkim=s; aspf=s&quot; is ideal<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="7961.000" class="marker cat_nullTopic research" data-ref="https://www.sparkpost.com/resources/email-explained/dmarc-explained/">
+                    <div class="cineraContent"><span class="timecode">2:12:41</span>Check SparkPost&#39;s support for DMARC<sup>7</sup><span class="cineraCategories"><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">2:12:41</span>Check SparkPost&#39;s support for DMARC<sup>7</sup><span class="cineraCategories"><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">2:12:41</span>Check SparkPost&#39;s support for DMARC<sup>7</sup><span class="cineraCategories"><div title="Research" class="categoryMedium research">&#128214;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="8059.000" class="marker cat_nullTopic authored">
+                    <div class="cineraContent"><span class="timecode">2:14:19</span><span class="author" data-hue="79" data-saturation="82%">jaythedeveloper</span> SendGrid is 10/10, in my opinion<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">2:14:19</span><span class="author" data-hue="79" data-saturation="82%">jaythedeveloper</span> SendGrid is 10/10, in my opinion<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">2:14:19</span><span class="author" data-hue="79" data-saturation="82%">jaythedeveloper</span> SendGrid is 10/10, in my opinion<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="8108.000" class="marker cat_nullTopic authored">
+                    <div class="cineraContent"><span class="timecode">2:15:08</span><span class="author" data-hue="240" data-saturation="82%">clayfreeman</span> If you intend to send out some mail today, I&#39;ll run an analysis on it and @ you via Twitter with what I find out<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">2:15:08</span><span class="author" data-hue="240" data-saturation="82%">clayfreeman</span> If you intend to send out some mail today, I&#39;ll run an analysis on it and @ you via Twitter with what I find out<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">2:15:08</span><span class="author" data-hue="240" data-saturation="82%">clayfreeman</span> If you intend to send out some mail today, I&#39;ll run an analysis on it and @ you via Twitter with what I find out<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="8136.000" class="marker cat_nullTopic authored">
+                    <div class="cineraContent"><span class="timecode">2:15:36</span><span class="author" data-hue="327" data-saturation="92%">ascentroid</span> With the email provider I use, when I log in to my account it has a section that shows me all the domain stuff I should set up, etc. Dunno if that could help<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">2:15:36</span><span class="author" data-hue="327" data-saturation="92%">ascentroid</span> With the email provider I use, when I log in to my account it has a section that shows me all the domain stuff I should set up, etc. Dunno if that could help<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">2:15:36</span><span class="author" data-hue="327" data-saturation="92%">ascentroid</span> With the email provider I use, when I log in to my account it has a section that shows me all the domain stuff I should set up, etc. Dunno if that could help<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="8264.000" class="marker cat_nullTopic authored">
+                    <div class="cineraContent"><span class="timecode">2:17:44</span><span class="author" data-hue="198" data-saturation="78%">brinktjofzki</span> Did SparkPost know that the mails were rejected? It is possible that Microsoft / Google were silently not delivering mail to end addresses<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">2:17:44</span><span class="author" data-hue="198" data-saturation="78%">brinktjofzki</span> Did SparkPost know that the mails were rejected? It is possible that Microsoft / Google were silently not delivering mail to end addresses<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">2:17:44</span><span class="author" data-hue="198" data-saturation="78%">brinktjofzki</span> Did SparkPost know that the mails were rejected? It is possible that Microsoft / Google were silently not delivering mail to end addresses<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="8328.000" class="marker cat_nullTopic authored">
+                    <div class="cineraContent"><span class="timecode">2:18:48</span><span class="author" data-hue="290" data-saturation="92%">caviar_liberta</span> <span class="member" data-hue="304" data-saturation="94%">handmade_hero</span> Isn&#39;t there an ack in the outbox?<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">2:18:48</span><span class="author" data-hue="290" data-saturation="92%">caviar_liberta</span> <span class="member" data-hue="304" data-saturation="94%">handmade_hero</span> Isn&#39;t there an ack in the outbox?<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">2:18:48</span><span class="author" data-hue="290" data-saturation="92%">caviar_liberta</span> <span class="member" data-hue="304" data-saturation="94%">handmade_hero</span> Isn&#39;t there an ack in the outbox?<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="8339.000" class="marker cat_nullTopic authored">
+                    <div class="cineraContent"><span class="timecode">2:18:59</span><span class="author" data-hue="99" data-saturation="88%">qyxat</span> There is a good chance that your IP is already blacklisted on Google, so changing provider may not help<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">2:18:59</span><span class="author" data-hue="99" data-saturation="88%">qyxat</span> There is a good chance that your IP is already blacklisted on Google, so changing provider may not help<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">2:18:59</span><span class="author" data-hue="99" data-saturation="88%">qyxat</span> There is a good chance that your IP is already blacklisted on Google, so changing provider may not help<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="8426.000" class="marker cat_nullTopic authored">
+                    <div class="cineraContent"><span class="timecode">2:20:26</span><span class="author" data-hue="295" data-saturation="74%">internationalizationist</span> I did get the mail, but didn&#39;t get notification that it came<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">2:20:26</span><span class="author" data-hue="295" data-saturation="74%">internationalizationist</span> I did get the mail, but didn&#39;t get notification that it came<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">2:20:26</span><span class="author" data-hue="295" data-saturation="74%">internationalizationist</span> I did get the mail, but didn&#39;t get notification that it came<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="8437.000" class="marker cat_nullTopic authored">
+                    <div class="cineraContent"><span class="timecode">2:20:37</span><span class="author" data-hue="97" data-saturation="97%">rastapharao</span> Are the emails properly marked as being bulk / list mail?<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">2:20:37</span><span class="author" data-hue="97" data-saturation="97%">rastapharao</span> Are the emails properly marked as being bulk / list mail?<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">2:20:37</span><span class="author" data-hue="97" data-saturation="97%">rastapharao</span> Are the emails properly marked as being bulk / list mail?<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="8463.000" class="marker cat_nullTopic authored">
+                    <div class="cineraContent"><span class="timecode">2:21:03</span><span class="author" data-hue="240" data-saturation="82%">clayfreeman</span> You&#39;d want a List-Unsubscribe header<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">2:21:03</span><span class="author" data-hue="240" data-saturation="82%">clayfreeman</span> You&#39;d want a List-Unsubscribe header<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">2:21:03</span><span class="author" data-hue="240" data-saturation="82%">clayfreeman</span> You&#39;d want a List-Unsubscribe header<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="8471.000" class="marker cat_nullTopic authored">
+                    <div class="cineraContent"><span class="timecode">2:21:11</span><span class="author" data-hue="97" data-saturation="97%">rastapharao</span> Precedence: bulk, List-Id, List-Unsubscribe etc. headers<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">2:21:11</span><span class="author" data-hue="97" data-saturation="97%">rastapharao</span> Precedence: bulk, List-Id, List-Unsubscribe etc. headers<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">2:21:11</span><span class="author" data-hue="97" data-saturation="97%">rastapharao</span> Precedence: bulk, List-Id, List-Unsubscribe etc. headers<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="8495.000" class="marker cat_nullTopic speech">
+                    <div class="cineraContent"><span class="timecode">2:21:35</span>Thoughts on mailing lists<span class="cineraCategories"><div title="Speech" class="categoryMedium speech">&#128489;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">2:21:35</span>Thoughts on mailing lists<span class="cineraCategories"><div title="Speech" class="categoryMedium speech">&#128489;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">2:21:35</span>Thoughts on mailing lists<span class="cineraCategories"><div title="Speech" class="categoryMedium speech">&#128489;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="8615.000" class="marker cat_nullTopic authored">
+                    <div class="cineraContent"><span class="timecode">2:23:35</span><span class="author" data-hue="253" data-saturation="77%">heliumfactory</span> I miss RSS<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">2:23:35</span><span class="author" data-hue="253" data-saturation="77%">heliumfactory</span> I miss RSS<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">2:23:35</span><span class="author" data-hue="253" data-saturation="77%">heliumfactory</span> I miss RSS<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="8630.000" class="marker cat_nullTopic speech" data-ref="https://www.kickstarter.com/projects/annarettberg/meow-the-infinite-book-two">
+                    <div class="cineraContent"><span class="timecode">2:23:50</span>Wrap it up with a plug of Meow the Infinite: Books One (physically) and Two<sup>8</sup><span class="cineraCategories"><div title="Speech" class="categoryMedium speech">&#128489;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">2:23:50</span>Wrap it up with a plug of Meow the Infinite: Books One (physically) and Two<sup>8</sup><span class="cineraCategories"><div title="Speech" class="categoryMedium speech">&#128489;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">2:23:50</span>Wrap it up with a plug of Meow the Infinite: Books One (physically) and Two<sup>8</sup><span class="cineraCategories"><div title="Speech" class="categoryMedium speech">&#128489;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="8732.000" class="marker cat_nullTopic authored">
+                    <div class="cineraContent"><span class="timecode">2:25:32</span><span class="author" data-hue="340" data-saturation="76%">fractalmindmike</span> Q: Is there a backer tier to receive both editions of Meow?<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">2:25:32</span><span class="author" data-hue="340" data-saturation="76%">fractalmindmike</span> Q: Is there a backer tier to receive both editions of Meow?<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">2:25:32</span><span class="author" data-hue="340" data-saturation="76%">fractalmindmike</span> Q: Is there a backer tier to receive both editions of Meow?<span class="cineraCategories"><div title="Chat Comment" class="categoryMedium authored">&#128490;</div></span></div>
+                    </div>
+                </div>
+                <div data-timestamp="8911.000" class="marker cat_nullTopic speech">
+                    <div class="cineraContent"><span class="timecode">2:28:31</span>Finish wrapping it up with a glimpse into the future<span class="cineraCategories"><div title="Speech" class="categoryMedium speech">&#128489;</div></span></div>
+                    <div class="progress faded">
+                        <div class="cineraContent"><span class="timecode">2:28:31</span>Finish wrapping it up with a glimpse into the future<span class="cineraCategories"><div title="Speech" class="categoryMedium speech">&#128489;</div></span></div>
+                    </div>
+                    <div class="progress main">
+                        <div class="cineraContent"><span class="timecode">2:28:31</span>Finish wrapping it up with a glimpse into the future<span class="cineraCategories"><div title="Speech" class="categoryMedium speech">&#128489;</div></span></div>
+                    </div>
+                </div>
+            </div>
+                <a class="episodeMarker next" href="https://hero.handmade.network/episode/code/day644/"><div>&#9196;</div><div>Next: 'Stepping Through Diagrams'</div><div>&#9196;</div></a>
+            </div>
+        </div>
+        </div>
+    <script type="text/javascript" src="https://handmade.network/public/annotations/cinera_player_post.js?r=285016ab"></script>
+    </body>
+</html>

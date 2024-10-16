@@ -6,6 +6,7 @@ dbclones/
 coverage.out
 public/media/
 cinera/*/
+!cinera/test
 cinera/cinera.conf
 annotations/
 /hmn
